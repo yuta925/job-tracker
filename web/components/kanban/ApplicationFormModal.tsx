@@ -1,8 +1,21 @@
 "use client";
 
 import { useState } from "react";
-import type { Application, ApplicationInsert, ApplicationUpdate } from "@/types";
-import { APPLICATION_STATUSES, STATUS_LABELS } from "@/types";
+import type {
+  Application,
+  ApplicationInsert,
+  ApplicationType,
+  ApplicationUpdate,
+  WebTestStatus,
+} from "@/types";
+import {
+  APPLICATION_STATUSES,
+  APPLICATION_TYPES,
+  APPLICATION_TYPE_LABELS,
+  STATUS_LABELS,
+  WEB_TEST_STATUSES,
+  WEB_TEST_STATUS_LABELS,
+} from "@/types";
 import { toDatetimeLocalValue } from "@/lib/date";
 
 interface ApplicationFormModalProps {
@@ -21,6 +34,22 @@ export function ApplicationFormModal({
   const isEditing = application !== null;
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [memo, setMemo] = useState(application?.memo ?? "");
+
+  function parseApplicationType(val: string): ApplicationType | null {
+    return APPLICATION_TYPES.includes(val as ApplicationType)
+      ? (val as ApplicationType)
+      : null;
+  }
+
+  function parseWebTestStatus(val: string): WebTestStatus | null {
+    return WEB_TEST_STATUSES.includes(val as WebTestStatus)
+      ? (val as WebTestStatus)
+      : null;
+  }
+
+  const MEMO_TEMPLATE =
+    "## 感想\n\n## 魅力点\n\n## 懸念点\n\n## 次回聞きたいこと\n";
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -39,6 +68,13 @@ export function ApplicationFormModal({
         })(),
         memo: (data.get("memo") as string) || null,
         application_url: (data.get("application_url") as string) || null,
+        application_type: parseApplicationType(
+          (data.get("application_type") as string) ?? ""
+        ),
+        web_test_status: parseWebTestStatus(
+          (data.get("web_test_status") as string) ?? ""
+        ),
+        deadline: (data.get("deadline") as string) || null,
       };
 
       if (isEditing) {
@@ -186,6 +222,56 @@ export function ApplicationFormModal({
               />
             </div>
 
+            {/* Application type */}
+            <div className="md-field">
+              <label className="md-field-label">応募種別</label>
+              <select
+                name="application_type"
+                aria-label="応募種別"
+                defaultValue={application?.application_type ?? ""}
+                className="md-field-input"
+                style={{ cursor: "pointer" }}
+              >
+                <option value="">未選択</option>
+                {APPLICATION_TYPES.map((t) => (
+                  <option key={t} value={t}>
+                    {APPLICATION_TYPE_LABELS[t]}
+                  </option>
+                ))}
+              </select>
+            </div>
+
+            {/* Web test status */}
+            <div className="md-field">
+              <label className="md-field-label">Webテスト</label>
+              <select
+                name="web_test_status"
+                aria-label="Webテスト"
+                defaultValue={application?.web_test_status ?? ""}
+                className="md-field-input"
+                style={{ cursor: "pointer" }}
+              >
+                <option value="">未選択</option>
+                {WEB_TEST_STATUSES.map((s) => (
+                  <option key={s} value={s}>
+                    {WEB_TEST_STATUS_LABELS[s]}
+                  </option>
+                ))}
+              </select>
+            </div>
+
+            {/* Deadline */}
+            <div className="md-field">
+              <label className="md-field-label">締切日</label>
+              <input
+                name="deadline"
+                type="date"
+                aria-label="締切日"
+                defaultValue={application?.deadline ?? ""}
+                className="md-field-input"
+              />
+            </div>
+
             {/* URL */}
             <div className="md-field">
               <label className="md-field-label">求人 URL</label>
@@ -200,13 +286,29 @@ export function ApplicationFormModal({
 
             {/* Memo */}
             <div className="md-field">
-              <label className="md-field-label">メモ</label>
+              <div className="flex items-center justify-between mb-1">
+                <label className="md-field-label" style={{ marginBottom: 0 }}>
+                  メモ
+                </label>
+                <button
+                  type="button"
+                  onClick={() => setMemo(MEMO_TEMPLATE)}
+                  className="md-label-small px-2 py-0.5 rounded-full md-state"
+                  style={{
+                    color: "var(--md-primary)",
+                    border: "1px solid var(--md-outline-variant)",
+                  }}
+                >
+                  テンプレを挿入
+                </button>
+              </div>
               <textarea
                 name="memo"
-                rows={3}
-                defaultValue={application?.memo ?? ""}
+                rows={4}
+                value={memo}
+                onChange={(e) => setMemo(e.target.value)}
                 className="md-field-input"
-                style={{ resize: "none" }}
+                style={{ resize: "vertical" }}
                 placeholder="備考、担当者名など..."
               />
             </div>
