@@ -4,8 +4,11 @@ import { useState, useCallback } from "react";
 import { DragDropContext, type DropResult } from "@hello-pangea/dnd";
 import {
   APPLICATION_STATUSES,
+  APPLICATION_TYPES,
+  APPLICATION_TYPE_LABELS,
   type Application,
   type ApplicationStatus,
+  type ApplicationType,
 } from "@/types";
 import { KanbanColumn } from "./KanbanColumn";
 import { ApplicationFormModal } from "./ApplicationFormModal";
@@ -25,12 +28,18 @@ export function KanbanBoard() {
   const [isFormOpen, setIsFormOpen] = useState(false);
   const [editingApplication, setEditingApplication] =
     useState<Application | null>(null);
+  const [filterType, setFilterType] = useState<ApplicationType | "all">("all");
+  const [filterWebTestNotTaken, setFilterWebTestNotTaken] = useState(false);
+
+  const filteredApplications = applications
+    .filter((a) => filterType === "all" || a.application_type === filterType)
+    .filter((a) => !filterWebTestNotTaken || a.web_test_status === "not_taken");
 
   const grouped = APPLICATION_STATUSES.reduce<
     Record<ApplicationStatus, Application[]>
   >(
     (acc, s) => {
-      acc[s] = applications.filter((a) => a.status === s);
+      acc[s] = filteredApplications.filter((a) => a.status === s);
       return acc;
     },
     {} as Record<ApplicationStatus, Application[]>
@@ -106,6 +115,46 @@ export function KanbanBoard() {
           </svg>
           企業を追加
         </button>
+      </div>
+
+      {/* ── Filters ── */}
+      <div
+        className="flex flex-wrap items-center gap-2 px-4 sm:px-6 py-2 border-b"
+        style={{ borderColor: "var(--md-outline-variant)" }}
+      >
+        <select
+          value={filterType}
+          onChange={(e) =>
+            setFilterType(e.target.value as ApplicationType | "all")
+          }
+          className="md-label-small px-3 py-1 rounded-full border"
+          style={{
+            borderColor: "var(--md-outline-variant)",
+            background: "var(--md-surface-container)",
+            color: "var(--md-on-surface)",
+            cursor: "pointer",
+          }}
+          aria-label="応募種別でフィルタ"
+        >
+          <option value="all">すべての種別</option>
+          {APPLICATION_TYPES.map((t) => (
+            <option key={t} value={t}>
+              {APPLICATION_TYPE_LABELS[t]}
+            </option>
+          ))}
+        </select>
+        <label
+          className="md-label-small inline-flex items-center gap-1.5 cursor-pointer"
+          style={{ color: "var(--md-on-surface-variant)" }}
+        >
+          <input
+            type="checkbox"
+            checked={filterWebTestNotTaken}
+            onChange={(e) => setFilterWebTestNotTaken(e.target.checked)}
+            className="rounded"
+          />
+          未受験のみ
+        </label>
       </div>
 
       {/* Error banner */}
