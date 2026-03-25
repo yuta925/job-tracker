@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { toDatetimeLocalValue } from "@/lib/date";
+import { toDatetimeLocalValue, getDeadlineUrgency } from "@/lib/date";
 
 describe("toDatetimeLocalValue", () => {
   it("UTC ISO 文字列をローカル datetime-local 形式に変換する", () => {
@@ -44,5 +44,36 @@ describe("toDatetimeLocalValue", () => {
     expect(result).toMatch(/T\d{2}:\d{2}$/);
     const minutes = result.slice(-2);
     expect(minutes.length).toBe(2);
+  });
+});
+
+describe("getDeadlineUrgency", () => {
+  // 今日の日付を 'YYYY-MM-DD' 形式で返すヘルパー
+  function todayStr(offsetDays = 0): string {
+    const d = new Date();
+    d.setHours(0, 0, 0, 0);
+    d.setDate(d.getDate() + offsetDays);
+    const pad = (n: number) => String(n).padStart(2, "0");
+    return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}`;
+  }
+
+  it("過去日は 'expired' を返す", () => {
+    expect(getDeadlineUrgency("2020-01-01")).toBe("expired");
+  });
+
+  it("当日は 'soon' を返す", () => {
+    expect(getDeadlineUrgency(todayStr(0))).toBe("soon");
+  });
+
+  it("3日後は 'soon' を返す", () => {
+    expect(getDeadlineUrgency(todayStr(3))).toBe("soon");
+  });
+
+  it("4日後は 'normal' を返す", () => {
+    expect(getDeadlineUrgency(todayStr(4))).toBe("normal");
+  });
+
+  it("遠い未来は 'normal' を返す", () => {
+    expect(getDeadlineUrgency("2099-12-31")).toBe("normal");
   });
 });
