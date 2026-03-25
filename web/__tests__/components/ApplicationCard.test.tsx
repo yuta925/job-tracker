@@ -114,4 +114,58 @@ describe("ApplicationCard", () => {
     fireEvent.click(screen.getByLabelText("削除"));
     expect(onDelete).not.toHaveBeenCalled();
   });
+
+  it("application_url がある場合、求人ページリンクを表示する", () => {
+    render(
+      <ApplicationCard
+        application={mockApplication}
+        index={0}
+        onEdit={vi.fn()}
+        onDelete={vi.fn()}
+      />
+    );
+    const link = screen.getByLabelText("求人ページを開く");
+    expect(link).toBeInTheDocument();
+    expect(link).toHaveAttribute("href", "https://example.com");
+    expect(link).toHaveAttribute("rel", "noopener noreferrer");
+    expect(link).toHaveAttribute("target", "_blank");
+  });
+
+  it("application_url が null の場合、求人ページリンクを表示しない", () => {
+    const appWithoutUrl: Application = { ...mockApplication, application_url: null };
+    render(
+      <ApplicationCard
+        application={appWithoutUrl}
+        index={0}
+        onEdit={vi.fn()}
+        onDelete={vi.fn()}
+      />
+    );
+    expect(screen.queryByLabelText("求人ページを開く")).not.toBeInTheDocument();
+  });
+
+  it("UTC ISO 文字列の面接日時がローカル時刻で表示される（TZズレ再発防止）", () => {
+    // UTC 06:00 の ISO 文字列を渡したとき、ローカル時刻に変換して表示されることを確認
+    const utcDate = new Date("2026-03-26T06:00:00.000Z");
+    const localMonth = utcDate.getMonth() + 1; // ローカル月
+    const localDay = utcDate.getDate();        // ローカル日
+
+    const appWithUtcDate: Application = {
+      ...mockApplication,
+      next_interview_at: "2026-03-26T06:00:00.000Z",
+    };
+
+    render(
+      <ApplicationCard
+        application={appWithUtcDate}
+        index={0}
+        onEdit={vi.fn()}
+        onDelete={vi.fn()}
+      />
+    );
+
+    // カードに表示される日付がローカル時刻の月/日を含むことを確認
+    const pattern = new RegExp(`${localMonth}[/月]${localDay}`);
+    expect(screen.getByText(pattern)).toBeInTheDocument();
+  });
 });

@@ -74,6 +74,22 @@ export function ApplicationCard({
 
               {/* Actions — visible on hover / focus-within */}
               <div className="flex shrink-0 opacity-0 group-hover:opacity-100 transition-opacity">
+                {application.application_url && (
+                  <a
+                    href={application.application_url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    onClick={(e) => e.stopPropagation()}
+                    className="w-8 h-8 rounded-full flex items-center justify-center md-state"
+                    style={{ color: "var(--md-on-surface-variant)" }}
+                    aria-label="求人ページを開く"
+                  >
+                    <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2}
+                        d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                    </svg>
+                  </a>
+                )}
                 <button
                   onClick={(e) => {
                     e.stopPropagation();

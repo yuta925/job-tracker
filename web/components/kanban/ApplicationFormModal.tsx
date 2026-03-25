@@ -3,6 +3,7 @@
 import { useState } from "react";
 import type { Application, ApplicationInsert, ApplicationUpdate } from "@/types";
 import { APPLICATION_STATUSES, STATUS_LABELS } from "@/types";
+import { toDatetimeLocalValue } from "@/lib/date";
 
 interface ApplicationFormModalProps {
   application: Application | null;
@@ -32,7 +33,10 @@ export function ApplicationFormModal({
         company_name: data.get("company_name") as string,
         position_name: (data.get("position_name") as string) || null,
         status: data.get("status") as Application["status"],
-        next_interview_at: (data.get("next_interview_at") as string) || null,
+        next_interview_at: (() => {
+          const raw = data.get("next_interview_at") as string;
+          return raw ? new Date(raw).toISOString() : null;
+        })(),
         memo: (data.get("memo") as string) || null,
         application_url: (data.get("application_url") as string) || null,
       };
@@ -175,7 +179,7 @@ export function ApplicationFormModal({
                 type="datetime-local"
                 defaultValue={
                   application?.next_interview_at
-                    ? application.next_interview_at.slice(0, 16)
+                    ? toDatetimeLocalValue(application.next_interview_at)
                     : ""
                 }
                 className="md-field-input"
