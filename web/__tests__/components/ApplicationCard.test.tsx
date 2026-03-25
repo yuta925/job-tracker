@@ -29,6 +29,9 @@ const mockApplication: Application = {
   next_interview_at: "2026-03-25T10:00:00Z",
   memo: "テストメモ",
   application_url: "https://example.com",
+  application_type: null,
+  web_test_status: null,
+  deadline: null,
   created_at: "2026-03-01T00:00:00Z",
   updated_at: "2026-03-01T00:00:00Z",
 };
@@ -142,6 +145,79 @@ describe("ApplicationCard", () => {
       />
     );
     expect(screen.queryByLabelText("求人ページを開く")).not.toBeInTheDocument();
+  });
+
+  it("application_type が 'main' のとき '本選考' チップを表示する", () => {
+    render(
+      <ApplicationCard
+        application={{ ...mockApplication, application_type: "main" }}
+        index={0}
+        onEdit={vi.fn()}
+        onDelete={vi.fn()}
+      />
+    );
+    expect(screen.getByText("本選考")).toBeInTheDocument();
+  });
+
+  it("application_type が null のとき種別チップを表示しない", () => {
+    render(
+      <ApplicationCard
+        application={{ ...mockApplication, application_type: null }}
+        index={0}
+        onEdit={vi.fn()}
+        onDelete={vi.fn()}
+      />
+    );
+    expect(screen.queryByText("本選考")).not.toBeInTheDocument();
+    expect(screen.queryByText("夏インターン")).not.toBeInTheDocument();
+  });
+
+  it("web_test_status が 'not_taken' のとき '未受験' チップを表示する", () => {
+    render(
+      <ApplicationCard
+        application={{ ...mockApplication, web_test_status: "not_taken" }}
+        index={0}
+        onEdit={vi.fn()}
+        onDelete={vi.fn()}
+      />
+    );
+    expect(screen.getByText("未受験")).toBeInTheDocument();
+  });
+
+  it("web_test_status が 'taken' のとき未受験チップを表示しない", () => {
+    render(
+      <ApplicationCard
+        application={{ ...mockApplication, web_test_status: "taken" }}
+        index={0}
+        onEdit={vi.fn()}
+        onDelete={vi.fn()}
+      />
+    );
+    expect(screen.queryByText("未受験")).not.toBeInTheDocument();
+  });
+
+  it("deadline が null のとき締切チップを表示しない", () => {
+    render(
+      <ApplicationCard
+        application={{ ...mockApplication, deadline: null }}
+        index={0}
+        onEdit={vi.fn()}
+        onDelete={vi.fn()}
+      />
+    );
+    expect(screen.queryByText(/締切/)).not.toBeInTheDocument();
+  });
+
+  it("deadline が過去日のとき ⚠ 付き締切チップを表示する", () => {
+    render(
+      <ApplicationCard
+        application={{ ...mockApplication, deadline: "2020-01-01" }}
+        index={0}
+        onEdit={vi.fn()}
+        onDelete={vi.fn()}
+      />
+    );
+    expect(screen.getByText(/締切.*⚠/)).toBeInTheDocument();
   });
 
   it("UTC ISO 文字列の面接日時がローカル時刻で表示される（TZズレ再発防止）", () => {
