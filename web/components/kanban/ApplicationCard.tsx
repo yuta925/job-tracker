@@ -1,5 +1,7 @@
 import { Draggable } from "@hello-pangea/dnd";
 import type { Application } from "@/types";
+import { APPLICATION_TYPE_LABELS, WEB_TEST_STATUS_LABELS } from "@/types";
+import { getDeadlineUrgency } from "@/lib/date";
 
 interface ApplicationCardProps {
   application: Application;
@@ -122,6 +124,63 @@ export function ApplicationCard({
                 </button>
               </div>
             </div>
+
+            {/* Chips row: application_type / web_test_status / deadline */}
+            {(application.application_type ||
+              application.web_test_status === "not_taken" ||
+              application.deadline) && (
+              <div className="mt-2 flex flex-wrap gap-1">
+                {application.application_type && (
+                  <span
+                    className="md-label-small inline-flex items-center px-2 py-0.5 rounded-full"
+                    style={{
+                      background: "var(--md-surface-container-high)",
+                      color: "var(--md-on-surface-variant)",
+                    }}
+                  >
+                    {APPLICATION_TYPE_LABELS[application.application_type]}
+                  </span>
+                )}
+                {application.web_test_status === "not_taken" && (
+                  <span
+                    className="md-label-small inline-flex items-center px-2 py-0.5 rounded-full"
+                    style={{ background: "#FFF3CD", color: "#7B5800" }}
+                  >
+                    {WEB_TEST_STATUS_LABELS["not_taken"]}
+                  </span>
+                )}
+                {application.deadline && (() => {
+                  const urgency = getDeadlineUrgency(application.deadline);
+                  const label = new Date(
+                    application.deadline + "T00:00:00"
+                  ).toLocaleDateString("ja-JP", {
+                    month: "numeric",
+                    day: "numeric",
+                  });
+                  const style =
+                    urgency === "expired"
+                      ? {
+                          background: "var(--md-error-container)",
+                          color: "var(--md-on-error-container)",
+                        }
+                      : urgency === "soon"
+                        ? { background: "#FFE0C2", color: "#8B4000" }
+                        : {
+                            background: "var(--md-surface-container-high)",
+                            color: "var(--md-on-surface-variant)",
+                          };
+                  const icon = urgency === "expired" ? " ⚠" : urgency === "soon" ? " ⚡" : "";
+                  return (
+                    <span
+                      className="md-label-small inline-flex items-center px-2 py-0.5 rounded-full"
+                      style={style}
+                    >
+                      締切 {label}{icon}
+                    </span>
+                  );
+                })()}
+              </div>
+            )}
 
             {/* Interview date chip */}
             {formattedDate && (
