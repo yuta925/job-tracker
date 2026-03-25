@@ -1,3 +1,31 @@
+export const APPLICATION_TYPES = [
+  "summer_intern",
+  "main",
+  "fulltime_intern",
+] as const;
+
+export type ApplicationType = (typeof APPLICATION_TYPES)[number];
+
+export const APPLICATION_TYPE_LABELS: Record<ApplicationType, string> = {
+  summer_intern: "夏インターン",
+  main: "本選考",
+  fulltime_intern: "内定者インターン",
+};
+
+export const WEB_TEST_STATUSES = [
+  "not_taken",
+  "taken",
+  "not_required",
+] as const;
+
+export type WebTestStatus = (typeof WEB_TEST_STATUSES)[number];
+
+export const WEB_TEST_STATUS_LABELS: Record<WebTestStatus, string> = {
+  not_taken: "未受験",
+  taken: "受験済み",
+  not_required: "不要",
+};
+
 export const APPLICATION_STATUSES = [
   "interest",
   "applied",
@@ -27,6 +55,9 @@ export interface Application {
   next_interview_at: string | null;
   memo: string | null;
   application_url: string | null;
+  application_type: ApplicationType | null;
+  web_test_status: WebTestStatus | null;
+  deadline: string | null;
   created_at: string;
   updated_at: string;
 }
