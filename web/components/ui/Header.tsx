@@ -1,6 +1,7 @@
 "use client";
 
 import { useTransition, useEffect, useState } from "react";
+import Link from "next/link";
 import { logout } from "@/app/login/actions";
 
 interface HeaderProps {
@@ -49,6 +50,18 @@ export function Header({ userEmail }: HeaderProps) {
 
       {/* Trailing actions */}
       <div className="flex items-center gap-1">
+        {/* Profile link */}
+        <Link
+          href="/profile"
+          className="w-10 h-10 rounded-full flex items-center justify-center md-state"
+          style={{ color: "var(--md-on-surface-variant)" }}
+          aria-label="プロフィール"
+        >
+          <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2}
+              d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+          </svg>
+        </Link>
         {/* User avatar chip */}
         <div
           className="hidden sm:flex items-center gap-2 px-3 py-1.5 rounded-full"

@@ -1,9 +1,9 @@
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import { Header } from "@/components/ui/Header";
-import { DashboardTabs } from "@/components/ui/DashboardTabs";
+import { ProfilePageClient } from "@/components/profile/ProfilePageClient";
 
-export default async function DashboardPage() {
+export default async function ProfilePage() {
   const supabase = await createClient();
   const {
     data: { user },
@@ -19,8 +19,8 @@ export default async function DashboardPage() {
       style={{ minHeight: "100dvh", background: "var(--md-background)" }}
     >
       <Header userEmail={user.email ?? ""} />
-      <main className="flex-1 flex flex-col overflow-hidden">
-        <DashboardTabs />
+      <main className="flex-1 overflow-auto">
+        <ProfilePageClient />
       </main>
     </div>
   );
