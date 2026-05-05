@@ -1,3 +1,35 @@
+export const POSITION_TYPES = [
+  "ソフトウェアエンジニア",
+  "インフラ/SREエンジニア",
+  "データサイエンティスト/AI",
+  "PM/PdM",
+  "UI/UXデザイナー",
+  "営業",
+  "マーケティング",
+  "コンサルタント",
+  "研究開発",
+  "ビジネス職",
+] as const;
+
+export type PositionType = (typeof POSITION_TYPES)[number];
+export const POSITION_OTHER_VALUE = "other" as const;
+
+export const INDUSTRIES = [
+  "IT/テック",
+  "金融/フィンテック",
+  "コンサルティング",
+  "メーカー",
+  "商社",
+  "小売/EC",
+  "メディア/広告",
+  "インフラ/公共",
+  "医療/ヘルスケア",
+  "教育",
+  "その他",
+] as const;
+
+export type Industry = (typeof INDUSTRIES)[number];
+
 export const APPLICATION_TYPES = [
   "summer_intern",
   "main",
@@ -58,6 +90,7 @@ export interface Application {
   application_type: ApplicationType | null;
   web_test_status: WebTestStatus | null;
   deadline: string | null;
+  industry: Industry | null;
   created_at: string;
   updated_at: string;
 }

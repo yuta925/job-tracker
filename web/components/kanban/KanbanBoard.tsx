@@ -6,9 +6,11 @@ import {
   APPLICATION_STATUSES,
   APPLICATION_TYPES,
   APPLICATION_TYPE_LABELS,
+  INDUSTRIES,
   type Application,
   type ApplicationStatus,
   type ApplicationType,
+  type Industry,
 } from "@/types";
 import { KanbanColumn } from "./KanbanColumn";
 import { ApplicationFormModal } from "./ApplicationFormModal";
@@ -29,10 +31,12 @@ export function KanbanBoard() {
   const [editingApplication, setEditingApplication] =
     useState<Application | null>(null);
   const [filterType, setFilterType] = useState<ApplicationType | "all">("all");
+  const [filterIndustry, setFilterIndustry] = useState<Industry | "all">("all");
   const [filterWebTestNotTaken, setFilterWebTestNotTaken] = useState(false);
 
   const filteredApplications = applications
     .filter((a) => filterType === "all" || a.application_type === filterType)
+    .filter((a) => filterIndustry === "all" || a.industry === filterIndustry)
     .filter((a) => !filterWebTestNotTaken || a.web_test_status === "not_taken");
 
   const grouped = APPLICATION_STATUSES.reduce<
@@ -140,6 +144,25 @@ export function KanbanBoard() {
           {APPLICATION_TYPES.map((t) => (
             <option key={t} value={t}>
               {APPLICATION_TYPE_LABELS[t]}
+            </option>
+          ))}
+        </select>
+        <select
+          value={filterIndustry}
+          onChange={(e) => setFilterIndustry(e.target.value as Industry | "all")}
+          className="md-label-small px-3 py-1 rounded-full border"
+          style={{
+            borderColor: "var(--md-outline-variant)",
+            background: "var(--md-surface-container)",
+            color: "var(--md-on-surface)",
+            cursor: "pointer",
+          }}
+          aria-label="業界でフィルタ"
+        >
+          <option value="all">すべての業界</option>
+          {INDUSTRIES.map((ind) => (
+            <option key={ind} value={ind}>
+              {ind}
             </option>
           ))}
         </select>

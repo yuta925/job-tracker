@@ -6,12 +6,17 @@ import type {
   ApplicationInsert,
   ApplicationType,
   ApplicationUpdate,
+  Industry,
+  PositionType,
   WebTestStatus,
 } from "@/types";
 import {
   APPLICATION_STATUSES,
   APPLICATION_TYPES,
   APPLICATION_TYPE_LABELS,
+  INDUSTRIES,
+  POSITION_OTHER_VALUE,
+  POSITION_TYPES,
   STATUS_LABELS,
   WEB_TEST_STATUSES,
   WEB_TEST_STATUS_LABELS,
@@ -36,6 +41,18 @@ export function ApplicationFormModal({
   const [error, setError] = useState<string | null>(null);
   const [memo, setMemo] = useState(application?.memo ?? "");
 
+  const initialPositionSelect = ((): PositionType | typeof POSITION_OTHER_VALUE => {
+    const name = application?.position_name ?? null;
+    if (name === null) return POSITION_OTHER_VALUE;
+    return (POSITION_TYPES as readonly string[]).includes(name)
+      ? (name as PositionType)
+      : POSITION_OTHER_VALUE;
+  })();
+  const [positionSelect, setPositionSelect] = useState<PositionType | typeof POSITION_OTHER_VALUE>(initialPositionSelect);
+  const [positionCustom, setPositionCustom] = useState(
+    initialPositionSelect === POSITION_OTHER_VALUE ? (application?.position_name ?? "") : ""
+  );
+
   function parseApplicationType(val: string): ApplicationType | null {
     return APPLICATION_TYPES.includes(val as ApplicationType)
       ? (val as ApplicationType)
@@ -48,6 +65,10 @@ export function ApplicationFormModal({
       : null;
   }
 
+  function parseIndustry(val: string): Industry | null {
+    return (INDUSTRIES as readonly string[]).includes(val) ? (val as Industry) : null;
+  }
+
   const MEMO_TEMPLATE =
     "## 感想\n\n## 魅力点\n\n## 懸念点\n\n## 次回聞きたいこと\n";
 
@@ -58,9 +79,14 @@ export function ApplicationFormModal({
 
     try {
       const data = new FormData(e.currentTarget);
+      const resolvedPositionName =
+        positionSelect === POSITION_OTHER_VALUE
+          ? positionCustom.trim() || null
+          : positionSelect;
+
       const fields = {
         company_name: data.get("company_name") as string,
-        position_name: (data.get("position_name") as string) || null,
+        position_name: resolvedPositionName,
         status: data.get("status") as Application["status"],
         next_interview_at: (() => {
           const raw = data.get("next_interview_at") as string;
@@ -75,6 +101,7 @@ export function ApplicationFormModal({
           (data.get("web_test_status") as string) ?? ""
         ),
         deadline: (data.get("deadline") as string) || null,
+        industry: parseIndustry((data.get("industry") as string) ?? ""),
       };
 
       if (isEditing) {
@@ -178,13 +205,30 @@ export function ApplicationFormModal({
             {/* Position */}
             <div className="md-field">
               <label className="md-field-label">職種・ポジション</label>
-              <input
-                name="position_name"
-                type="text"
-                defaultValue={application?.position_name ?? ""}
+              <select
+                value={positionSelect}
+                onChange={(e) =>
+                  setPositionSelect(e.target.value as PositionType | typeof POSITION_OTHER_VALUE)
+                }
                 className="md-field-input"
-                placeholder="ソフトウェアエンジニア"
-              />
+                style={{ cursor: "pointer" }}
+              >
+                <option value={POSITION_OTHER_VALUE}>その他（自由入力）</option>
+                {POSITION_TYPES.map((p) => (
+                  <option key={p} value={p}>
+                    {p}
+                  </option>
+                ))}
+              </select>
+              {positionSelect === POSITION_OTHER_VALUE && (
+                <input
+                  type="text"
+                  value={positionCustom}
+                  onChange={(e) => setPositionCustom(e.target.value)}
+                  className="md-field-input mt-2"
+                  placeholder="職種を入力..."
+                />
+              )}
             </div>
 
             {/* Status */}
@@ -236,6 +280,25 @@ export function ApplicationFormModal({
                 {APPLICATION_TYPES.map((t) => (
                   <option key={t} value={t}>
                     {APPLICATION_TYPE_LABELS[t]}
+                  </option>
+                ))}
+              </select>
+            </div>
+
+            {/* Industry */}
+            <div className="md-field">
+              <label className="md-field-label">業界</label>
+              <select
+                name="industry"
+                aria-label="業界"
+                defaultValue={application?.industry ?? ""}
+                className="md-field-input"
+                style={{ cursor: "pointer" }}
+              >
+                <option value="">未選択</option>
+                {INDUSTRIES.map((ind) => (
+                  <option key={ind} value={ind}>
+                    {ind}
                   </option>
                 ))}
               </select>

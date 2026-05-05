@@ -15,6 +15,7 @@ const makeApp = (overrides: Partial<Application> = {}): Application => ({
   application_type: null,
   web_test_status: null,
   deadline: null,
+  industry: null,
   created_at: "2026-03-01T00:00:00Z",
   updated_at: "2026-03-01T00:00:00Z",
   ...overrides,

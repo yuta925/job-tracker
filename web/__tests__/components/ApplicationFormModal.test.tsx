@@ -15,6 +15,7 @@ const mockApplication: Application = {
   application_type: "main",
   web_test_status: "not_taken",
   deadline: "2026-05-01",
+  industry: null,
   created_at: "2026-03-01T00:00:00Z",
   updated_at: "2026-03-01T00:00:00Z",
 };
