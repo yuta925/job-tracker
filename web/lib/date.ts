@@ -11,6 +11,23 @@ export function toDatetimeLocalValue(isoString: string): string {
   );
 }
 
+/**
+ * 開催日 ('YYYY-MM-DD' or null) に対して相対的な日付ラベルを返す。
+ * - '今日' / '明日' / 'N日後' / '昨日' / 'N日前' / '日程未定'
+ */
+export function getRelativeDateLabel(dateStr: string | null): string {
+  if (!dateStr) return "日程未定";
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+  const d = new Date(dateStr + "T00:00:00");
+  const diffDays = Math.round((d.getTime() - today.getTime()) / (1000 * 60 * 60 * 24));
+  if (diffDays === 0) return "今日";
+  if (diffDays === 1) return "明日";
+  if (diffDays > 1) return `${diffDays}日後`;
+  if (diffDays === -1) return "昨日";
+  return `${Math.abs(diffDays)}日前`;
+}
+
 export type DeadlineUrgency = "expired" | "soon" | "normal";
 
 /**
