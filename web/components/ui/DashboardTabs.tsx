@@ -5,11 +5,13 @@ import { KanbanBoard } from "@/components/kanban/KanbanBoard";
 import { ReverseOfferEventList } from "@/components/events/ReverseOfferEventList";
 import { SeminarList } from "@/components/seminars/SeminarList";
 import { JobSiteList } from "@/components/job_sites/JobSiteList";
+import { CaMeetingList } from "@/components/ca_meetings/CaMeetingList";
 import { useReverseOfferEvents } from "@/hooks/useReverseOfferEvents";
 import { useSeminars } from "@/hooks/useSeminars";
 import { useJobSites } from "@/hooks/useJobSites";
+import { useCaMeetings } from "@/hooks/useCaMeetings";
 
-type Tab = "kanban" | "events" | "seminars" | "job_sites";
+type Tab = "kanban" | "events" | "seminars" | "job_sites" | "ca_meetings";
 
 const TAB_STYLE_ACTIVE = {
   color: "var(--md-primary)",
@@ -85,6 +87,15 @@ export function DashboardTabs() {
     deleteItem: deleteJobSite,
   } = useJobSites();
 
+  const {
+    meetings,
+    isLoading: meetingsLoading,
+    error: meetingsError,
+    createItem: createMeeting,
+    updateItem: updateMeeting,
+    deleteItem: deleteMeeting,
+  } = useCaMeetings();
+
   return (
     <div className="flex-1 flex flex-col overflow-hidden">
       {/* Tab bar — overflow-x-auto for mobile */}
@@ -114,6 +125,12 @@ export function DashboardTabs() {
           badge={jobSites.length}
           isActive={activeTab === "job_sites"}
           onClick={() => setActiveTab("job_sites")}
+        />
+        <TabButton
+          label="CA面談"
+          badge={meetings.length}
+          isActive={activeTab === "ca_meetings"}
+          onClick={() => setActiveTab("ca_meetings")}
         />
       </div>
 
@@ -148,6 +165,16 @@ export function DashboardTabs() {
             onCreate={createJobSite}
             onUpdate={updateJobSite}
             onDelete={deleteJobSite}
+          />
+        )}
+        {activeTab === "ca_meetings" && (
+          <CaMeetingList
+            meetings={meetings}
+            isLoading={meetingsLoading}
+            error={meetingsError}
+            onCreate={createMeeting}
+            onUpdate={updateMeeting}
+            onDelete={deleteMeeting}
           />
         )}
       </div>
