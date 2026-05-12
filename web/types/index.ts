@@ -1,4 +1,5 @@
 export * from "./application";
+export * from "./ca_meeting";
 export * from "./document_item";
 export * from "./job_site";
 export * from "./reverse_offer_event";
