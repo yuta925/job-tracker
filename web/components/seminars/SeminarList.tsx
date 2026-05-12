@@ -14,6 +14,40 @@ interface SeminarListProps {
   onDelete: (id: string) => Promise<void>;
 }
 
+function SeminarSection({
+  title,
+  seminars,
+  onEdit,
+  onDelete,
+}: {
+  title: string;
+  seminars: Seminar[];
+  onEdit: (s: Seminar) => void;
+  onDelete: (id: string) => Promise<void>;
+}) {
+  if (seminars.length === 0) return null;
+  return (
+    <section className="mb-6">
+      <h2
+        className="md-title-small mb-3"
+        style={{ color: "var(--md-on-surface-variant)" }}
+      >
+        {title}（{seminars.length}件）
+      </h2>
+      <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+        {seminars.map((seminar) => (
+          <SeminarCard
+            key={seminar.id}
+            seminar={seminar}
+            onEdit={onEdit}
+            onDelete={onDelete}
+          />
+        ))}
+      </div>
+    </section>
+  );
+}
+
 export function SeminarList({
   seminars,
   isLoading,
@@ -24,6 +58,15 @@ export function SeminarList({
 }: SeminarListProps) {
   const [modalSeminar, setModalSeminar] = useState<Seminar | null | undefined>(
     undefined
+  );
+
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+  const upcoming = seminars.filter(
+    (s) => !s.event_date || new Date(s.event_date + "T00:00:00") >= today
+  );
+  const past = seminars.filter(
+    (s) => s.event_date && new Date(s.event_date + "T00:00:00") < today
   );
 
   if (isLoading) {
@@ -88,16 +131,20 @@ export function SeminarList({
           </button>
         </div>
       ) : (
-        <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-          {seminars.map((seminar) => (
-            <SeminarCard
-              key={seminar.id}
-              seminar={seminar}
-              onEdit={(s) => setModalSeminar(s)}
-              onDelete={onDelete}
-            />
-          ))}
-        </div>
+        <>
+          <SeminarSection
+            title="今後の説明会"
+            seminars={upcoming}
+            onEdit={(s) => setModalSeminar(s)}
+            onDelete={onDelete}
+          />
+          <SeminarSection
+            title="終了した説明会"
+            seminars={past}
+            onEdit={(s) => setModalSeminar(s)}
+            onDelete={onDelete}
+          />
+        </>
       )}
 
       {modalSeminar !== undefined && (
