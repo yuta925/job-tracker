@@ -1,5 +1,6 @@
 export const POSITION_TYPES = [
   "ソフトウェアエンジニア",
+  "システムエンジニア（SE）",
   "インフラ/SREエンジニア",
   "データサイエンティスト/AI",
   "PM/PdM",
@@ -44,19 +45,13 @@ export const APPLICATION_TYPE_LABELS: Record<ApplicationType, string> = {
   fulltime_intern: "内定者インターン",
 };
 
-export const WEB_TEST_STATUSES = [
-  "not_taken",
-  "taken",
-  "not_required",
+export const SCREENING_LABELS = [
+  "コーディングテスト",
+  "Webテスト",
+  "GD",
 ] as const;
 
-export type WebTestStatus = (typeof WEB_TEST_STATUSES)[number];
-
-export const WEB_TEST_STATUS_LABELS: Record<WebTestStatus, string> = {
-  not_taken: "未受験",
-  taken: "受験済み",
-  not_required: "不要",
-};
+export type ScreeningLabel = (typeof SCREENING_LABELS)[number];
 
 export const APPLICATION_STATUSES = [
   "interest",
@@ -88,7 +83,7 @@ export interface Application {
   memo: string | null;
   application_url: string | null;
   application_type: ApplicationType | null;
-  web_test_status: WebTestStatus | null;
+  screening_labels: ScreeningLabel[] | null;
   deadline: string | null;
   industry: Industry | null;
   created_at: string;

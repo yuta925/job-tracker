@@ -8,7 +8,7 @@ import type {
   ApplicationUpdate,
   Industry,
   PositionType,
-  WebTestStatus,
+  ScreeningLabel,
 } from "@/types";
 import {
   APPLICATION_STATUSES,
@@ -17,9 +17,8 @@ import {
   INDUSTRIES,
   POSITION_OTHER_VALUE,
   POSITION_TYPES,
+  SCREENING_LABELS,
   STATUS_LABELS,
-  WEB_TEST_STATUSES,
-  WEB_TEST_STATUS_LABELS,
 } from "@/types";
 import { toDatetimeLocalValue } from "@/lib/date";
 
@@ -40,6 +39,9 @@ export function ApplicationFormModal({
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [memo, setMemo] = useState(application?.memo ?? "");
+  const [screeningLabels, setScreeningLabels] = useState<ScreeningLabel[]>(
+    application?.screening_labels ?? []
+  );
 
   const initialPositionSelect = ((): PositionType | typeof POSITION_OTHER_VALUE => {
     const name = application?.position_name ?? null;
@@ -59,10 +61,10 @@ export function ApplicationFormModal({
       : null;
   }
 
-  function parseWebTestStatus(val: string): WebTestStatus | null {
-    return WEB_TEST_STATUSES.includes(val as WebTestStatus)
-      ? (val as WebTestStatus)
-      : null;
+  function toggleScreeningLabel(label: ScreeningLabel) {
+    setScreeningLabels((prev) =>
+      prev.includes(label) ? prev.filter((l) => l !== label) : [...prev, label]
+    );
   }
 
   function parseIndustry(val: string): Industry | null {
@@ -97,9 +99,7 @@ export function ApplicationFormModal({
         application_type: parseApplicationType(
           (data.get("application_type") as string) ?? ""
         ),
-        web_test_status: parseWebTestStatus(
-          (data.get("web_test_status") as string) ?? ""
-        ),
+        screening_labels: screeningLabels.length > 0 ? screeningLabels : null,
         deadline: (data.get("deadline") as string) || null,
         industry: parseIndustry((data.get("industry") as string) ?? ""),
       };
@@ -304,23 +304,40 @@ export function ApplicationFormModal({
               </select>
             </div>
 
-            {/* Web test status */}
+            {/* Screening labels */}
             <div className="md-field">
-              <label className="md-field-label">Webテスト</label>
-              <select
-                name="web_test_status"
-                aria-label="Webテスト"
-                defaultValue={application?.web_test_status ?? ""}
-                className="md-field-input"
-                style={{ cursor: "pointer" }}
-              >
-                <option value="">未選択</option>
-                {WEB_TEST_STATUSES.map((s) => (
-                  <option key={s} value={s}>
-                    {WEB_TEST_STATUS_LABELS[s]}
-                  </option>
-                ))}
-              </select>
+              <label className="md-field-label">選考ラベル</label>
+              <div className="flex flex-wrap gap-2 mt-1">
+                {SCREENING_LABELS.map((label) => {
+                  const checked = screeningLabels.includes(label);
+                  return (
+                    <label
+                      key={label}
+                      className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full md-label-small cursor-pointer select-none"
+                      style={{
+                        background: checked
+                          ? "var(--md-primary-container)"
+                          : "var(--md-surface-container-high)",
+                        color: checked
+                          ? "var(--md-on-primary-container)"
+                          : "var(--md-on-surface-variant)",
+                        border: checked
+                          ? "1.5px solid var(--md-primary)"
+                          : "1.5px solid transparent",
+                      }}
+                    >
+                      <input
+                        type="checkbox"
+                        className="sr-only"
+                        checked={checked}
+                        onChange={() => toggleScreeningLabel(label)}
+                        aria-label={label}
+                      />
+                      {label}
+                    </label>
+                  );
+                })}
+              </div>
             </div>
 
             {/* Deadline */}

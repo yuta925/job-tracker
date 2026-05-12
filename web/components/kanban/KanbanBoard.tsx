@@ -34,12 +34,9 @@ export function KanbanBoard() {
   const [selectedApp, setSelectedApp] = useState<Application | null>(null);
   const [filterType, setFilterType] = useState<ApplicationType | "all">("all");
   const [filterIndustry, setFilterIndustry] = useState<Industry | "all">("all");
-  const [filterWebTestNotTaken, setFilterWebTestNotTaken] = useState(false);
-
   const filteredApplications = applications
     .filter((a) => filterType === "all" || a.application_type === filterType)
-    .filter((a) => filterIndustry === "all" || a.industry === filterIndustry)
-    .filter((a) => !filterWebTestNotTaken || a.web_test_status === "not_taken");
+    .filter((a) => filterIndustry === "all" || a.industry === filterIndustry);
 
   const grouped = APPLICATION_STATUSES.reduce<
     Record<ApplicationStatus, Application[]>
@@ -148,18 +145,6 @@ export function KanbanBoard() {
               </option>
             ))}
           </select>
-          <label
-            className="md-label-small inline-flex items-center gap-1.5 cursor-pointer"
-            style={{ color: "var(--md-on-surface-variant)" }}
-          >
-            <input
-              type="checkbox"
-              checked={filterWebTestNotTaken}
-              onChange={(e) => setFilterWebTestNotTaken(e.target.checked)}
-              className="rounded"
-            />
-            未受験のみ
-          </label>
         </div>
         <button
           onClick={handleOpenNew}

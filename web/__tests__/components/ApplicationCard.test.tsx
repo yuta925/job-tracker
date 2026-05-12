@@ -30,7 +30,7 @@ const mockApplication: Application = {
   memo: "テストメモ",
   application_url: "https://example.com",
   application_type: null,
-  web_test_status: null,
+  screening_labels: null,
   deadline: null,
   industry: null,
   created_at: "2026-03-01T00:00:00Z",
@@ -122,26 +122,27 @@ describe("ApplicationCard", () => {
     expect(screen.queryByText("夏インターン")).not.toBeInTheDocument();
   });
 
-  it("web_test_status が 'not_taken' のとき '未受験' チップを表示する", () => {
+  it("screening_labels があるときラベルチップを表示する", () => {
     render(
       <ApplicationCard
-        application={{ ...mockApplication, web_test_status: "not_taken" }}
+        application={{ ...mockApplication, screening_labels: ["コーディングテスト", "GD"] }}
         index={0}
         onCardClick={vi.fn()}
       />
     );
-    expect(screen.getByText("未受験")).toBeInTheDocument();
+    expect(screen.getByText("コーディングテスト")).toBeInTheDocument();
+    expect(screen.getByText("GD")).toBeInTheDocument();
   });
 
-  it("web_test_status が 'taken' のとき未受験チップを表示しない", () => {
+  it("screening_labels が null のときラベルチップを表示しない", () => {
     render(
       <ApplicationCard
-        application={{ ...mockApplication, web_test_status: "taken" }}
+        application={{ ...mockApplication, screening_labels: null }}
         index={0}
         onCardClick={vi.fn()}
       />
     );
-    expect(screen.queryByText("未受験")).not.toBeInTheDocument();
+    expect(screen.queryByText("コーディングテスト")).not.toBeInTheDocument();
   });
 
   it("deadline が null のとき締切チップを表示しない", () => {

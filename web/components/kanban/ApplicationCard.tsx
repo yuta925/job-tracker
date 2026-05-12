@@ -1,7 +1,7 @@
 import { useRef } from "react";
 import { Draggable } from "@hello-pangea/dnd";
 import type { Application } from "@/types";
-import { APPLICATION_TYPE_LABELS, WEB_TEST_STATUS_LABELS } from "@/types";
+import { APPLICATION_TYPE_LABELS } from "@/types";
 import { getDeadlineUrgency } from "@/lib/date";
 
 interface ApplicationCardProps {
@@ -84,10 +84,10 @@ export function ApplicationCard({
               )}
             </div>
 
-            {/* Chips row: application_type / web_test_status / deadline */}
+            {/* Chips row */}
             {(application.application_type ||
-              application.web_test_status === "not_taken" ||
-              application.deadline) && (
+              application.deadline ||
+              (application.screening_labels && application.screening_labels.length > 0)) && (
               <div className="mt-2 flex flex-wrap gap-1">
                 {application.application_type && (
                   <span
@@ -100,14 +100,18 @@ export function ApplicationCard({
                     {APPLICATION_TYPE_LABELS[application.application_type]}
                   </span>
                 )}
-                {application.web_test_status === "not_taken" && (
+                {application.screening_labels?.map((label) => (
                   <span
+                    key={label}
                     className="md-label-small inline-flex items-center px-2 py-0.5 rounded-full"
-                    style={{ background: "#FFF3CD", color: "#7B5800" }}
+                    style={{
+                      background: "var(--md-secondary-container)",
+                      color: "var(--md-on-secondary-container)",
+                    }}
                   >
-                    {WEB_TEST_STATUS_LABELS["not_taken"]}
+                    {label}
                   </span>
-                )}
+                ))}
                 {application.deadline && (() => {
                   const urgency = getDeadlineUrgency(application.deadline);
                   const label = new Date(
@@ -134,7 +138,7 @@ export function ApplicationCard({
                       className="md-label-small inline-flex items-center px-2 py-0.5 rounded-full"
                       style={style}
                     >
-                      締切 {label}{icon}
+                      ES締切 {label}{icon}
                     </span>
                   );
                 })()}
@@ -163,16 +167,6 @@ export function ApplicationCard({
                   {isInterviewSoon && " ⚡"}
                 </span>
               </div>
-            )}
-
-            {/* Memo */}
-            {application.memo && (
-              <p
-                className="md-body-small mt-2 line-clamp-2 leading-relaxed"
-                style={{ color: "var(--md-on-surface-variant)" }}
-              >
-                {application.memo}
-              </p>
             )}
           </div>
         </div>

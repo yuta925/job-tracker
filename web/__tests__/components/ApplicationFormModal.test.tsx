@@ -13,7 +13,7 @@ const mockApplication: Application = {
   memo: "既存メモ",
   application_url: null,
   application_type: "main",
-  web_test_status: "not_taken",
+  screening_labels: null,
   deadline: "2026-05-01",
   industry: null,
   created_at: "2026-03-01T00:00:00Z",
@@ -66,10 +66,15 @@ describe("ApplicationFormModal", () => {
     expect(select.value).toBe("main");
   });
 
-  it("編集モード時にWebテスト初期値が選択されている", () => {
-    render(<ApplicationFormModal {...defaultProps} application={mockApplication} />);
-    const select = screen.getByLabelText(/Webテスト/) as HTMLSelectElement;
-    expect(select.value).toBe("not_taken");
+  it("編集モード時に選考ラベルの初期チェック状態が反映されている", () => {
+    render(
+      <ApplicationFormModal
+        {...defaultProps}
+        application={{ ...mockApplication, screening_labels: ["コーディングテスト"] }}
+      />
+    );
+    const checkbox = screen.getByLabelText("コーディングテスト") as HTMLInputElement;
+    expect(checkbox.checked).toBe(true);
   });
 
   it("編集モード時に締切日の初期値が設定されている", () => {

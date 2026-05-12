@@ -4,7 +4,6 @@ import type { Application } from "@/types";
 import {
   STATUS_LABELS,
   APPLICATION_TYPE_LABELS,
-  WEB_TEST_STATUS_LABELS,
 } from "@/types";
 import { getDeadlineUrgency } from "@/lib/date";
 
@@ -111,8 +110,8 @@ export function ApplicationDetailModal({
 
         {/* Body */}
         <div className="px-6 py-4 space-y-4 overflow-y-auto" style={{ maxHeight: "55vh" }}>
-          {/* Type / Industry / Web test */}
-          {(application.application_type || application.industry || application.web_test_status) && (
+          {/* Type / Industry */}
+          {(application.application_type || application.industry) && (
             <div className="grid grid-cols-2 gap-3">
               {application.application_type && (
                 <Field label="応募種別">
@@ -122,12 +121,27 @@ export function ApplicationDetailModal({
               {application.industry && (
                 <Field label="業界">{application.industry}</Field>
               )}
-              {application.web_test_status && (
-                <Field label="Webテスト">
-                  {WEB_TEST_STATUS_LABELS[application.web_test_status]}
-                </Field>
-              )}
             </div>
+          )}
+
+          {/* Screening labels */}
+          {application.screening_labels && application.screening_labels.length > 0 && (
+            <Field label="選考ラベル">
+              <div className="flex flex-wrap gap-1 mt-0.5">
+                {application.screening_labels.map((label) => (
+                  <span
+                    key={label}
+                    className="md-label-small inline-flex items-center px-2 py-0.5 rounded-full"
+                    style={{
+                      background: "var(--md-secondary-container)",
+                      color: "var(--md-on-secondary-container)",
+                    }}
+                  >
+                    {label}
+                  </span>
+                ))}
+              </div>
+            </Field>
           )}
 
           {/* Deadline / Interview */}
