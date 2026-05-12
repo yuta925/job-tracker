@@ -4,10 +4,12 @@ import { useState } from "react";
 import { KanbanBoard } from "@/components/kanban/KanbanBoard";
 import { ReverseOfferEventList } from "@/components/events/ReverseOfferEventList";
 import { SeminarList } from "@/components/seminars/SeminarList";
+import { JobSiteList } from "@/components/job_sites/JobSiteList";
 import { useReverseOfferEvents } from "@/hooks/useReverseOfferEvents";
 import { useSeminars } from "@/hooks/useSeminars";
+import { useJobSites } from "@/hooks/useJobSites";
 
-type Tab = "kanban" | "events" | "seminars";
+type Tab = "kanban" | "events" | "seminars" | "job_sites";
 
 const TAB_STYLE_ACTIVE = {
   color: "var(--md-primary)",
@@ -74,6 +76,15 @@ export function DashboardTabs() {
     deleteItem: deleteSeminar,
   } = useSeminars();
 
+  const {
+    jobSites,
+    isLoading: jobSitesLoading,
+    error: jobSitesError,
+    createItem: createJobSite,
+    updateItem: updateJobSite,
+    deleteItem: deleteJobSite,
+  } = useJobSites();
+
   return (
     <div className="flex-1 flex flex-col overflow-hidden">
       {/* Tab bar — overflow-x-auto for mobile */}
@@ -98,6 +109,12 @@ export function DashboardTabs() {
           isActive={activeTab === "events"}
           onClick={() => setActiveTab("events")}
         />
+        <TabButton
+          label="就活サイト"
+          badge={jobSites.length}
+          isActive={activeTab === "job_sites"}
+          onClick={() => setActiveTab("job_sites")}
+        />
       </div>
 
       {/* Tab content */}
@@ -121,6 +138,16 @@ export function DashboardTabs() {
             onCreate={createEvent}
             onUpdate={updateEvent}
             onDelete={deleteEvent}
+          />
+        )}
+        {activeTab === "job_sites" && (
+          <JobSiteList
+            jobSites={jobSites}
+            isLoading={jobSitesLoading}
+            error={jobSitesError}
+            onCreate={createJobSite}
+            onUpdate={updateJobSite}
+            onDelete={deleteJobSite}
           />
         )}
       </div>
