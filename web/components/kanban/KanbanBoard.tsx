@@ -14,6 +14,7 @@ import {
 } from "@/types";
 import { KanbanColumn } from "./KanbanColumn";
 import { ApplicationFormModal } from "./ApplicationFormModal";
+import { ApplicationDetailModal } from "./ApplicationDetailModal";
 import { useApplications } from "@/hooks/useApplications";
 
 export function KanbanBoard() {
@@ -30,6 +31,7 @@ export function KanbanBoard() {
   const [isFormOpen, setIsFormOpen] = useState(false);
   const [editingApplication, setEditingApplication] =
     useState<Application | null>(null);
+  const [selectedApp, setSelectedApp] = useState<Application | null>(null);
   const [filterType, setFilterType] = useState<ApplicationType | "all">("all");
   const [filterIndustry, setFilterIndustry] = useState<Industry | "all">("all");
   const [filterWebTestNotTaken, setFilterWebTestNotTaken] = useState(false);
@@ -62,7 +64,12 @@ export function KanbanBoard() {
     [applications, updateStatus]
   );
 
-  function handleEdit(app: Application) {
+  function handleCardClick(app: Application) {
+    setSelectedApp(app);
+  }
+
+  function handleEditFromDetail(app: Application) {
+    setSelectedApp(null);
     setEditingApplication(app);
     setIsFormOpen(true);
   }
@@ -198,8 +205,7 @@ export function KanbanBoard() {
               key={status}
               status={status}
               applications={grouped[status]}
-              onEdit={handleEdit}
-              onDelete={deleteApp}
+              onCardClick={handleCardClick}
             />
           ))}
         </div>
@@ -217,7 +223,20 @@ export function KanbanBoard() {
         </svg>
       </button>
 
-      {/* Modal */}
+      {/* Detail modal */}
+      {selectedApp && (
+        <ApplicationDetailModal
+          application={selectedApp}
+          onClose={() => setSelectedApp(null)}
+          onEdit={handleEditFromDetail}
+          onDelete={(id) => {
+            deleteApp(id);
+            setSelectedApp(null);
+          }}
+        />
+      )}
+
+      {/* Edit modal */}
       {isFormOpen && (
         <ApplicationFormModal
           application={editingApplication}

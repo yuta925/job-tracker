@@ -6,8 +6,7 @@ import { ApplicationCard } from "./ApplicationCard";
 interface KanbanColumnProps {
   status: ApplicationStatus;
   applications: Application[];
-  onEdit: (app: Application) => void;
-  onDelete: (id: string) => void;
+  onCardClick: (app: Application) => void;
 }
 
 type StatusConfig = {
@@ -59,8 +58,7 @@ const STATUS_CONFIG: Record<ApplicationStatus, StatusConfig> = {
 export function KanbanColumn({
   status,
   applications,
-  onEdit,
-  onDelete,
+  onCardClick,
 }: KanbanColumnProps) {
   const cfg = STATUS_CONFIG[status];
 
@@ -112,8 +110,7 @@ export function KanbanColumn({
                 key={app.id}
                 application={app}
                 index={index}
-                onEdit={onEdit}
-                onDelete={onDelete}
+                onCardClick={onCardClick}
               />
             ))}
             {provided.placeholder}

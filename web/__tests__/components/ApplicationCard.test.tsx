@@ -43,8 +43,7 @@ describe("ApplicationCard", () => {
       <ApplicationCard
         application={mockApplication}
         index={0}
-        onEdit={vi.fn()}
-        onDelete={vi.fn()}
+        onCardClick={vi.fn()}
       />
     );
     expect(screen.getByText("株式会社テスト")).toBeInTheDocument();
@@ -55,8 +54,7 @@ describe("ApplicationCard", () => {
       <ApplicationCard
         application={mockApplication}
         index={0}
-        onEdit={vi.fn()}
-        onDelete={vi.fn()}
+        onCardClick={vi.fn()}
       />
     );
     expect(screen.getByText("エンジニア")).toBeInTheDocument();
@@ -67,85 +65,38 @@ describe("ApplicationCard", () => {
       <ApplicationCard
         application={mockApplication}
         index={0}
-        onEdit={vi.fn()}
-        onDelete={vi.fn()}
+        onCardClick={vi.fn()}
       />
     );
-    // 日付が表示されることを確認（数字形式: "3/25 ..." など）
     expect(screen.getByText(/3\/25|3月25/)).toBeInTheDocument();
   });
 
-  it("編集ボタンクリックで onEdit が呼ばれる", () => {
-    const onEdit = vi.fn();
+  it("カードクリックで onCardClick が呼ばれる", () => {
+    const onCardClick = vi.fn();
     render(
       <ApplicationCard
         application={mockApplication}
         index={0}
-        onEdit={onEdit}
-        onDelete={vi.fn()}
+        onCardClick={onCardClick}
       />
     );
-    fireEvent.click(screen.getByLabelText("編集"));
-    expect(onEdit).toHaveBeenCalledWith(mockApplication);
+    // ドラッグ判別のため pointerDown → click の順で発火する
+    const card = screen.getByText("株式会社テスト").closest(".md-card") as HTMLElement;
+    fireEvent.pointerDown(card, { clientX: 0, clientY: 0 });
+    fireEvent.click(card, { clientX: 0, clientY: 0 });
+    expect(onCardClick).toHaveBeenCalledWith(mockApplication);
   });
 
-  it("削除ボタンクリックで確認後 onDelete が呼ばれる", () => {
-    const onDelete = vi.fn();
-    vi.spyOn(window, "confirm").mockReturnValue(true);
+  it("カードに編集・削除ボタンが表示されない", () => {
     render(
       <ApplicationCard
         application={mockApplication}
         index={0}
-        onEdit={vi.fn()}
-        onDelete={onDelete}
+        onCardClick={vi.fn()}
       />
     );
-    fireEvent.click(screen.getByLabelText("削除"));
-    expect(onDelete).toHaveBeenCalledWith("test-id-1");
-  });
-
-  it("削除キャンセル時は onDelete が呼ばれない", () => {
-    const onDelete = vi.fn();
-    vi.spyOn(window, "confirm").mockReturnValue(false);
-    render(
-      <ApplicationCard
-        application={mockApplication}
-        index={0}
-        onEdit={vi.fn()}
-        onDelete={onDelete}
-      />
-    );
-    fireEvent.click(screen.getByLabelText("削除"));
-    expect(onDelete).not.toHaveBeenCalled();
-  });
-
-  it("application_url がある場合、求人ページリンクを表示する", () => {
-    render(
-      <ApplicationCard
-        application={mockApplication}
-        index={0}
-        onEdit={vi.fn()}
-        onDelete={vi.fn()}
-      />
-    );
-    const link = screen.getByLabelText("求人ページを開く");
-    expect(link).toBeInTheDocument();
-    expect(link).toHaveAttribute("href", "https://example.com");
-    expect(link).toHaveAttribute("rel", "noopener noreferrer");
-    expect(link).toHaveAttribute("target", "_blank");
-  });
-
-  it("application_url が null の場合、求人ページリンクを表示しない", () => {
-    const appWithoutUrl: Application = { ...mockApplication, application_url: null };
-    render(
-      <ApplicationCard
-        application={appWithoutUrl}
-        index={0}
-        onEdit={vi.fn()}
-        onDelete={vi.fn()}
-      />
-    );
-    expect(screen.queryByLabelText("求人ページを開く")).not.toBeInTheDocument();
+    expect(screen.queryByLabelText("編集")).not.toBeInTheDocument();
+    expect(screen.queryByLabelText("削除")).not.toBeInTheDocument();
   });
 
   it("application_type が 'main' のとき '本選考' チップを表示する", () => {
@@ -153,8 +104,7 @@ describe("ApplicationCard", () => {
       <ApplicationCard
         application={{ ...mockApplication, application_type: "main" }}
         index={0}
-        onEdit={vi.fn()}
-        onDelete={vi.fn()}
+        onCardClick={vi.fn()}
       />
     );
     expect(screen.getByText("本選考")).toBeInTheDocument();
@@ -165,8 +115,7 @@ describe("ApplicationCard", () => {
       <ApplicationCard
         application={{ ...mockApplication, application_type: null }}
         index={0}
-        onEdit={vi.fn()}
-        onDelete={vi.fn()}
+        onCardClick={vi.fn()}
       />
     );
     expect(screen.queryByText("本選考")).not.toBeInTheDocument();
@@ -178,8 +127,7 @@ describe("ApplicationCard", () => {
       <ApplicationCard
         application={{ ...mockApplication, web_test_status: "not_taken" }}
         index={0}
-        onEdit={vi.fn()}
-        onDelete={vi.fn()}
+        onCardClick={vi.fn()}
       />
     );
     expect(screen.getByText("未受験")).toBeInTheDocument();
@@ -190,8 +138,7 @@ describe("ApplicationCard", () => {
       <ApplicationCard
         application={{ ...mockApplication, web_test_status: "taken" }}
         index={0}
-        onEdit={vi.fn()}
-        onDelete={vi.fn()}
+        onCardClick={vi.fn()}
       />
     );
     expect(screen.queryByText("未受験")).not.toBeInTheDocument();
@@ -202,8 +149,7 @@ describe("ApplicationCard", () => {
       <ApplicationCard
         application={{ ...mockApplication, deadline: null }}
         index={0}
-        onEdit={vi.fn()}
-        onDelete={vi.fn()}
+        onCardClick={vi.fn()}
       />
     );
     expect(screen.queryByText(/締切/)).not.toBeInTheDocument();
@@ -214,34 +160,25 @@ describe("ApplicationCard", () => {
       <ApplicationCard
         application={{ ...mockApplication, deadline: "2020-01-01" }}
         index={0}
-        onEdit={vi.fn()}
-        onDelete={vi.fn()}
+        onCardClick={vi.fn()}
       />
     );
     expect(screen.getByText(/締切.*⚠/)).toBeInTheDocument();
   });
 
   it("UTC ISO 文字列の面接日時がローカル時刻で表示される（TZズレ再発防止）", () => {
-    // UTC 06:00 の ISO 文字列を渡したとき、ローカル時刻に変換して表示されることを確認
     const utcDate = new Date("2026-03-26T06:00:00.000Z");
-    const localMonth = utcDate.getMonth() + 1; // ローカル月
-    const localDay = utcDate.getDate();        // ローカル日
-
-    const appWithUtcDate: Application = {
-      ...mockApplication,
-      next_interview_at: "2026-03-26T06:00:00.000Z",
-    };
+    const localMonth = utcDate.getMonth() + 1;
+    const localDay = utcDate.getDate();
 
     render(
       <ApplicationCard
-        application={appWithUtcDate}
+        application={{ ...mockApplication, next_interview_at: "2026-03-26T06:00:00.000Z" }}
         index={0}
-        onEdit={vi.fn()}
-        onDelete={vi.fn()}
+        onCardClick={vi.fn()}
       />
     );
 
-    // カードに表示される日付がローカル時刻の月/日を含むことを確認
     const pattern = new RegExp(`${localMonth}[/月]${localDay}`);
     expect(screen.getByText(pattern)).toBeInTheDocument();
   });
