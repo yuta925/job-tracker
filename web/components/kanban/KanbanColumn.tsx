@@ -65,13 +65,9 @@ export function KanbanColumn({
   const cfg = STATUS_CONFIG[status];
 
   return (
-    /* On mobile: snap to this column. On desktop: fixed 272px width */
+    /* Mobile: snap-scroll with ~85vw. Desktop(md+): flex-1 equal width */
     <div
-      className="flex flex-col shrink-0"
-      style={{
-        width: "min(272px, 85vw)",
-        scrollSnapAlign: "start",
-      }}
+      className="flex flex-col snap-start shrink-0 w-[min(272px,85vw)] md:w-auto md:flex-1 md:min-w-0"
     >
       {/* Column header */}
       <div className="flex items-center justify-between mb-2 px-0.5">
