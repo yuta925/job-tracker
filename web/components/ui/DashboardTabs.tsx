@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { KanbanBoard } from "@/components/kanban/KanbanBoard";
 import { ReverseOfferEventList } from "@/components/events/ReverseOfferEventList";
-import { SeminarList } from "@/components/seminars/SeminarList";
+import { SeminarCalendar } from "@/components/seminars/SeminarCalendar";
 import { JobSiteList } from "@/components/job_sites/JobSiteList";
 import { CaMeetingList } from "@/components/ca_meetings/CaMeetingList";
 import { SelfAnalysisTab } from "@/components/self_analysis/SelfAnalysisTab";
@@ -155,7 +155,7 @@ export function DashboardTabs() {
       <div className="flex-1 overflow-auto">
         {activeTab === "kanban" && <KanbanBoard />}
         {activeTab === "seminars" && (
-          <SeminarList
+          <SeminarCalendar
             seminars={seminars}
             isLoading={seminarsLoading}
             error={seminarsError}
