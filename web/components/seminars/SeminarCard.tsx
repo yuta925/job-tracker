@@ -5,11 +5,12 @@ import { getRelativeDateLabel } from "@/lib/date";
 
 interface SeminarCardProps {
   seminar: Seminar;
+  onCardClick: (seminar: Seminar) => void;
   onEdit: (seminar: Seminar) => void;
   onDelete: (id: string) => void;
 }
 
-export function SeminarCard({ seminar, onEdit, onDelete }: SeminarCardProps) {
+export function SeminarCard({ seminar, onCardClick, onEdit, onDelete }: SeminarCardProps) {
   const relativeLabel = getRelativeDateLabel(seminar.event_date);
   const formattedDate = seminar.event_date
     ? new Date(seminar.event_date + "T00:00:00").toLocaleDateString("ja-JP", {
@@ -24,7 +25,11 @@ export function SeminarCard({ seminar, onEdit, onDelete }: SeminarCardProps) {
     new Date(seminar.event_date + "T00:00:00") >= new Date(new Date().setHours(0, 0, 0, 0));
 
   return (
-    <div className="md-card group" style={{ boxShadow: "var(--md-elev-1)" }}>
+    <div
+      className="md-card group cursor-pointer"
+      style={{ boxShadow: "var(--md-elev-1)" }}
+      onClick={() => onCardClick(seminar)}
+    >
       <div className="p-4">
         {/* Header */}
         <div className="flex items-start gap-2">
@@ -40,7 +45,7 @@ export function SeminarCard({ seminar, onEdit, onDelete }: SeminarCardProps) {
           {/* Actions */}
           <div className="flex shrink-0 opacity-100 sm:opacity-0 sm:group-hover:opacity-100 transition-opacity">
             <button
-              onClick={() => onEdit(seminar)}
+              onClick={(e) => { e.stopPropagation(); onEdit(seminar); }}
               className="w-8 h-8 rounded-full flex items-center justify-center md-state"
               style={{ color: "var(--md-on-surface-variant)" }}
               aria-label="編集"
@@ -51,7 +56,8 @@ export function SeminarCard({ seminar, onEdit, onDelete }: SeminarCardProps) {
               </svg>
             </button>
             <button
-              onClick={() => {
+              onClick={(e) => {
+                e.stopPropagation();
                 if (confirm(`「${seminar.title}」を削除しますか？`)) {
                   onDelete(seminar.id);
                 }
@@ -93,6 +99,7 @@ export function SeminarCard({ seminar, onEdit, onDelete }: SeminarCardProps) {
               href={seminar.url}
               target="_blank"
               rel="noopener noreferrer"
+              onClick={(e) => e.stopPropagation()}
               className="md-label-small inline-flex items-center gap-1 px-2 py-0.5 rounded-full md-state"
               style={{
                 background: "var(--md-secondary-container)",

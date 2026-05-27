@@ -3,6 +3,7 @@
 import { useState } from "react";
 import type { Seminar, SeminarInsert, SeminarUpdate } from "@/types";
 import { SeminarCard } from "./SeminarCard";
+import { SeminarDetailModal } from "./SeminarDetailModal";
 import { SeminarFormModal } from "./SeminarFormModal";
 
 interface SeminarListProps {
@@ -17,11 +18,13 @@ interface SeminarListProps {
 function SeminarSection({
   title,
   seminars,
+  onCardClick,
   onEdit,
   onDelete,
 }: {
   title: string;
   seminars: Seminar[];
+  onCardClick: (s: Seminar) => void;
   onEdit: (s: Seminar) => void;
   onDelete: (id: string) => Promise<void>;
 }) {
@@ -39,6 +42,7 @@ function SeminarSection({
           <SeminarCard
             key={seminar.id}
             seminar={seminar}
+            onCardClick={onCardClick}
             onEdit={onEdit}
             onDelete={onDelete}
           />
@@ -56,6 +60,7 @@ export function SeminarList({
   onUpdate,
   onDelete,
 }: SeminarListProps) {
+  const [selectedSeminar, setSelectedSeminar] = useState<Seminar | undefined>(undefined);
   const [modalSeminar, setModalSeminar] = useState<Seminar | null | undefined>(
     undefined
   );
@@ -135,16 +140,32 @@ export function SeminarList({
           <SeminarSection
             title="今後の説明会"
             seminars={upcoming}
+            onCardClick={(s) => setSelectedSeminar(s)}
             onEdit={(s) => setModalSeminar(s)}
             onDelete={onDelete}
           />
           <SeminarSection
             title="終了した説明会"
             seminars={past}
+            onCardClick={(s) => setSelectedSeminar(s)}
             onEdit={(s) => setModalSeminar(s)}
             onDelete={onDelete}
           />
         </>
+      )}
+
+      {selectedSeminar !== undefined && (
+        <SeminarDetailModal
+          seminar={selectedSeminar}
+          onClose={() => setSelectedSeminar(undefined)}
+          onEdit={(s) => {
+            setSelectedSeminar(undefined);
+            setModalSeminar(s);
+          }}
+          onDelete={async (id) => {
+            await onDelete(id);
+          }}
+        />
       )}
 
       {modalSeminar !== undefined && (
