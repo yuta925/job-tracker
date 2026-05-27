@@ -4,4 +4,5 @@ export * from "./document_item";
 export * from "./job_site";
 export * from "./reverse_offer_event";
 export * from "./resume_profile";
+export * from "./self_analysis";
 export * from "./seminar";

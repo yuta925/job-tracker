@@ -6,12 +6,14 @@ import { ReverseOfferEventList } from "@/components/events/ReverseOfferEventList
 import { SeminarList } from "@/components/seminars/SeminarList";
 import { JobSiteList } from "@/components/job_sites/JobSiteList";
 import { CaMeetingList } from "@/components/ca_meetings/CaMeetingList";
+import { SelfAnalysisTab } from "@/components/self_analysis/SelfAnalysisTab";
 import { useReverseOfferEvents } from "@/hooks/useReverseOfferEvents";
 import { useSeminars } from "@/hooks/useSeminars";
 import { useJobSites } from "@/hooks/useJobSites";
 import { useCaMeetings } from "@/hooks/useCaMeetings";
+import { useSelfAnalysis } from "@/hooks/useSelfAnalysis";
 
-type Tab = "kanban" | "events" | "seminars" | "job_sites" | "ca_meetings";
+type Tab = "kanban" | "events" | "seminars" | "job_sites" | "ca_meetings" | "self_analysis";
 
 const TAB_STYLE_ACTIVE = {
   color: "var(--md-primary)",
@@ -96,6 +98,15 @@ export function DashboardTabs() {
     deleteItem: deleteMeeting,
   } = useCaMeetings();
 
+  const {
+    items: selfAnalysisItems,
+    isLoading: selfAnalysisLoading,
+    error: selfAnalysisError,
+    createItem: createSelfAnalysisItem,
+    updateItem: updateSelfAnalysisItem,
+    deleteItem: deleteSelfAnalysisItem,
+  } = useSelfAnalysis();
+
   return (
     <div className="flex-1 flex flex-col overflow-hidden">
       {/* Tab bar — overflow-x-auto for mobile */}
@@ -131,6 +142,12 @@ export function DashboardTabs() {
           badge={meetings.length}
           isActive={activeTab === "ca_meetings"}
           onClick={() => setActiveTab("ca_meetings")}
+        />
+        <TabButton
+          label="自己分析"
+          badge={selfAnalysisItems.length}
+          isActive={activeTab === "self_analysis"}
+          onClick={() => setActiveTab("self_analysis")}
         />
       </div>
 
@@ -175,6 +192,16 @@ export function DashboardTabs() {
             onCreate={createMeeting}
             onUpdate={updateMeeting}
             onDelete={deleteMeeting}
+          />
+        )}
+        {activeTab === "self_analysis" && (
+          <SelfAnalysisTab
+            items={selfAnalysisItems}
+            isLoading={selfAnalysisLoading}
+            error={selfAnalysisError}
+            onCreate={createSelfAnalysisItem}
+            onUpdate={updateSelfAnalysisItem}
+            onDelete={deleteSelfAnalysisItem}
           />
         )}
       </div>
