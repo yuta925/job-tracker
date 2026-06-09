@@ -3,6 +3,8 @@ export interface ReverseOfferEvent {
   user_id: string;
   event_name: string;
   event_date: string | null; // YYYY-MM-DD
+  start_time: string | null; // HH:MM
+  end_time: string | null;   // HH:MM
   company_name: string;
   contact_name: string | null;
   memo: string | null;

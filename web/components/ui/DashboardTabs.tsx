@@ -2,10 +2,8 @@
 
 import { useState } from "react";
 import { KanbanBoard } from "@/components/kanban/KanbanBoard";
-import { ReverseOfferEventList } from "@/components/events/ReverseOfferEventList";
-import { SeminarCalendar } from "@/components/seminars/SeminarCalendar";
+import { ScheduleCalendar } from "@/components/schedule/ScheduleCalendar";
 import { JobSiteList } from "@/components/job_sites/JobSiteList";
-import { CaMeetingList } from "@/components/ca_meetings/CaMeetingList";
 import { SelfAnalysisTab } from "@/components/self_analysis/SelfAnalysisTab";
 import { useReverseOfferEvents } from "@/hooks/useReverseOfferEvents";
 import { useSeminars } from "@/hooks/useSeminars";
@@ -13,7 +11,7 @@ import { useJobSites } from "@/hooks/useJobSites";
 import { useCaMeetings } from "@/hooks/useCaMeetings";
 import { useSelfAnalysis } from "@/hooks/useSelfAnalysis";
 
-type Tab = "kanban" | "events" | "seminars" | "job_sites" | "ca_meetings" | "self_analysis";
+type Tab = "kanban" | "schedule" | "job_sites" | "self_analysis";
 
 const TAB_STYLE_ACTIVE = {
   color: "var(--md-primary)",
@@ -107,9 +105,13 @@ export function DashboardTabs() {
     deleteItem: deleteSelfAnalysisItem,
   } = useSelfAnalysis();
 
+  const scheduleLoading = seminarsLoading || eventsLoading || meetingsLoading;
+  const scheduleError = seminarsError ?? eventsError ?? meetingsError;
+  const scheduleCount = seminars.length + events.length + meetings.length;
+
   return (
     <div className="flex-1 flex flex-col overflow-hidden">
-      {/* Tab bar — overflow-x-auto for mobile */}
+      {/* Tab bar */}
       <div
         className="flex gap-1 px-4 sm:px-6 pt-3 pb-0 overflow-x-auto"
         style={{ borderBottom: "1px solid var(--md-outline-variant)" }}
@@ -120,28 +122,16 @@ export function DashboardTabs() {
           onClick={() => setActiveTab("kanban")}
         />
         <TabButton
-          label="説明会"
-          badge={seminars.length}
-          isActive={activeTab === "seminars"}
-          onClick={() => setActiveTab("seminars")}
-        />
-        <TabButton
-          label="逆求人イベント"
-          badge={events.length}
-          isActive={activeTab === "events"}
-          onClick={() => setActiveTab("events")}
+          label="スケジュール"
+          badge={scheduleCount}
+          isActive={activeTab === "schedule"}
+          onClick={() => setActiveTab("schedule")}
         />
         <TabButton
           label="就活サイト"
           badge={jobSites.length}
           isActive={activeTab === "job_sites"}
           onClick={() => setActiveTab("job_sites")}
-        />
-        <TabButton
-          label="CA面談"
-          badge={meetings.length}
-          isActive={activeTab === "ca_meetings"}
-          onClick={() => setActiveTab("ca_meetings")}
         />
         <TabButton
           label="自己分析"
@@ -154,24 +144,22 @@ export function DashboardTabs() {
       {/* Tab content */}
       <div className="flex-1 overflow-auto">
         {activeTab === "kanban" && <KanbanBoard />}
-        {activeTab === "seminars" && (
-          <SeminarCalendar
+        {activeTab === "schedule" && (
+          <ScheduleCalendar
             seminars={seminars}
-            isLoading={seminarsLoading}
-            error={seminarsError}
-            onCreate={createSeminar}
-            onUpdate={updateSeminar}
-            onDelete={deleteSeminar}
-          />
-        )}
-        {activeTab === "events" && (
-          <ReverseOfferEventList
-            events={events}
-            isLoading={eventsLoading}
-            error={eventsError}
-            onCreate={createEvent}
-            onUpdate={updateEvent}
-            onDelete={deleteEvent}
+            reverseOfferEvents={events}
+            caMeetings={meetings}
+            isLoading={scheduleLoading}
+            error={scheduleError}
+            onCreateSeminar={createSeminar}
+            onUpdateSeminar={updateSeminar}
+            onDeleteSeminar={deleteSeminar}
+            onCreateReverseOffer={createEvent}
+            onUpdateReverseOffer={updateEvent}
+            onDeleteReverseOffer={deleteEvent}
+            onCreateCaMeeting={createMeeting}
+            onUpdateCaMeeting={updateMeeting}
+            onDeleteCaMeeting={deleteMeeting}
           />
         )}
         {activeTab === "job_sites" && (
@@ -182,16 +170,6 @@ export function DashboardTabs() {
             onCreate={createJobSite}
             onUpdate={updateJobSite}
             onDelete={deleteJobSite}
-          />
-        )}
-        {activeTab === "ca_meetings" && (
-          <CaMeetingList
-            meetings={meetings}
-            isLoading={meetingsLoading}
-            error={meetingsError}
-            onCreate={createMeeting}
-            onUpdate={updateMeeting}
-            onDelete={deleteMeeting}
           />
         )}
         {activeTab === "self_analysis" && (

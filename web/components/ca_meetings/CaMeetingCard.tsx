@@ -5,11 +5,12 @@ import { getRelativeDateLabel } from "@/lib/date";
 
 interface CaMeetingCardProps {
   meeting: CaMeeting;
+  onCardClick: (meeting: CaMeeting) => void;
   onEdit: (meeting: CaMeeting) => void;
   onDelete: (id: string) => void;
 }
 
-export function CaMeetingCard({ meeting, onEdit, onDelete }: CaMeetingCardProps) {
+export function CaMeetingCard({ meeting, onCardClick, onEdit, onDelete }: CaMeetingCardProps) {
   const relativeLabel = getRelativeDateLabel(meeting.meeting_date);
   const formattedDate = meeting.meeting_date
     ? new Date(meeting.meeting_date + "T00:00:00").toLocaleDateString("ja-JP", {
@@ -20,7 +21,7 @@ export function CaMeetingCard({ meeting, onEdit, onDelete }: CaMeetingCardProps)
     : null;
 
   return (
-    <div className="md-card group" style={{ boxShadow: "var(--md-elev-1)" }}>
+    <div className="md-card group cursor-pointer" style={{ boxShadow: "var(--md-elev-1)" }} onClick={() => onCardClick(meeting)}>
       <div className="p-4">
         {/* Header */}
         <div className="flex items-start gap-2">
@@ -44,7 +45,7 @@ export function CaMeetingCard({ meeting, onEdit, onDelete }: CaMeetingCardProps)
           {/* Actions */}
           <div className="flex shrink-0 opacity-100 sm:opacity-0 sm:group-hover:opacity-100 transition-opacity">
             <button
-              onClick={() => onEdit(meeting)}
+              onClick={(e) => { e.stopPropagation(); onEdit(meeting); }}
               className="w-8 h-8 rounded-full flex items-center justify-center md-state"
               style={{ color: "var(--md-on-surface-variant)" }}
               aria-label="編集"
@@ -55,7 +56,8 @@ export function CaMeetingCard({ meeting, onEdit, onDelete }: CaMeetingCardProps)
               </svg>
             </button>
             <button
-              onClick={() => {
+              onClick={(e) => {
+                e.stopPropagation();
                 if (confirm(`「${meeting.advisor_name}」との面談記録を削除しますか？`)) {
                   onDelete(meeting.id);
                 }

@@ -31,9 +31,11 @@ export function ReverseOfferEventFormModal({
 
     try {
       const formData = new FormData(e.currentTarget);
-      const fields = {
+      const fields: ReverseOfferEventInsert = {
         event_name: formData.get("event_name") as string,
         event_date: (formData.get("event_date") as string) || null,
+        start_time: (formData.get("start_time") as string) || null,
+        end_time: (formData.get("end_time") as string) || null,
         company_name: formData.get("company_name") as string,
         contact_name: (formData.get("contact_name") as string) || null,
         memo: (formData.get("memo") as string) || null,
@@ -142,6 +144,27 @@ export function ReverseOfferEventFormModal({
                 defaultValue={event?.event_date ?? ""}
                 className="md-field-input"
               />
+            </div>
+
+            <div className="grid grid-cols-2 gap-3">
+              <div className="md-field">
+                <label className="md-field-label">開始時刻</label>
+                <input
+                  name="start_time"
+                  type="time"
+                  defaultValue={event?.start_time ?? ""}
+                  className="md-field-input"
+                />
+              </div>
+              <div className="md-field">
+                <label className="md-field-label">終了時刻</label>
+                <input
+                  name="end_time"
+                  type="time"
+                  defaultValue={event?.end_time ?? ""}
+                  className="md-field-input"
+                />
+              </div>
             </div>
 
             <div className="md-field">

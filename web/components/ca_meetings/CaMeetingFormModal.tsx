@@ -31,6 +31,8 @@ export function CaMeetingFormModal({
         advisor_name: formData.get("advisor_name") as string,
         agency_name: (formData.get("agency_name") as string) || null,
         meeting_date: (formData.get("meeting_date") as string) || null,
+        start_time: (formData.get("start_time") as string) || null,
+        end_time: (formData.get("end_time") as string) || null,
         memo: (formData.get("memo") as string) || null,
         next_action: (formData.get("next_action") as string) || null,
       };
@@ -141,6 +143,27 @@ export function CaMeetingFormModal({
                 defaultValue={meeting?.meeting_date ?? ""}
                 className="md-field-input"
               />
+            </div>
+
+            <div className="grid grid-cols-2 gap-3">
+              <div className="md-field">
+                <label className="md-field-label">開始時刻</label>
+                <input
+                  name="start_time"
+                  type="time"
+                  defaultValue={meeting?.start_time ?? ""}
+                  className="md-field-input"
+                />
+              </div>
+              <div className="md-field">
+                <label className="md-field-label">終了時刻</label>
+                <input
+                  name="end_time"
+                  type="time"
+                  defaultValue={meeting?.end_time ?? ""}
+                  className="md-field-input"
+                />
+              </div>
             </div>
 
             <div className="md-field">

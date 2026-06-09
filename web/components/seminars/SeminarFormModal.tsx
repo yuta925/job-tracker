@@ -30,6 +30,8 @@ export function SeminarFormModal({
       const fields: SeminarInsert = {
         title: formData.get("title") as string,
         event_date: (formData.get("event_date") as string) || null,
+        start_time: (formData.get("start_time") as string) || null,
+        end_time: (formData.get("end_time") as string) || null,
         url: (formData.get("url") as string) || null,
         memo: (formData.get("memo") as string) || null,
       };
@@ -130,6 +132,27 @@ export function SeminarFormModal({
                 defaultValue={seminar?.event_date ?? ""}
                 className="md-field-input"
               />
+            </div>
+
+            <div className="grid grid-cols-2 gap-3">
+              <div className="md-field">
+                <label className="md-field-label">開始時刻</label>
+                <input
+                  name="start_time"
+                  type="time"
+                  defaultValue={seminar?.start_time ?? ""}
+                  className="md-field-input"
+                />
+              </div>
+              <div className="md-field">
+                <label className="md-field-label">終了時刻</label>
+                <input
+                  name="end_time"
+                  type="time"
+                  defaultValue={seminar?.end_time ?? ""}
+                  className="md-field-input"
+                />
+              </div>
             </div>
 
             <div className="md-field">

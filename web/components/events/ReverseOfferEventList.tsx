@@ -7,6 +7,7 @@ import type {
   ReverseOfferEventUpdate,
 } from "@/types";
 import { ReverseOfferEventCard } from "./ReverseOfferEventCard";
+import { ReverseOfferEventDetailModal } from "./ReverseOfferEventDetailModal";
 import { ReverseOfferEventFormModal } from "./ReverseOfferEventFormModal";
 
 interface ReverseOfferEventListProps {
@@ -26,6 +27,7 @@ export function ReverseOfferEventList({
   onUpdate,
   onDelete,
 }: ReverseOfferEventListProps) {
+  const [selectedEvent, setSelectedEvent] = useState<ReverseOfferEvent | undefined>(undefined);
   const [modalEvent, setModalEvent] = useState<ReverseOfferEvent | null | undefined>(
     undefined // undefined = closed, null = new, ReverseOfferEvent = editing
   );
@@ -104,6 +106,7 @@ export function ReverseOfferEventList({
             <ReverseOfferEventCard
               key={event.id}
               event={event}
+              onCardClick={setSelectedEvent}
               onEdit={(e) => setModalEvent(e)}
               onDelete={onDelete}
             />
@@ -111,7 +114,20 @@ export function ReverseOfferEventList({
         </div>
       )}
 
-      {/* Modal */}
+      {selectedEvent !== undefined && (
+        <ReverseOfferEventDetailModal
+          event={selectedEvent}
+          onClose={() => setSelectedEvent(undefined)}
+          onEdit={(e) => {
+            setSelectedEvent(undefined);
+            setModalEvent(e);
+          }}
+          onDelete={async (id) => {
+            await onDelete(id);
+            setSelectedEvent(undefined);
+          }}
+        />
+      )}
       {modalEvent !== undefined && (
         <ReverseOfferEventFormModal
           event={modalEvent}

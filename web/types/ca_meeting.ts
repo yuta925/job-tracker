@@ -4,6 +4,8 @@ export interface CaMeeting {
   advisor_name: string;
   agency_name: string | null;
   meeting_date: string | null; // YYYY-MM-DD
+  start_time: string | null;   // HH:MM
+  end_time: string | null;     // HH:MM
   memo: string | null;
   next_action: string | null;
   created_at: string;

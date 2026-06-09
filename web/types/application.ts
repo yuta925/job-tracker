@@ -69,7 +69,7 @@ export const STATUS_LABELS: Record<ApplicationStatus, string> = {
   applied: "エントリー済み",
   document_passed: "書類通過",
   interviewing: "面接中",
-  offer: "内定",
+  offer: "内定/オファー",
   rejected: "お見送り",
 };
 

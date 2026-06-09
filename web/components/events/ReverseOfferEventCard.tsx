@@ -4,12 +4,14 @@ import type { ReverseOfferEvent } from "@/types";
 
 interface ReverseOfferEventCardProps {
   event: ReverseOfferEvent;
+  onCardClick: (event: ReverseOfferEvent) => void;
   onEdit: (event: ReverseOfferEvent) => void;
   onDelete: (id: string) => void;
 }
 
 export function ReverseOfferEventCard({
   event,
+  onCardClick,
   onEdit,
   onDelete,
 }: ReverseOfferEventCardProps) {
@@ -23,8 +25,9 @@ export function ReverseOfferEventCard({
 
   return (
     <div
-      className="md-card group"
+      className="md-card group cursor-pointer"
       style={{ boxShadow: "var(--md-elev-1)" }}
+      onClick={() => onCardClick(event)}
     >
       <div className="p-4">
         {/* Header row */}
@@ -47,7 +50,7 @@ export function ReverseOfferEventCard({
           {/* Actions */}
           <div className="flex shrink-0 opacity-100 sm:opacity-0 sm:group-hover:opacity-100 transition-opacity">
             <button
-              onClick={() => onEdit(event)}
+              onClick={(e) => { e.stopPropagation(); onEdit(event); }}
               className="w-8 h-8 rounded-full flex items-center justify-center md-state"
               style={{ color: "var(--md-on-surface-variant)" }}
               aria-label="編集"
@@ -58,7 +61,8 @@ export function ReverseOfferEventCard({
               </svg>
             </button>
             <button
-              onClick={() => {
+              onClick={(e) => {
+                e.stopPropagation();
                 if (confirm(`「${event.company_name}」のイベント記録を削除しますか？`)) {
                   onDelete(event.id);
                 }

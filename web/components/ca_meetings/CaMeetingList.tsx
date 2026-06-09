@@ -3,6 +3,7 @@
 import { useState } from "react";
 import type { CaMeeting, CaMeetingInsert, CaMeetingUpdate } from "@/types";
 import { CaMeetingCard } from "./CaMeetingCard";
+import { CaMeetingDetailModal } from "./CaMeetingDetailModal";
 import { CaMeetingFormModal } from "./CaMeetingFormModal";
 
 interface CaMeetingListProps {
@@ -22,9 +23,8 @@ export function CaMeetingList({
   onUpdate,
   onDelete,
 }: CaMeetingListProps) {
-  const [modalMeeting, setModalMeeting] = useState<
-    CaMeeting | null | undefined
-  >(undefined);
+  const [selectedMeeting, setSelectedMeeting] = useState<CaMeeting | undefined>(undefined);
+  const [modalMeeting, setModalMeeting] = useState<CaMeeting | null | undefined>(undefined);
 
   if (isLoading) {
     return (
@@ -93,6 +93,7 @@ export function CaMeetingList({
             <CaMeetingCard
               key={meeting.id}
               meeting={meeting}
+              onCardClick={setSelectedMeeting}
               onEdit={(m) => setModalMeeting(m)}
               onDelete={onDelete}
             />
@@ -100,6 +101,20 @@ export function CaMeetingList({
         </div>
       )}
 
+      {selectedMeeting !== undefined && (
+        <CaMeetingDetailModal
+          meeting={selectedMeeting}
+          onClose={() => setSelectedMeeting(undefined)}
+          onEdit={(m) => {
+            setSelectedMeeting(undefined);
+            setModalMeeting(m);
+          }}
+          onDelete={async (id) => {
+            await onDelete(id);
+            setSelectedMeeting(undefined);
+          }}
+        />
+      )}
       {modalMeeting !== undefined && (
         <CaMeetingFormModal
           meeting={modalMeeting}
