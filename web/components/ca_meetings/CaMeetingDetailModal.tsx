@@ -2,6 +2,8 @@
 
 import type { CaMeeting } from "@/types";
 import { getRelativeDateLabel } from "@/lib/date";
+import { AddToCalendarButton } from "@/components/google_calendar/AddToCalendarButton";
+import { addCaMeetingToCalendar } from "@/lib/google_calendar/actions";
 
 interface CaMeetingDetailModalProps {
   meeting: CaMeeting;
@@ -132,6 +134,9 @@ export function CaMeetingDetailModal({
             </svg>
             編集
           </button>
+
+          <AddToCalendarButton onAdd={() => addCaMeetingToCalendar(meeting.id)} />
+
           <button
             onClick={() => {
               if (confirm(`「${meeting.advisor_name}」との面談記録を削除しますか？`)) {

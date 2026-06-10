@@ -3,8 +3,13 @@
 import Link from "next/link";
 import { useResumeProfile } from "@/hooks/useResumeProfile";
 import { ResumeProfileForm } from "./ResumeProfileForm";
+import { GoogleCalendarSection } from "./GoogleCalendarSection";
 
-export function ProfilePageClient() {
+interface ProfilePageClientProps {
+  isGoogleConnected: boolean;
+}
+
+export function ProfilePageClient({ isGoogleConnected }: ProfilePageClientProps) {
   const { profile, isLoading, error, saveProfile } = useResumeProfile();
 
   return (
@@ -60,6 +65,10 @@ export function ProfilePageClient() {
       ) : (
         <ResumeProfileForm profile={profile} onSave={saveProfile} />
       )}
+
+      <div className="mt-8">
+        <GoogleCalendarSection initialConnected={isGoogleConnected} />
+      </div>
     </div>
   );
 }

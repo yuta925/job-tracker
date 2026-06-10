@@ -6,3 +6,4 @@ export * from "./reverse_offer_event";
 export * from "./resume_profile";
 export * from "./self_analysis";
 export * from "./seminar";
+export * from "./google_calendar";

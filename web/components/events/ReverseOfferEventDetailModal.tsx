@@ -2,6 +2,8 @@
 
 import type { ReverseOfferEvent } from "@/types";
 import { getRelativeDateLabel } from "@/lib/date";
+import { AddToCalendarButton } from "@/components/google_calendar/AddToCalendarButton";
+import { addReverseOfferEventToCalendar } from "@/lib/google_calendar/actions";
 
 interface ReverseOfferEventDetailModalProps {
   event: ReverseOfferEvent;
@@ -132,6 +134,9 @@ export function ReverseOfferEventDetailModal({
             </svg>
             編集
           </button>
+
+          <AddToCalendarButton onAdd={() => addReverseOfferEventToCalendar(event.id)} />
+
           <button
             onClick={() => {
               if (confirm(`「${event.company_name}」のイベント記録を削除しますか？`)) {

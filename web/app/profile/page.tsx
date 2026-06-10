@@ -2,6 +2,7 @@ import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import { Header } from "@/components/ui/Header";
 import { ProfilePageClient } from "@/components/profile/ProfilePageClient";
+import { fetchGoogleCalendarToken } from "@/lib/google_calendar/queries";
 
 export default async function ProfilePage() {
   const supabase = await createClient();
@@ -13,6 +14,8 @@ export default async function ProfilePage() {
     redirect("/login");
   }
 
+  const token = await fetchGoogleCalendarToken();
+
   return (
     <div
       className="flex flex-col"
@@ -20,7 +23,7 @@ export default async function ProfilePage() {
     >
       <Header userEmail={user.email ?? ""} />
       <main className="flex-1 overflow-auto">
-        <ProfilePageClient />
+        <ProfilePageClient isGoogleConnected={token !== null} />
       </main>
     </div>
   );

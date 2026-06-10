@@ -6,6 +6,8 @@ import {
   APPLICATION_TYPE_LABELS,
 } from "@/types";
 import { getDeadlineUrgency } from "@/lib/date";
+import { AddToCalendarButton } from "@/components/google_calendar/AddToCalendarButton";
+import { addApplicationToCalendar } from "@/lib/google_calendar/actions";
 
 interface ApplicationDetailModalProps {
   application: Application;
@@ -210,6 +212,10 @@ export function ApplicationDetailModal({
               </svg>
               マイページ
             </a>
+          )}
+
+          {application.next_interview_at && (
+            <AddToCalendarButton onAdd={() => addApplicationToCalendar(application.id)} />
           )}
 
           <button

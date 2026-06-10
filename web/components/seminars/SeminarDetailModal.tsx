@@ -2,6 +2,8 @@
 
 import type { Seminar } from "@/types";
 import { getRelativeDateLabel } from "@/lib/date";
+import { AddToCalendarButton } from "@/components/google_calendar/AddToCalendarButton";
+import { addSeminarToCalendar } from "@/lib/google_calendar/actions";
 
 interface SeminarDetailModalProps {
   seminar: Seminar;
@@ -135,6 +137,8 @@ export function SeminarDetailModal({
             </svg>
             編集
           </button>
+
+          <AddToCalendarButton onAdd={() => addSeminarToCalendar(seminar.id)} />
 
           <button
             onClick={() => {
