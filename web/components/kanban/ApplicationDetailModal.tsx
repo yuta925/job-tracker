@@ -4,6 +4,7 @@ import type { Application } from "@/types";
 import {
   STATUS_LABELS,
   APPLICATION_TYPE_LABELS,
+  SCREENING_LABEL_DISPLAY,
 } from "@/types";
 import { getDeadlineUrgency } from "@/lib/date";
 import { AddToCalendarButton } from "@/components/google_calendar/AddToCalendarButton";
@@ -139,7 +140,7 @@ export function ApplicationDetailModal({
                       color: "var(--md-on-secondary-container)",
                     }}
                   >
-                    {label}
+                    {SCREENING_LABEL_DISPLAY[label] ?? label}
                   </span>
                 ))}
               </div>

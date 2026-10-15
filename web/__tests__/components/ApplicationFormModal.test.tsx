@@ -1,5 +1,5 @@
 import { describe, it, expect, vi } from "vitest";
-import { render, screen, fireEvent } from "@testing-library/react";
+import { render, screen, fireEvent, waitFor } from "@testing-library/react";
 import { ApplicationFormModal } from "@/components/kanban/ApplicationFormModal";
 import type { Application } from "@/types";
 
@@ -28,6 +28,13 @@ const defaultProps = {
 };
 
 describe("ApplicationFormModal", () => {
+  it.each(["winter_intern", "early_selection"])("応募種別 %s を保存できる", async (type) => {
+    const onUpdate = vi.fn().mockResolvedValue(undefined);
+    render(<ApplicationFormModal {...defaultProps} application={mockApplication} onUpdate={onUpdate} />);
+    fireEvent.change(screen.getByLabelText("応募種別"), { target: { value: type } });
+    fireEvent.click(screen.getByText("更新する"));
+    await waitFor(() => expect(onUpdate).toHaveBeenCalledWith(mockApplication.id, expect.objectContaining({ application_type: type })));
+  });
   it("応募種別セレクトを表示する", () => {
     render(<ApplicationFormModal {...defaultProps} />);
     expect(screen.getByLabelText(/応募種別/)).toBeInTheDocument();

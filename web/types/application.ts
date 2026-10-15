@@ -33,6 +33,8 @@ export type Industry = (typeof INDUSTRIES)[number];
 
 export const APPLICATION_TYPES = [
   "summer_intern",
+  "winter_intern",
+  "early_selection",
   "main",
   "fulltime_intern",
 ] as const;
@@ -41,17 +43,30 @@ export type ApplicationType = (typeof APPLICATION_TYPES)[number];
 
 export const APPLICATION_TYPE_LABELS: Record<ApplicationType, string> = {
   summer_intern: "夏インターン",
+  winter_intern: "冬インターン",
+  early_selection: "早期選考",
   main: "本選考",
   fulltime_intern: "内定者インターン",
 };
 
 export const SCREENING_LABELS = [
+  "エントリーシート",
   "コーディングテスト",
   "Webテスト",
   "GD",
+  "課題提出",
 ] as const;
 
 export type ScreeningLabel = (typeof SCREENING_LABELS)[number];
+
+// 保存済みのラベル値は維持し、略語は画面上で説明する。
+export const SCREENING_LABEL_DISPLAY: Record<ScreeningLabel, string> = {
+  エントリーシート: "エントリーシート",
+  コーディングテスト: "コーディングテスト",
+  Webテスト: "Webテスト",
+  GD: "グループディスカッション",
+  課題提出: "課題提出",
+};
 
 export const APPLICATION_STATUSES = [
   "interest",

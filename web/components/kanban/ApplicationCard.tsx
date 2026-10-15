@@ -1,7 +1,7 @@
 import { useRef } from "react";
 import { Draggable } from "@hello-pangea/dnd";
 import type { Application } from "@/types";
-import { APPLICATION_TYPE_LABELS } from "@/types";
+import { APPLICATION_TYPE_LABELS, SCREENING_LABEL_DISPLAY } from "@/types";
 import { getDeadlineUrgency } from "@/lib/date";
 
 interface ApplicationCardProps {
@@ -109,7 +109,7 @@ export function ApplicationCard({
                       color: "var(--md-on-secondary-container)",
                     }}
                   >
-                    {label}
+                    {SCREENING_LABEL_DISPLAY[label] ?? label}
                   </span>
                 ))}
                 {application.deadline && (() => {
@@ -138,7 +138,7 @@ export function ApplicationCard({
                       className="md-label-small inline-flex items-center px-2 py-0.5 rounded-full"
                       style={style}
                     >
-                      ES締切 {label}{icon}
+                      締切 {label}{icon}
                     </span>
                   );
                 })()}

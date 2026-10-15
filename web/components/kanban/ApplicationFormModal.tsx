@@ -18,6 +18,7 @@ import {
   POSITION_OTHER_VALUE,
   POSITION_TYPES,
   SCREENING_LABELS,
+  SCREENING_LABEL_DISPLAY,
   STATUS_LABELS,
 } from "@/types";
 import { toDatetimeLocalValue } from "@/lib/date";
@@ -306,7 +307,7 @@ export function ApplicationFormModal({
 
             {/* Screening labels */}
             <div className="md-field">
-              <label className="md-field-label">選考ラベル</label>
+              <p className="md-field-label">選考内容（複数選択）</p>
               <div className="flex flex-wrap gap-2 mt-1">
                 {SCREENING_LABELS.map((label) => {
                   const checked = screeningLabels.includes(label);
@@ -333,7 +334,7 @@ export function ApplicationFormModal({
                         onChange={() => toggleScreeningLabel(label)}
                         aria-label={label}
                       />
-                      {label}
+                      {SCREENING_LABEL_DISPLAY[label]}
                     </label>
                   );
                 })}
