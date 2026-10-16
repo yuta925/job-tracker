@@ -1,6 +1,7 @@
 "use client";
 
 import { useTransition, useState } from "react";
+import Link from "next/link";
 import { login, signup } from "@/app/login/actions";
 
 export function LoginForm() {
@@ -44,7 +45,10 @@ export function LoginForm() {
                     color: "var(--md-primary)",
                     boxShadow: "var(--md-elev-1)",
                   }
-                : { color: "var(--md-on-surface-variant)", background: "transparent" }
+                : {
+                    color: "var(--md-on-surface-variant)",
+                    background: "transparent",
+                  }
             }
           >
             {m === "login" ? "ログイン" : "新規登録"}
@@ -80,7 +84,9 @@ export function LoginForm() {
             type="password"
             required
             minLength={6}
-            autoComplete={mode === "login" ? "current-password" : "new-password"}
+            autoComplete={
+              mode === "login" ? "current-password" : "new-password"
+            }
             placeholder="6文字以上"
             className="md-field-input"
           />
@@ -95,9 +101,18 @@ export function LoginForm() {
               color: "var(--md-on-error-container)",
             }}
           >
-            <svg className="w-5 h-5 mt-0.5 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2}
-                d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+            <svg
+              className="w-5 h-5 mt-0.5 shrink-0"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+              />
             </svg>
             <p className="md-body-medium">{error}</p>
           </div>
@@ -117,6 +132,14 @@ export function LoginForm() {
               : "アカウントを作成"}
         </button>
       </form>
+      {mode === "login" && (
+        <Link
+          className="md-btn md-btn-text w-full mt-4"
+          href="/forgot-password"
+        >
+          パスワードを忘れた方はこちら
+        </Link>
+      )}
     </div>
   );
 }

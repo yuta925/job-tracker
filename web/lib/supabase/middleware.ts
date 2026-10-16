@@ -14,15 +14,15 @@ export async function updateSession(request: NextRequest) {
         },
         setAll(cookiesToSet) {
           cookiesToSet.forEach(({ name, value }) =>
-            request.cookies.set(name, value)
+            request.cookies.set(name, value),
           );
           supabaseResponse = NextResponse.next({ request });
           cookiesToSet.forEach(({ name, value, options }) =>
-            supabaseResponse.cookies.set(name, value, options)
+            supabaseResponse.cookies.set(name, value, options),
           );
         },
       },
-    }
+    },
   );
 
   const {
@@ -31,9 +31,20 @@ export async function updateSession(request: NextRequest) {
 
   const { pathname } = request.nextUrl;
   const isAuthRoute = pathname.startsWith("/login");
+  const isPublicAuthRoute = [
+    "/forgot-password",
+    "/auth/recovery",
+    "/auth/callback",
+  ].includes(pathname);
   const isApiRoute = pathname.startsWith("/api");
 
-  if (!user && !isAuthRoute && !isApiRoute) {
+  if (!user && pathname === "/reset-password") {
+    return NextResponse.redirect(
+      new URL("/forgot-password?error=expired", request.url),
+    );
+  }
+
+  if (!user && !isAuthRoute && !isApiRoute && !isPublicAuthRoute) {
     const url = request.nextUrl.clone();
     url.pathname = "/login";
     return NextResponse.redirect(url);
