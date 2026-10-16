@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import type { JobSite, JobSiteInsert, JobSiteUpdate } from "@/types";
+import type { JobSite, JobSiteCategory, JobSiteInsert, JobSiteUpdate } from "@/types";
 import { JOB_SITE_CATEGORIES } from "@/types";
 import { JobSiteCard } from "./JobSiteCard";
 import { JobSiteFormModal } from "./JobSiteFormModal";
@@ -15,116 +15,43 @@ interface JobSiteListProps {
   onDelete: (id: string) => Promise<void>;
 }
 
-export function JobSiteList({
-  jobSites,
-  isLoading,
-  error,
-  onCreate,
-  onUpdate,
-  onDelete,
-}: JobSiteListProps) {
-  const [modalJobSite, setModalJobSite] = useState<
-    JobSite | null | undefined
-  >(undefined);
+export function JobSiteList({ jobSites, isLoading, error, onCreate, onUpdate, onDelete }: JobSiteListProps) {
+  const [modalJobSite, setModalJobSite] = useState<JobSite | null | undefined>(undefined);
+  const [category, setCategory] = useState<JobSiteCategory | "all">("all");
+  const [query, setQuery] = useState("");
+  const term = query.trim().toLocaleLowerCase();
+  const filtered = jobSites.filter(site =>
+    (category === "all" || site.category === category) &&
+    [site.name, site.url, site.memo].some(value => value?.toLocaleLowerCase().includes(term))
+  );
 
-  if (isLoading) {
-    return (
-      <div className="flex items-center justify-center py-16">
-        <div
-          className="w-8 h-8 rounded-full border-2 animate-spin"
-          style={{
-            borderColor: "var(--md-primary)",
-            borderTopColor: "transparent",
-          }}
-        />
-      </div>
-    );
-  }
-
-  if (error) {
-    return (
-      <div
-        className="mx-4 mt-4 flex items-start gap-3 px-4 py-3 rounded-xl"
-        style={{
-          background: "var(--md-error-container)",
-          color: "var(--md-on-error-container)",
-        }}
-      >
-        <p className="md-body-medium">{error.message}</p>
-      </div>
-    );
-  }
+  if (isLoading) return <p role="status" className="collection-page">就活サイトを読み込み中...</p>;
+  if (error) return <p role="alert" className="collection-page home-error">{error.message}</p>;
 
   return (
-    <div className="px-4 sm:px-6 py-4">
-      {/* Toolbar */}
-      <div className="flex items-center justify-between mb-4">
-        <p className="md-body-medium" style={{ color: "var(--md-on-surface-variant)" }}>
-          {jobSites.length > 0 ? `${jobSites.length} 件` : ""}
-        </p>
-        <button onClick={() => setModalJobSite(null)} className="md-btn md-btn-filled">
-          <svg className="w-4 h-4 mr-1 -ml-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
-          </svg>
-          サイトを追加
-        </button>
-      </div>
-
+    <div className="collection-page">
+      <header className="collection-heading">
+        <div><p className="home-eyebrow">YOUR LINKS</p><h2>就活サイト</h2><p className="collection-muted">求人探しも、スカウトの確認も。使うサイトをひとまとめに。</p></div>
+        <button onClick={() => setModalJobSite(null)} className="md-btn md-btn-filled">＋ サイトを追加</button>
+      </header>
       {jobSites.length === 0 ? (
-        <div
-          className="flex flex-col items-center justify-center py-16 gap-3"
-          style={{ color: "var(--md-on-surface-variant)" }}
-        >
-          <svg className="w-12 h-12 opacity-30" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5}
-              d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9" />
-          </svg>
-          <p className="md-body-medium">登録している就活サイトがありません</p>
-          <button
-            onClick={() => setModalJobSite(null)}
-            className="md-btn md-btn-outlined md-state"
-            style={{ borderColor: "var(--md-outline)", color: "var(--md-primary)" }}
-          >
-            最初のサイトを追加する
-          </button>
-        </div>
+        <div className="collection-empty"><h3 className="md-title-large">いつも使うサイトを、ここに。</h3><p>サイト名とURLを登録して、すぐに開ける自分用のリンク集を作りましょう。</p></div>
       ) : (
-        <div className="space-y-6">
-          {JOB_SITE_CATEGORIES.map((category) => {
-            const sites = jobSites.filter((s) => s.category === category);
-            if (sites.length === 0) return null;
-            return (
-              <section key={category}>
-                <h2
-                  className="md-title-small mb-3"
-                  style={{ color: "var(--md-on-surface-variant)" }}
-                >
-                  {category}（{sites.length}件）
-                </h2>
-                <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-                  {sites.map((site) => (
-                    <JobSiteCard
-                      key={site.id}
-                      jobSite={site}
-                      onEdit={(s) => setModalJobSite(s)}
-                      onDelete={onDelete}
-                    />
-                  ))}
-                </div>
-              </section>
-            );
-          })}
-        </div>
+        <>
+          <div className="collection-toolbar">
+            <div className="collection-filters" role="group" aria-label="サイトのカテゴリ">
+              <button aria-pressed={category === "all"} onClick={() => setCategory("all")}>すべて <span>{jobSites.length}</span></button>
+              {JOB_SITE_CATEGORIES.map(value => <button key={value} aria-pressed={category === value} onClick={() => setCategory(value)}>{value} <span>{jobSites.filter(site => site.category === value).length}</span></button>)}
+            </div>
+            <label className="collection-search"><span>サイトを検索</span><input type="search" value={query} onChange={event => setQuery(event.target.value)} placeholder="サイト名・URL・メモ" className="md-field-input" /></label>
+          </div>
+          <p className="collection-result" role="status">{filtered.length}件を表示 / 全{jobSites.length}件</p>
+          {filtered.length === 0 ? <div className="collection-empty"><h3 className="md-title-medium">条件に合うサイトがありません</h3><p>カテゴリや検索する言葉を変えてみてください。</p><button className="md-btn md-btn-text" onClick={() => {setCategory("all");setQuery("");}}>絞り込みを解除</button></div> : (
+            <div className="collection-grid">{filtered.map(site => <JobSiteCard key={site.id} jobSite={site} onEdit={setModalJobSite} onDelete={onDelete} />)}</div>
+          )}
+        </>
       )}
-
-      {modalJobSite !== undefined && (
-        <JobSiteFormModal
-          jobSite={modalJobSite}
-          onClose={() => setModalJobSite(undefined)}
-          onCreate={onCreate}
-          onUpdate={onUpdate}
-        />
-      )}
+      {modalJobSite !== undefined && <JobSiteFormModal jobSite={modalJobSite} onClose={() => setModalJobSite(undefined)} onCreate={onCreate} onUpdate={onUpdate} />}
     </div>
   );
 }

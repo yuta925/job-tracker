@@ -137,7 +137,7 @@ export function SelfAnalysisItemFormModal({
                 value={title}
                 onChange={(e) => setTitle(e.target.value)}
                 required
-                className="md-input"
+                className="md-field-input"
                 placeholder={
                   itemType === "episode"
                     ? "例: チーム開発でのリーダー経験"
@@ -162,7 +162,7 @@ export function SelfAnalysisItemFormModal({
                 value={description}
                 onChange={(e) => setDescription(e.target.value)}
                 rows={itemType === "episode" ? 6 : 3}
-                className="md-input resize-none"
+                className="md-field-input resize-none"
                 placeholder={
                   itemType === "episode"
                     ? "S: 状況...\nT: 課題...\nA: 行動...\nR: 結果..."
@@ -191,7 +191,7 @@ export function SelfAnalysisItemFormModal({
                         addTag(tagInput);
                       }
                     }}
-                    className="md-input flex-1"
+                    className="md-field-input flex-1"
                     placeholder="タグを入力して Enter"
                   />
                   <button
