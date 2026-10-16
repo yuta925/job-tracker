@@ -39,6 +39,8 @@
 
 `design/home-design-explorations.html` に追加。最初の3案を残したまま、ホームの配置と雰囲気を比較する。
 
+切り替え用の矢印が表示されない環境向けに、`design/pop-studio.html`、`design/daybook.html`、`design/quiet-desk.html` でも各案を個別表示できる。個別版は切り替え操作なしで最初から表示し、比較用の固定の高さを設けない。
+
 | 案 | 見た目 | 配置・遊び心 |
 | --- | --- | --- |
 | Pop Studio | ライム・クリーム・暖かい黄色 | 締切を大きなタイルに。ステッカーとずらした影で、軽くポップに。 |
