@@ -13,7 +13,6 @@ interface Props {
   scheduleState: ReturnType<typeof useScheduleEvents>;
   onOpenApplication: (app: Application) => void;
   onNavigate: (tab: "kanban" | "schedule", date?: string) => void;
-  onAdd: () => void;
 }
 
 export function HomeOverview({
@@ -21,7 +20,6 @@ export function HomeOverview({
   scheduleState,
   onOpenApplication,
   onNavigate,
-  onAdd,
 }: Props) {
   const now = useLocalClock();
   // サーバーと利用者のタイムゾーンが違っても初期HTMLを一致させる。
@@ -59,9 +57,6 @@ export function HomeOverview({
           <h2>今日の一歩を、ここから。</h2>
           <p>大切な連絡と、次にやることをひと目で。</p>
         </div>
-        <button className="md-btn md-btn-filled" onClick={onAdd}>
-          ＋ 企業を追加
-        </button>
         <span className="home-spark" aria-hidden="true">
           ✳
         </span>
@@ -243,7 +238,7 @@ export function HomeOverview({
         applicationsState.applications.length === 0 &&
         !applicationsState.error && (
           <p className="home-welcome">
-            まずは気になる企業をひとつ追加してみよう。締切と面接予定がここに集まります。
+            「選考管理」から気になる企業を追加すると、締切と面接予定がここに集まります。
           </p>
         )}
     </div>

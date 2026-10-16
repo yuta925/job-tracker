@@ -86,7 +86,6 @@ export function DashboardTabs() {
               setScheduleDate(date);
               setActiveTab(tab);
             }}
-            onAdd={() => setEditing(null)}
           />
         )}
         {activeTab === "kanban" && <KanbanBoard state={applicationsState} />}

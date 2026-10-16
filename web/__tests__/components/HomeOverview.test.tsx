@@ -34,7 +34,6 @@ describe("ホームの操作", () => {
       applicationsState: applicationState,
       scheduleState,
       onNavigate: vi.fn(),
-      onAdd: vi.fn(),
       onOpenApplication: vi.fn(),
     };
     vi.useFakeTimers();
@@ -80,7 +79,6 @@ describe("ホームの操作", () => {
         applicationsState={applicationState}
         scheduleState={{ ...scheduleState, events: [event] }}
         onNavigate={navigate}
-        onAdd={vi.fn()}
         onOpenApplication={vi.fn()}
       />,
     );
@@ -98,7 +96,6 @@ describe("ホームの操作", () => {
         }}
         scheduleState={scheduleState}
         onNavigate={vi.fn()}
-        onAdd={vi.fn()}
         onOpenApplication={vi.fn()}
       />,
     );
