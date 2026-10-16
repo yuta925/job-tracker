@@ -1,6 +1,6 @@
 # Job Tracker
 
-就活の応募企業と選考ステータスを Kanban 形式で管理する Web アプリです。  
+締切・予定・重要メールをホームで確認し、応募企業と選考ステータスを管理する Web アプリです。
 Supabase Auth でログインし、各ユーザーが自分の応募データのみを CRUD できます。
 
 ## 主な機能
@@ -8,6 +8,10 @@ Supabase Auth でログインし、各ユーザーが自分の応募データの
 - ログイン / 新規登録（Supabase Auth）
 - 認証ガード（未ログイン時は `/login` にリダイレクト）
 - 応募情報の作成・編集・削除
+- ホームで直近の締切・面接・予定を集約
+- Gmailの重要な選考メールを表示（別途OAuth設定が必要）
+- 共通フォームでの予定管理（説明会・逆求人・CA面談を統合）
+- 夏/冬インターン・早期選考・本選考・内定者インターンの分類
 - Kanban でのステータス管理
 - ドラッグ&ドロップによるステータス更新
 - ユーザー単位のデータ分離（RLS）
@@ -65,7 +69,9 @@ NEXT_PUBLIC_SUPABASE_ANON_KEY=your-supabase-anon-key
 ```
 
 3. Supabase でテーブルを作成
-- `web/supabase/migrations/0001_create_applications.sql` の内容を SQL Editor で実行してください。
+- 新規環境は `web/supabase/migrations/0001` から `0016` まで番号順に適用してください。
+- 既存環境の更新、Gmail設定、名称・デザイン案は [見直し内容とセットアップ](docs/refresh-plan.md) を参照してください。
+- 環境変数の一覧は `web/.env.example` にあります。
 
 4. 開発サーバー起動
 

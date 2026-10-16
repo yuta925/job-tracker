@@ -5,127 +5,71 @@ import { createClient } from "@/lib/supabase/server";
 import { fetchGoogleCalendarToken } from "./queries";
 import { getAuthenticatedClient } from "./client";
 import {
-  seminarToCalendarEvent,
-  caMeetingToCalendarEvent,
-  reverseOfferEventToCalendarEvent,
+  scheduleEventToCalendarEvent,
   applicationToCalendarEvent,
 } from "./event-mappers";
-import type { AddToCalendarResult } from "@/types";
-import type { Seminar } from "@/types/seminar";
-import type { CaMeeting } from "@/types/ca_meeting";
-import type { ReverseOfferEvent } from "@/types/reverse_offer_event";
+import type {
+  AddToCalendarResult,
+  GoogleCalendarEventRequest,
+} from "@/types/google_calendar";
 import type { Application } from "@/types/application";
-
-async function getAuthContext(): Promise<
-  { userId: string } | { error: AddToCalendarResult }
-> {
-  const supabase = await createClient();
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
-  if (!user) {
-    return { error: { success: false, error: "ログインが必要です" } };
-  }
-  return { userId: user.id };
-}
+import type { ScheduleEvent } from "@/types/schedule_event";
 
 async function insertCalendarEvent(
   userId: string,
-  eventRequest: ReturnType<typeof seminarToCalendarEvent>
+  request: GoogleCalendarEventRequest,
 ): Promise<AddToCalendarResult> {
   const token = await fetchGoogleCalendarToken();
-  if (!token) {
-    return { success: false, error: "google_not_connected" };
-  }
-
+  if (!token) return { success: false, error: "google_not_connected" };
   const auth = await getAuthenticatedClient(token, userId);
-  const calendar = google.calendar({ version: "v3", auth });
-
-  const { data } = await calendar.events.insert({
-    calendarId: "primary",
-    requestBody: eventRequest,
-  });
-
-  if (!data.id || !data.htmlLink) {
-    return { success: false, error: "イベントの登録に失敗しました" };
-  }
-
+  const { data } = await google
+    .calendar({ version: "v3", auth })
+    .events.insert({ calendarId: "primary", requestBody: request });
+  if (!data.id || !data.htmlLink)
+    return { success: false, error: "予定の登録に失敗しました" };
   return { success: true, eventId: data.id, htmlLink: data.htmlLink };
 }
 
-export async function addSeminarToCalendar(
-  seminarId: string
+async function addEvent(
+  kind: "application" | "schedule",
+  id: string,
 ): Promise<AddToCalendarResult> {
-  const ctx = await getAuthContext();
-  if ("error" in ctx) return ctx.error;
-
-  const supabase = await createClient();
-  const { data, error } = await supabase
-    .from("seminars")
-    .select("*")
-    .eq("id", seminarId)
-    .single();
-  if (error || !data) return { success: false, error: "説明会が見つかりません" };
-
-  const eventRequest = seminarToCalendarEvent(data as Seminar);
-  return insertCalendarEvent(ctx.userId, eventRequest);
+  try {
+    const supabase = await createClient();
+    const {
+      data: { user },
+    } = await supabase.auth.getUser();
+    if (!user) return { success: false, error: "ログインが必要です" };
+    const { data, error } = await supabase
+      .from(kind === "application" ? "applications" : "schedule_events")
+      .select("*")
+      .eq("id", id)
+      .eq("user_id", user.id)
+      .single();
+    if (error || !data)
+      return { success: false, error: "予定が見つかりません" };
+    const request =
+      kind === "application"
+        ? applicationToCalendarEvent(data as Application)
+        : scheduleEventToCalendarEvent(data as ScheduleEvent);
+    return await insertCalendarEvent(user.id, request);
+  } catch {
+    return {
+      success: false,
+      error:
+        "カレンダーに登録できませんでした。日程と連携状態を確認してください。",
+    };
+  }
 }
 
-export async function addCaMeetingToCalendar(
-  meetingId: string
+export async function addScheduleEventToCalendar(
+  id: string,
 ): Promise<AddToCalendarResult> {
-  const ctx = await getAuthContext();
-  if ("error" in ctx) return ctx.error;
-
-  const supabase = await createClient();
-  const { data, error } = await supabase
-    .from("ca_meetings")
-    .select("*")
-    .eq("id", meetingId)
-    .single();
-  if (error || !data) return { success: false, error: "CA面談が見つかりません" };
-
-  const eventRequest = caMeetingToCalendarEvent(data as CaMeeting);
-  return insertCalendarEvent(ctx.userId, eventRequest);
-}
-
-export async function addReverseOfferEventToCalendar(
-  eventId: string
-): Promise<AddToCalendarResult> {
-  const ctx = await getAuthContext();
-  if ("error" in ctx) return ctx.error;
-
-  const supabase = await createClient();
-  const { data, error } = await supabase
-    .from("reverse_offer_events")
-    .select("*")
-    .eq("id", eventId)
-    .single();
-  if (error || !data) return { success: false, error: "逆求人イベントが見つかりません" };
-
-  const eventRequest = reverseOfferEventToCalendarEvent(data as ReverseOfferEvent);
-  return insertCalendarEvent(ctx.userId, eventRequest);
+  return addEvent("schedule", id);
 }
 
 export async function addApplicationToCalendar(
-  applicationId: string
+  id: string,
 ): Promise<AddToCalendarResult> {
-  const ctx = await getAuthContext();
-  if ("error" in ctx) return ctx.error;
-
-  const supabase = await createClient();
-  const { data, error } = await supabase
-    .from("applications")
-    .select("*")
-    .eq("id", applicationId)
-    .single();
-  if (error || !data) return { success: false, error: "応募企業が見つかりません" };
-
-  const application = data as Application;
-  if (!application.next_interview_at) {
-    return { success: false, error: "面接日時が設定されていません" };
-  }
-
-  const eventRequest = applicationToCalendarEvent(application);
-  return insertCalendarEvent(ctx.userId, eventRequest);
+  return addEvent("application", id);
 }

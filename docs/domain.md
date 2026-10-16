@@ -6,6 +6,13 @@
 
 ---
 
+## 現行モデルの更新
+- 応募区分は夏インターン・冬インターン・早期選考・本選考・内定者インターン。
+- Webテスト受験状況は廃止済み。必要な選考内容を `screening_labels` として複数選択する。
+- 説明会・逆求人・CA面談の予定は `schedule_events` に統合。応募の面接日時は `applications.next_interview_at` を使う。
+- Gmail連携は `gmail_connections` に暗号化した更新トークンのみ保存する。メールは取得時に判定し、本文はDBに保存しない。
+- 以下の説明には初期構想が含まれる。今回の現行仕様は `refresh-plan.md` を優先する。
+
 ## Core Concepts
 
 ### 1. Application
