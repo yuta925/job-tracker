@@ -28,6 +28,21 @@ const defaultProps = {
 };
 
 describe("ApplicationFormModal", () => {
+  it("DBの応募種別制約エラーを通常のオブジェクトで受けても原因を表示する", async () => {
+    const onClose = vi.fn();
+    const onUpdate = vi.fn().mockRejectedValue({
+      code:"23514",
+      message:'new row violates check constraint "applications_application_type_check"',
+      details:"private row values",
+    });
+    render(<ApplicationFormModal {...defaultProps} application={mockApplication} onUpdate={onUpdate} onClose={onClose} />);
+    fireEvent.change(screen.getByLabelText("応募種別"), {target:{value:"winter_intern"}});
+    fireEvent.click(screen.getByText("更新する"));
+    expect(await screen.findByText(/応募種別のDB設定が未更新/)).toBeInTheDocument();
+    expect(screen.getByLabelText("応募種別")).toHaveValue("winter_intern");
+    expect(screen.queryByText(/private row values/)).not.toBeInTheDocument();
+    expect(onClose).not.toHaveBeenCalled();
+  });
   it.each(["winter_intern", "early_selection"])("応募種別 %s を保存できる", async (type) => {
     const onUpdate = vi.fn().mockResolvedValue(undefined);
     render(<ApplicationFormModal {...defaultProps} application={mockApplication} onUpdate={onUpdate} />);

@@ -22,6 +22,7 @@ import {
   STATUS_LABELS,
 } from "@/types";
 import { toDatetimeLocalValue } from "@/lib/date";
+import { applicationSaveMessage } from "@/lib/applications/errors";
 
 interface ApplicationFormModalProps {
   application: Application | null;
@@ -112,9 +113,7 @@ export function ApplicationFormModal({
       }
       onClose();
     } catch (err) {
-      setError(
-        err instanceof Error ? err.message : "保存に失敗しました。再度お試しください。"
-      );
+      setError(applicationSaveMessage(err));
     } finally {
       setIsSubmitting(false);
     }
