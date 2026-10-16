@@ -1,0 +1,129 @@
+<style>
+#jt-designs { color-scheme: light dark; }
+#jt-designs .jt-mock { --jt-bg:light-dark(#f6f2e9,#26251f); --jt-paper:light-dark(#fffdf8,#333229); --jt-ink:light-dark(#302f2b,#f3efe5); --jt-soft:light-dark(#6b685f,#bcb6a8); --jt-line:light-dark(#d9d3c5,#565247); --jt-accent:light-dark(#b54c32,#ffaf93); --jt-fill:light-dark(#f7ddbf,#684431); --jt-radius:16px; background:var(--jt-bg); color:var(--jt-ink); font:14px/1.6 system-ui,sans-serif; min-height:650px; padding:24px; box-sizing:border-box; }
+#jt-designs .jt-mock * { box-sizing:border-box; }
+#jt-designs .jt-top { display:flex; align-items:center; flex-wrap:wrap; gap:20px; padding-bottom:20px; border-bottom:1px solid var(--jt-line); }
+#jt-designs .jt-logo { font-size:30px; font-weight:700; letter-spacing:-.08em; display:flex; gap:10px; align-items:center; }
+#jt-designs .jt-logo i { width:24px; height:24px; }
+#jt-designs .jt-note { color:var(--jt-soft); font-size:11px; letter-spacing:.08em; }
+#jt-designs .jt-nav { display:flex; gap:18px; flex-wrap:wrap; margin-left:auto; font-size:12px; }
+#jt-designs .jt-current { color:var(--jt-accent); font-weight:700; }
+#jt-designs .jt-intro { display:flex; align-items:center; justify-content:space-between; gap:18px; padding:26px 0 20px; }
+#jt-designs .jt-intro h2 { font-size:30px; font-weight:500; line-height:1.4; margin:4px 0; letter-spacing:-.04em; }
+#jt-designs .jt-intro p { margin:0; color:var(--jt-soft); }
+#jt-designs .jt-flower { font-size:64px; line-height:1; color:var(--jt-accent); transform:rotate(-12deg); }
+#jt-designs .jt-metrics { display:flex; flex-wrap:wrap; gap:20px; color:var(--jt-soft); padding:4px 0 22px; font-size:12px; }
+#jt-designs .jt-metrics strong { color:var(--jt-ink); font-size:22px; margin:0 6px; font-weight:500; }
+#jt-designs .jt-grid { display:grid; grid-template-columns:1fr 1.2fr; gap:18px; }
+#jt-designs .jt-sheet { background:var(--jt-paper); border:1px solid var(--jt-line); border-radius:var(--jt-radius); padding:22px; min-width:0; }
+#jt-designs .jt-sheet h3 { margin:0 0 14px; font-size:17px; font-weight:500; }
+#jt-designs .jt-row { display:flex; gap:14px; align-items:center; padding:15px 0; border-top:1px solid var(--jt-line); }
+#jt-designs .jt-row:first-of-type { border-top:0; }
+#jt-designs .jt-row p { margin:0; }
+#jt-designs .jt-row small { display:block; color:var(--jt-soft); font-size:11px; }
+#jt-designs .jt-date { min-width:50px; color:var(--jt-accent); font-weight:500; }
+#jt-designs .jt-tag { display:inline-block; background:var(--jt-fill); color:var(--jt-ink); padding:2px 8px; border-radius:6px; font-size:11px; margin-bottom:5px; }
+#jt-designs .jt-mail { border-top:1px solid var(--jt-line); padding:14px 0; }
+#jt-designs .jt-mail summary { list-style:none; cursor:inherit; }
+#jt-designs .jt-mail summary::after { content:'＋'; float:right; color:var(--jt-accent); }
+#jt-designs .jt-mail[open] summary::after { content:'−'; }
+#jt-designs .jt-mail p { color:var(--jt-soft); margin:8px 0 0; font-size:12px; }
+#jt-designs .jt-mail strong { display:block; font-weight:500; }
+#jt-designs .jt-footer { margin:18px 0 0; font-size:11px; color:var(--jt-soft); }
+#jt-designs .jt-paper .jt-sheet:first-child { border-radius:4px 4px 24px 4px; position:relative; }
+#jt-designs .jt-paper .jt-sheet:first-child::before { content:''; position:absolute; top:-8px; left:28px; width:56px; height:16px; background:var(--jt-fill); transform:rotate(-5deg); opacity:.8; }
+#jt-designs .jt-quest { --jt-bg:light-dark(#f3f1e8,#232524); --jt-paper:light-dark(#fffefa,#303432); --jt-ink:light-dark(#25332b,#f1f4e9); --jt-soft:light-dark(#5c6d60,#b2c2b2); --jt-line:light-dark(#a7b4a0,#526755); --jt-accent:light-dark(#365b3a,#bae69a); --jt-fill:light-dark(#e6f1b3,#4a5b32); display:grid; grid-template-columns:150px 1fr; gap:24px; }
+#jt-designs .jt-quest .jt-side { border-right:1px solid var(--jt-line); padding-right:18px; }
+#jt-designs .jt-quest .jt-nav { margin:28px 0; flex-direction:column; gap:20px; }
+#jt-designs .jt-quest .jt-intro { padding-top:0; }
+#jt-designs .jt-mission { padding:24px; background:var(--jt-fill); border:1px solid var(--jt-line); border-radius:var(--jt-radius); box-shadow:4px 4px 0 var(--jt-line); margin-bottom:24px; }
+#jt-designs .jt-mission h3 { font-size:24px; font-weight:500; margin:10px 0 6px; }
+#jt-designs .jt-mission p { margin:0 0 18px; }
+#jt-designs .jt-action { display:inline-flex; align-items:center; gap:8px; padding:9px 16px; border:1px solid var(--jt-ink); background:var(--jt-ink); color:var(--jt-paper); border-radius:10px; font:inherit; }
+#jt-designs .jt-action[aria-pressed=true] { background:var(--jt-paper); color:var(--jt-ink); }
+#jt-designs .jt-quest .jt-grid { grid-template-columns:1fr 1fr; }
+#jt-designs .jt-orbit { --jt-bg:light-dark(#edf2fc,#181f32); --jt-paper:light-dark(#fcfdff,#253049); --jt-ink:light-dark(#243455,#edf2ff); --jt-soft:light-dark(#607294,#b4c2e0); --jt-line:light-dark(#cbd6ea,#465679); --jt-accent:light-dark(#385bbc,#adbcff); --jt-fill:light-dark(#e0e7ff,#3b4a78); }
+#jt-designs .jt-orbit .jt-top { border:0; }
+#jt-designs .jt-orbit .jt-intro { padding-top:12px; }
+#jt-designs .jt-orbit-grid { display:grid; grid-template-columns:210px 1fr; gap:22px; }
+#jt-designs .jt-day-rail { background:var(--jt-ink); color:var(--jt-paper); border-radius:90px 90px 20px 20px; padding:30px 20px 24px; text-align:center; }
+#jt-designs .jt-day-number { font-size:70px; line-height:1.2; letter-spacing:-.08em; margin:4px 0 16px; }
+#jt-designs .jt-day-rail .jt-row { text-align:left; border-color:var(--jt-soft); flex-wrap:wrap; gap:4px; }
+#jt-designs .jt-day-rail .jt-row small { color:var(--jt-paper); }
+#jt-designs .jt-orbit .jt-grid { grid-template-columns:1fr; }
+#jt-designs .jt-orbit .jt-sheet { padding:18px 22px; }
+#jt-designs .jt-orbit .jt-sheet h3 { margin-bottom:4px; }
+#jt-designs .jt-orbit .jt-mail { padding:10px 0; }
+@media(max-width:650px) {
+ #jt-designs .jt-mock { min-height:1100px; padding:20px 16px; }
+ #jt-designs .jt-top { gap:8px; }
+ #jt-designs .jt-nav { width:100%; margin:0; gap:12px; }
+ #jt-designs .jt-intro h2 { font-size:24px; }
+ #jt-designs .jt-grid, #jt-designs .jt-quest .jt-grid, #jt-designs .jt-orbit-grid { grid-template-columns:1fr; }
+ #jt-designs .jt-quest { display:block; }
+ #jt-designs .jt-quest .jt-side { border-right:0; border-bottom:1px solid var(--jt-line); padding:0 0 16px; margin-bottom:20px; }
+ #jt-designs .jt-quest .jt-nav { flex-direction:row; margin:10px 0 0; }
+ #jt-designs .jt-day-rail { border-radius:24px; text-align:left; padding:16px 20px; }
+ #jt-designs .jt-day-number { font-size:38px; display:inline; margin-right:12px; }
+ #jt-designs .jt-day-rail .jt-row { display:inline-flex; border:0; margin-right:14px; padding:8px 0; }
+ #jt-designs .jt-sheet { padding:20px; }
+ #jt-designs .jt-mail summary { min-height:44px; }
+ #jt-designs .jt-flower { font-size:40px; }
+}
+</style>
+<div id="jt-designs" class="viz-carousel" aria-label="就活ホームのデザイン案" data-previous-label="前の案" data-next-label="次の案">
+  <section data-variant="Scrapbook" aria-label="Scrapbook">
+    <div class="jt-mock jt-paper" id="jt-paper" aria-label="Scrapbookデザイン">
+      <header class="jt-top"><div class="jt-logo"><i data-lucide="footprints" aria-hidden="true"></i>ippo</div><span class="jt-note">SCRAPBOOK</span><nav class="jt-nav" aria-label="画面構成"><span class="jt-current">ホーム</span><span>選考管理</span><span>予定</span><span>ノート</span></nav></header>
+      <div class="jt-intro"><div><p class="jt-note">THU, OCT 15</p><h2>今日の一歩を、ここから。</h2><p>大切な連絡と、次にやることをひと目で。</p></div><span class="jt-flower" aria-hidden="true">✳</span></div>
+      <div class="jt-metrics"><span>進行中 <strong>8</strong>件</span><span>今日の予定 <strong>2</strong>件</span><span>直近の締切 <strong>2</strong>件</span></div>
+      <div class="jt-grid">
+        <section class="jt-sheet"><h3>先に確認すること</h3><div class="jt-row"><span class="jt-date">今日<small>締切</small></span><p>Mori Tech<small>冬インターン · ES提出</small></p></div><div class="jt-row"><span class="jt-date">10/16<small>締切</small></span><p>Nami Studio<small>早期選考 · 課題提出</small></p></div><div class="jt-row"><span class="jt-date">15:00</span><p>Mori Tech 面接<small>オンライン</small></p></div><div class="jt-row"><span class="jt-date">17:00</span><p>キャリア面談<small>30分</small></p></div></section>
+        <section class="jt-sheet"><h3>見逃したくないメール</h3><details class="jt-mail"><summary class="cursor-interaction"><span class="jt-tag">選考結果 · 未読</span><strong>Nami Studio｜書類選考の結果</strong></summary><p>書類選考を通過されました。次回面接の日程を、10月19日までにお知らせください。</p></details><details class="jt-mail"><summary class="cursor-interaction"><span class="jt-tag">締切・提出 · 未読</span><strong>Mori Tech｜ES提出は本日まで</strong></summary><p>冬インターンのエントリーシートは本日23:59までです。マイページから提出してください。</p></details><details class="jt-mail"><summary class="cursor-interaction"><span class="jt-tag">面接・日程調整</span><strong>Mori Tech｜面接URLのご案内</strong></summary><p>本日15:00からの面接用URLをご案内します。開始5分前を目安にご参加ください。</p></details></section>
+      </div><p class="jt-footer">デザイン案・サンプルデータ ／ 紙の質感、テープ、小さなスタンプで日々の記録を楽しく。</p>
+    </div>
+  </section>
+  <section data-variant="Quest" aria-label="Quest" hidden>
+    <div class="jt-mock jt-quest" id="jt-quest" aria-label="Questデザイン">
+      <aside class="jt-side"><div class="jt-logo"><i data-lucide="flag" aria-hidden="true"></i>ippo</div><p class="jt-note">MAKE YOUR MOVE</p><nav class="jt-nav" aria-label="画面構成"><span class="jt-current">ホーム</span><span>選考管理</span><span>予定</span><span>ノート</span></nav><span class="jt-flower" aria-hidden="true">✦</span></aside>
+      <div><div class="jt-intro"><div><p class="jt-note">THU, OCT 15</p><h2>ひとつずつ、進もう。</h2><p>今日のミッションを確認しよう。</p></div></div>
+        <section class="jt-mission"><span class="jt-note">TODAY'S NEXT STEP</span><h3>Mori TechのESを提出する</h3><p>冬インターン · 今日23:59まで</p><button class="jt-action cursor-interaction" type="button" aria-pressed="false">確認済みにする <i data-lucide="check" aria-hidden="true"></i></button><p class="jt-note jt-confirmed" aria-live="polite" hidden>確認しました。提出は企業のマイページから。</p></section>
+        <div class="jt-grid"><section class="jt-sheet"><h3>次に会う人</h3><div class="jt-row"><span class="jt-date">15:00</span><p>Mori Tech 面接<small>オンライン · 60分</small></p></div><div class="jt-row"><span class="jt-date">17:00</span><p>キャリア面談<small>30分</small></p></div><div class="jt-metrics"><span>選考中 <strong>8</strong>件</span></div></section><section class="jt-sheet"><h3>届いている連絡</h3><details class="jt-mail"><summary class="cursor-interaction"><span class="jt-tag">選考結果 · 未読</span><strong>Nami Studio｜書類選考の結果</strong></summary><p>書類選考を通過されました。面接の候補日を10月19日までにご連絡ください。</p></details><details class="jt-mail"><summary class="cursor-interaction"><span class="jt-tag">締切・提出</span><strong>Mori Tech｜ES提出は本日まで</strong></summary><p>本日23:59までにマイページから提出してください。</p></details></section></div>
+        <p class="jt-footer">デザイン案・サンプルデータ ／ スコアや順位を付けず、ひとつの行動を後押しするゲーム風のホーム。</p>
+      </div>
+    </div>
+  </section>
+  <section data-variant="Orbit" aria-label="Orbit" hidden>
+    <div class="jt-mock jt-orbit" id="jt-orbit" aria-label="Orbitデザイン">
+      <header class="jt-top"><div class="jt-logo"><i data-lucide="orbit" aria-hidden="true"></i>ippo</div><span class="jt-note">YOUR NEXT ORBIT</span><nav class="jt-nav" aria-label="画面構成"><span class="jt-current">ホーム</span><span>選考管理</span><span>予定</span><span>ノート</span></nav></header>
+      <div class="jt-intro"><div><p class="jt-note">A LITTLE CLOSER, EVERY DAY</p><h2>次のチャンスを、見渡そう。</h2></div><div class="jt-metrics"><span>選考中 <strong>8</strong></span><span>締切 <strong>2</strong></span></div></div>
+      <div class="jt-orbit-grid"><aside class="jt-day-rail"><p>OCTOBER / THU</p><div class="jt-day-number">15</div><div class="jt-row"><span>15:00</span><p>Mori Tech 面接<small>オンライン</small></p></div><div class="jt-row"><span>17:00</span><p>キャリア面談<small>30分</small></p></div></aside><div class="jt-grid"><section class="jt-sheet"><h3>Action radar</h3><div class="jt-row"><span class="jt-tag">今日</span><p>Mori Tech · 冬インターン<small>ES提出締切 23:59</small></p></div><div class="jt-row"><span class="jt-tag">10/16</span><p>Nami Studio · 早期選考<small>課題提出</small></p></div></section><section class="jt-sheet"><h3>Incoming signals</h3><details class="jt-mail"><summary class="cursor-interaction"><span class="jt-tag">選考結果 · 未読</span><strong>Nami Studio｜書類選考の結果</strong></summary><p>書類選考を通過されました。10月19日までに面接の候補日をご連絡ください。</p></details><details class="jt-mail"><summary class="cursor-interaction"><span class="jt-tag">締切・提出</span><strong>Mori Tech｜ES提出は本日まで</strong></summary><p>マイページから本日23:59までにご提出ください。</p></details></section></div></div>
+      <p class="jt-footer">デザイン案・サンプルデータ ／ 日付を大きな目印に。青と丸い形で、軽やかなコックピットへ。</p>
+    </div>
+  </section>
+</div>
+<script>
+(() => {
+  const root = document.getElementById('jt-designs');
+  const quest = document.getElementById('jt-quest');
+  const action = quest.querySelector('.jt-action');
+  action.addEventListener('click', () => {
+    const selected = action.getAttribute('aria-pressed') !== 'true';
+    action.setAttribute('aria-pressed', String(selected));
+    quest.querySelector('.jt-confirmed').hidden = !selected;
+  });
+  if (globalThis.Tweak) {
+    for (const design of root.querySelectorAll('.jt-mock')) {
+      const state = { radius: 16, name: 'ippo' };
+      const render = () => {
+        design.style.setProperty('--jt-radius', `${state.radius}px`);
+        const logo = design.querySelector('.jt-logo');
+        logo.lastChild.textContent = state.name;
+      };
+      const tweak = new Tweak({ container: design, onChange: render });
+      tweak.addSlider(state, 'radius', { label: 'カードの丸み', min: 0, max: 28, unit: 'px' });
+      tweak.addSelect(state, 'name', { label: 'サービス名', options: ['ippo', 'tsugie', 'shiori', 'michi', 'asu'] });
+    }
+  }
+})();
+</script>
