@@ -26,6 +26,9 @@ Gmail連携の設定は不要。再設定メールはSupabase Authのメール�
 
 ## 実装上の扱い
 
+- 送信前にProject URLを検証し、管理画面URLの誤入力を案内する。
+- 宛先制限、送信回数制限、Supabase側の送信処理エラーは、安全な定型文で原因・対処を表示する。内部の生のエラー文は表示しない。
+
 - 再送画面と `/auth/recovery` は未ログインでもアクセス可能。
 - `/auth/recovery` は `type=recovery` のトークン、または標準メールのPKCEコードを検証する。成功後は固定の `/reset-password` に転送する。
 - `/reset-password` と更新処理の両方でSupabaseによるユーザー確認を行う。ログイン済みのユーザーは自身のパスワードを変更できる。

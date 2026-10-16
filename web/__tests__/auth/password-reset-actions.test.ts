@@ -34,10 +34,44 @@ beforeEach(() => {
   });
   mocks.update.mockResolvedValue({ error: null });
   vi.stubEnv("NEXT_PUBLIC_SITE_URL", "https://job.example.com/");
+  vi.stubEnv("NEXT_PUBLIC_SUPABASE_URL", "https://project.supabase.co");
+  vi.stubEnv("NEXT_PUBLIC_SUPABASE_ANON_KEY", "test-key");
 });
 afterEach(() => vi.unstubAllEnvs());
 
 describe("再設定メール", () => {
+  it("管理画面URLの誤設定を送信前に検出する", async () => {
+    vi.stubEnv(
+      "NEXT_PUBLIC_SUPABASE_URL",
+      "https://supabase.com/dashboard/project/project",
+    );
+    const result = await requestPasswordReset(
+      form({ email: "user@example.com" }),
+    );
+    expect(result.error).toContain("管理画面URL");
+    expect(mocks.reset).not.toHaveBeenCalled();
+  });
+  it("公開キーがなければ接続設定を案内する", async () => {
+    vi.stubEnv("NEXT_PUBLIC_SUPABASE_ANON_KEY", "");
+    expect(
+      (await requestPasswordReset(form({ email: "user@example.com" }))).error,
+    ).toContain("APIキーが未設定");
+    expect(mocks.reset).not.toHaveBeenCalled();
+  });
+  it.each([
+    ["email_address_not_authorized", 403, "SMTP"],
+    ["over_email_send_rate_limit", 429, "回数制限"],
+    ["unexpected_failure", 500, "Authログ"],
+  ])("%sの原因と対処を表示する", async (code, status, message) => {
+    mocks.reset.mockResolvedValue({
+      error: { code, status, message: "private details" },
+    });
+    const result = await requestPasswordReset(
+      form({ email: "user@example.com" }),
+    );
+    expect(result.error).toContain(message);
+    expect(result.error).not.toContain("private details");
+  });
   it("アドレスを検証してから送信する", async () => {
     expect(await requestPasswordReset(form({ email: "bad" }))).toHaveProperty(
       "error",
