@@ -1,0 +1,130 @@
+<style>
+@import url('https://fonts.googleapis.com/css2?family=DotGothic16&display=swap');
+#ippo-pixel-field { color-scheme:light dark; --pf-bg:light-dark(#e8e6d5,#20291f); --pf-paper:light-dark(#fbf7e7,#303b2b); --pf-ink:light-dark(#354933,#edeed5); --pf-soft:light-dark(#68715a,#b9c5a5); --pf-line:light-dark(#a9b393,#667957); --pf-green:light-dark(#3b5b36,#bed28e); --pf-green-text:light-dark(#fff9df,#263321); --pf-gold:light-dark(#efd38b,#8f753d); --pf-gold-text:light-dark(#55431e,#fff0c0); --pf-sky:light-dark(#cdddc3,#45543d); --pf-hill:light-dark(#a4bb88,#71895a); --pf-tree:light-dark(#5e7d49,#94ac6f); --pf-trunk:light-dark(#8b7752,#bba378); --pf-path:light-dark(#d5bd83,#968256); --pf-hair:light-dark(#3e4b38,#343f30); --pf-face:light-dark(#edce9b,#edce9b); --pf-coat:light-dark(#b76743,#ce8458); --pf-pack:light-dark(#e7c76d,#e7c76d); background:var(--pf-bg); color:var(--pf-ink); padding:26px; font:14px/1.8 'DotGothic16',ui-monospace,monospace; }
+#ippo-pixel-field * { box-sizing:border-box; }
+#ippo-pixel-field h2,#ippo-pixel-field h3,#ippo-pixel-field p { margin:0; font-weight:400; }
+#ippo-pixel-field button { font:inherit; }
+#ippo-pixel-field [hidden] { display:none; }
+#ippo-pixel-field .pf-top { display:flex; align-items:center; gap:30px; border-bottom:2px solid var(--pf-ink); padding-bottom:19px; }
+#ippo-pixel-field .pf-logo { display:flex; gap:10px; align-items:center; font:500 31px/1 ui-monospace,monospace; letter-spacing:-.09em; }
+#ippo-pixel-field .pf-pixel { display:inline-block; width:8px; height:8px; background:var(--pf-green); box-shadow:8px -8px 0 var(--pf-green),16px 0 0 var(--pf-green),8px 8px 0 var(--pf-green); margin:8px 15px 8px 0; }
+#ippo-pixel-field .pf-nav { display:flex; gap:24px; color:var(--pf-soft); font-size:12px; }
+#ippo-pixel-field .pf-nav [aria-current] { color:var(--pf-ink); }
+#ippo-pixel-field .pf-nav [aria-current]::before { content:'▶ '; font-size:10px; }
+#ippo-pixel-field .pf-date { margin-left:auto; font-size:11px; color:var(--pf-soft); }
+#ippo-pixel-field .pf-hero { display:grid; grid-template-columns:1fr 1fr; align-items:center; gap:24px; padding:25px 0 23px; }
+#ippo-pixel-field .pf-kicker { font-size:11px; letter-spacing:.1em; color:var(--pf-soft); }
+#ippo-pixel-field .pf-hero h2 { font-size:29px; line-height:1.7; margin:5px 0 11px; }
+#ippo-pixel-field .pf-hero p:last-child { font:12px/1.8 -apple-system,'Hiragino Kaku Gothic ProN',sans-serif; color:var(--pf-soft); }
+#ippo-pixel-field .pf-art { min-width:0; position:relative; padding-top:8px; }
+#ippo-pixel-field canvas { image-rendering:pixelated; width:100%; height:auto; display:block; }
+#ippo-pixel-field .pf-art-label { display:flex; justify-content:space-between; flex-wrap:wrap; gap:5px; color:var(--pf-soft); font-size:11px; margin-top:8px; letter-spacing:.05em; }
+#ippo-pixel-field .pf-stats { border-top:1px dashed var(--pf-line); border-bottom:1px dashed var(--pf-line); padding:12px 0; display:flex; gap:32px; font-size:12px; margin-bottom:24px; color:var(--pf-soft); }
+#ippo-pixel-field .pf-stats strong { font-size:20px; font-weight:400; color:var(--pf-ink); margin:0 7px; }
+#ippo-pixel-field .pf-grid { display:grid; grid-template-columns: .92fr 1.08fr; gap:23px; align-items:start; }
+#ippo-pixel-field .pf-window { background:var(--pf-paper); border:2px solid var(--pf-ink); box-shadow:4px 4px 0 var(--pf-line); padding:21px; min-width:0; }
+#ippo-pixel-field .pf-heading { display:flex; align-items:center; justify-content:space-between; gap:10px; border-bottom:1px solid var(--pf-line); padding-bottom:12px; margin-bottom:16px; }
+#ippo-pixel-field .pf-heading h3 { font-size:16px; }
+#ippo-pixel-field .pf-small { font-size:11px; color:var(--pf-soft); }
+#ippo-pixel-field .pf-badge { font-size:11px; background:var(--pf-gold); color:var(--pf-gold-text); padding:3px 8px; display:inline-block; }
+#ippo-pixel-field .pf-quest h3 { font-size:22px; line-height:1.7; margin:16px 0 9px; }
+#ippo-pixel-field .pf-meta { font:12px/1.9 -apple-system,'Hiragino Kaku Gothic ProN',sans-serif; color:var(--pf-soft); }
+#ippo-pixel-field .pf-button { display:inline-flex; justify-content:center; align-items:center; gap:9px; border:2px solid var(--pf-ink); background:var(--pf-green); color:var(--pf-green-text); padding:10px 17px; box-shadow:3px 3px 0 var(--pf-line); margin-top:21px; }
+#ippo-pixel-field .pf-button[aria-pressed=true] { background:var(--pf-paper); color:var(--pf-ink); box-shadow:none; transform:translate(2px,2px); }
+#ippo-pixel-field .pf-feedback { font-size:12px; margin-top:14px; color:var(--pf-green); }
+#ippo-pixel-field .pf-next { margin-top:21px; padding-top:16px; border-top:1px dashed var(--pf-line); }
+#ippo-pixel-field .pf-next p { font-size:13px; margin-top:5px; }
+#ippo-pixel-field .pf-mail { border-top:1px dashed var(--pf-line); }
+#ippo-pixel-field .pf-mail:first-of-type { border-top:0; }
+#ippo-pixel-field .pf-mail summary { list-style:none; padding:13px 18px 13px 0; position:relative; }
+#ippo-pixel-field .pf-mail summary::-webkit-details-marker { display:none; }
+#ippo-pixel-field .pf-mail summary::after { content:'＋'; position:absolute; top:28px; right:0; color:var(--pf-soft); }
+#ippo-pixel-field .pf-mail[open] summary::after { content:'−'; }
+#ippo-pixel-field .pf-mail strong { display:block; font:500 13px/1.8 -apple-system,'Hiragino Kaku Gothic ProN',sans-serif; margin-top:5px; }
+#ippo-pixel-field .pf-mail time { font-size:11px; color:var(--pf-soft); }
+#ippo-pixel-field .pf-mail p { font:12px/1.9 -apple-system,'Hiragino Kaku Gothic ProN',sans-serif; color:var(--pf-soft); padding-bottom:14px; }
+#ippo-pixel-field .pf-mail-tag { font-size:11px; color:var(--pf-green); }
+#ippo-pixel-field .pf-schedule { display:grid; grid-template-columns:auto 1fr 1fr; gap:24px; align-items:center; margin-top:24px; padding:18px 0; border-top:2px solid var(--pf-ink); border-bottom:1px solid var(--pf-line); }
+#ippo-pixel-field .pf-schedule h3 { font-size:14px; }
+#ippo-pixel-field .pf-schedule time { display:block; font-size:15px; }
+#ippo-pixel-field .pf-schedule p { font:12px/1.8 -apple-system,'Hiragino Kaku Gothic ProN',sans-serif; }
+#ippo-pixel-field .pf-footer { display:flex; justify-content:space-between; flex-wrap:wrap; gap:8px; font:11px/1.8 -apple-system,sans-serif; color:var(--pf-soft); padding-top:17px; }
+@media(max-width:760px) {
+ #ippo-pixel-field { padding:22px; }
+ #ippo-pixel-field .pf-top { flex-wrap:wrap; gap:20px; }
+ #ippo-pixel-field .pf-nav { order:3; width:100%; }
+ #ippo-pixel-field .pf-hero h2 { font-size:24px; }
+ #ippo-pixel-field .pf-grid { gap:18px; grid-template-columns:1fr 1fr; }
+ #ippo-pixel-field .pf-window { padding:17px; }
+ #ippo-pixel-field .pf-heading { flex-wrap:wrap; gap:5px; }
+ #ippo-pixel-field .pf-quest h3 { font-size:20px; }
+ #ippo-pixel-field .pf-schedule { gap:18px; }
+}
+@media(max-width:540px) {
+ #ippo-pixel-field { padding:22px 17px; }
+ #ippo-pixel-field .pf-nav { gap:21px; font-size:11px; }
+ #ippo-pixel-field .pf-hero { grid-template-columns:1fr; gap:16px; padding-top:23px; }
+ #ippo-pixel-field .pf-hero h2 { font-size:27px; }
+ #ippo-pixel-field .pf-art { max-width:410px; }
+ #ippo-pixel-field .pf-stats { gap:16px; flex-wrap:wrap; font-size:11px; }
+ #ippo-pixel-field .pf-stats strong { font-size:18px; margin:0 4px; }
+ #ippo-pixel-field .pf-grid { grid-template-columns:1fr; gap:21px; }
+ #ippo-pixel-field .pf-schedule { grid-template-columns:1fr 1fr; gap:14px; }
+ #ippo-pixel-field .pf-schedule h3 { grid-column:1/-1; }
+ #ippo-pixel-field .pf-schedule p { font-size:11px; }
+}
+@media(pointer:coarse) { #ippo-pixel-field .pf-button { min-height:44px; } }
+</style>
+<div id="ippo-pixel-field" aria-label="Pixel Field：ドット絵の冒険手帳">
+  <span data-palette hidden aria-hidden="true"></span>
+  <header class="pf-top"><div class="pf-logo"><span class="pf-pixel" aria-hidden="true"></span><span data-brand>ippo</span></div><nav class="pf-nav" aria-label="メインメニュー"><span aria-current="page">ホーム</span><span>選考管理</span><span>予定</span><span>ノート</span></nav><time class="pf-date">10.16 FRI</time></header>
+  <section class="pf-hero"><div><p class="pf-kicker">YOUR NEXT CHAPTER</p><h2>きょうの冒険を、<br>はじめよう。</h2><p>締切も、予定も、大切な手紙も。<br>次の一歩に必要なものを、この手帳に。</p></div><div class="pf-art" data-art><canvas width="208" height="70" role="img" aria-label="森の小道を歩くリュック姿の旅人のドット絵"></canvas><div class="pf-art-label"><span>FIELD NOTES / OCTOBER</span><span>ひとつずつ、前へ。</span></div></div></section>
+  <div class="pf-stats"><span>進行中<strong>8</strong>件</span><span>近い締切<strong data-count>2</strong>件</span><span>今日の予定<strong>2</strong>件</span></div>
+  <div class="pf-grid"><section class="pf-window pf-quest"><div class="pf-heading"><h3>今日のクエスト</h3><span class="pf-small">提出・締切</span></div><span class="pf-badge">！ 本日 23:59まで</span><h3>Mori Techの<br>ESを提出する</h3><p class="pf-meta">冬インターン / エントリーシート<br>提出先：企業のマイページ</p><button class="pf-button cursor-interaction" type="button" data-complete aria-pressed="false"><span aria-hidden="true">▶</span><span data-button-label>提出済みにする</span></button><p class="pf-feedback" data-feedback aria-live="polite" hidden>クエスト完了！ ひとつ、前に進んだ。</p><div class="pf-next"><span class="pf-small">次のクエスト / 10.19 MON</span><p>Nami Studio · 課題提出</p><p class="pf-meta">早期選考 / 23:59まで</p></div></section>
+    <section class="pf-window"><div class="pf-heading"><h3>届いた手紙</h3><span class="pf-small">重要メール / 3件</span></div><details class="pf-mail" open><summary class="cursor-interaction"><span class="pf-mail-tag">◆ 要返信 / 選考結果</span><strong>Nami Studio｜書類選考の結果</strong><time>09:42</time></summary><p>書類選考を通過しました。10月19日（月）までに、一次面接の候補日を返信してください。</p></details><details class="pf-mail"><summary class="cursor-interaction"><span class="pf-mail-tag">！ 本日締切</span><strong>Mori Tech｜ES提出のご案内</strong><time>08:15</time></summary><p>冬インターンのES提出は本日23:59まで。企業のマイページから提出してください。</p></details><details class="pf-mail"><summary class="cursor-interaction"><span class="pf-mail-tag">◇ 面接案内</span><strong>Kite Works｜本日の面接URL</strong><time>昨日 18:30</time></summary><p>本日15:00から一次面接を行います。メール内の参加URLへ、開始5分前を目安に接続してください。</p></details></section></div>
+  <section class="pf-schedule"><h3>今日の旅程</h3><div><time>15:00 — 16:00</time><p>Kite Works · 一次面接</p><span class="pf-small">オンライン</span></div><div><time>17:00 — 17:30</time><p>キャリア面談</p><span class="pf-small">オンライン</span></div></section>
+  <footer class="pf-footer"><span>PIXEL FIELD / 冒険手帳と、小さな旅人</span><span>デザインサンプル · 架空のデータ</span></footer>
+</div>
+<script>
+(() => {
+  const root = document.getElementById('ippo-pixel-field');
+  const previous = window.openai?.widgetState?.privateContent;
+  const state = { completed:previous?.completed === true, name:['ippo','tsugie','shiori'].includes(previous?.name) ? previous.name : 'ippo', art:previous?.art !== false };
+  const draw = () => {
+    const canvas = root.querySelector('canvas');
+    const ctx = canvas.getContext('2d');
+    if (!ctx) return;
+    const swatch = root.querySelector('[data-palette]');
+    const colors = {};
+    const color = name => { if (!colors[name]) { swatch.style.color = `var(--pf-${name})`; colors[name] = getComputedStyle(swatch).color; } return colors[name]; };
+    const rect = (x,y,w,h,tone) => { ctx.fillStyle = color(tone); ctx.fillRect(x,y,w,h); };
+    ctx.clearRect(0,0,208,70);
+    rect(0,0,208,70,'sky');
+    for (const [x,y,w] of [[0,37,30],[24,31,37],[53,36,44],[91,29,39],[123,35,39],[159,27,49]]) { rect(x,y,w,70-y,'hill'); }
+    rect(0,58,208,12,'tree');
+    for (const [x,y] of [[17,17],[44,27],[169,14],[191,27]]) { rect(x+6,y+15,4,16,'trunk'); rect(x+4,y,8,4,'tree'); rect(x,y+4,16,6,'tree'); rect(x-4,y+10,24,8,'tree'); }
+    for (const [x,y,w,h] of [[83,48,15,5],[78,53,27,5],[70,58,45,5],[61,63,65,7]]) rect(x,y,w,h,'path');
+    for (const [x,y] of [[9,57],[33,60],[145,55],[178,60]]) { rect(x,y,2,3,'paper'); rect(x-1,y+1,4,1,'gold'); }
+    const sprite = ['....hhhh....','...hhhhhh...','...hffffh...','...hfffff...','....ffff....','...ccccppp..','..cccccpppp.','..ffcccpppp.','..ffcccpppp.','...ccccppp..','...cccccc...','....hh.hh...','...hhh.hhh..'];
+    const palette = { h:'hair', f:'face', c:'coat', p:'pack' };
+    sprite.forEach((line,y) => Array.from(line).forEach((pixel,x) => { if (palette[pixel]) rect(83+x,35+y,1,1,palette[pixel]); }));
+  };
+  const render = () => {
+    root.querySelector('[data-brand]').textContent = state.name;
+    root.querySelector('[data-count]').textContent = state.completed ? '1' : '2';
+    root.querySelector('[data-complete]').setAttribute('aria-pressed', String(state.completed));
+    root.querySelector('[data-button-label]').textContent = state.completed ? '提出済みを取り消す' : '提出済みにする';
+    root.querySelector('[data-feedback]').hidden = !state.completed;
+    root.querySelector('[data-art]').hidden = !state.art;
+  };
+  const save = () => { if (window.openai?.setWidgetState) window.openai.setWidgetState({modelContent:{design:'Pixel Field',name:state.name},privateContent:{...state}}).catch(() => {}); };
+  render(); draw();
+  root.querySelector('[data-complete]').addEventListener('click', () => { state.completed = !state.completed; render(); save(); });
+  window.addEventListener('openai:set_globals', event => { const saved = event.detail?.globals?.widgetState?.privateContent; if (!saved) return; state.completed = saved.completed === true; if (['ippo','tsugie','shiori'].includes(saved.name)) state.name = saved.name; state.art = saved.art !== false; render(); draw(); });
+  const theme = matchMedia('(prefers-color-scheme: dark)');
+  theme.addEventListener('change', draw);
+  const observer = new MutationObserver(draw);
+  observer.observe(document.documentElement,{attributes:true,attributeFilter:['class','style','data-theme']});
+  if (globalThis.Tweak) { const tweak = new Tweak({container:root,onChange:() => {render();save();}}); tweak.addSelect(state,'name',{label:'サービス名',options:['ippo','tsugie','shiori']}); tweak.addToggle(state,'art',{label:'ドット絵の風景'}); }
+})();
+</script>

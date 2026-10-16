@@ -1,0 +1,130 @@
+<style>
+@import url('https://fonts.googleapis.com/css2?family=DotGothic16&display=swap');
+#ippo-pixel-command { color-scheme:light dark; --pc-bg:light-dark(#e1e6ed,#0c1422); --pc-window:light-dark(#253853,#162741); --pc-deep:light-dark(#1c2b43,#101c30); --pc-ink:light-dark(#f1f3e5,#f1f3e5); --pc-soft:light-dark(#bac9d9,#aabcce); --pc-line:light-dark(#8ea3b9,#697f98); --pc-gold:light-dark(#f1d68b,#f1d68b); --pc-mint:light-dark(#b8e1c6,#b8e1c6); --pc-ground:light-dark(#40566d,#2b4057); --pc-roof:light-dark(#859aab,#6c8099); --pc-star:light-dark(#b0bfd0,#b0bfd0); --pc-title:light-dark(#253853,#e7edee); --pc-path:light-dark(#9fa69c,#858e8a); --pc-coat:light-dark(#bf7768,#bf7768); --pc-skin:light-dark(#e9c7a0,#e9c7a0); --pc-font:'DotGothic16',ui-monospace,monospace; background:var(--pc-bg); color:var(--pc-ink); padding:26px; font:14px/1.9 var(--pc-font); }
+#ippo-pixel-command * { box-sizing:border-box; }
+#ippo-pixel-command h2,#ippo-pixel-command h3,#ippo-pixel-command p { margin:0; font-weight:400; }
+#ippo-pixel-command button { font:inherit; }
+#ippo-pixel-command [hidden] { display:none; }
+#ippo-pixel-command .pc-top { display:flex; justify-content:space-between; align-items:center; gap:20px; color:var(--pc-title); padding-bottom:20px; }
+#ippo-pixel-command .pc-logo { font:500 29px/1 ui-monospace,monospace; letter-spacing:-.08em; }
+#ippo-pixel-command .pc-logo small { font:11px/1.8 var(--pc-font); letter-spacing:.1em; margin-left:14px; }
+#ippo-pixel-command .pc-time { font-size:11px; }
+#ippo-pixel-command .pc-shell { display:grid; grid-template-columns:160px 1fr; gap:18px; }
+#ippo-pixel-command .pc-window { background:var(--pc-window); border:2px solid var(--pc-line); box-shadow:inset 0 0 0 3px var(--pc-window),inset 0 0 0 4px var(--pc-line),4px 4px 0 var(--pc-deep); padding:21px; min-width:0; }
+#ippo-pixel-command .pc-menu { padding:21px 18px; align-self:start; }
+#ippo-pixel-command .pc-heading { display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:5px 12px; margin-bottom:15px; }
+#ippo-pixel-command .pc-heading h3 { font-size:16px; }
+#ippo-pixel-command .pc-eyebrow { color:var(--pc-soft); font-size:11px; letter-spacing:.08em; }
+#ippo-pixel-command .pc-nav { display:flex; flex-direction:column; gap:21px; margin-top:25px; padding-bottom:26px; border-bottom:1px dashed var(--pc-line); font-size:13px; color:var(--pc-soft); }
+#ippo-pixel-command .pc-nav span { padding-left:16px; }
+#ippo-pixel-command .pc-nav [aria-current] { padding-left:0; color:var(--pc-gold); }
+#ippo-pixel-command .pc-nav [aria-current]::before { content:'▶ '; font-size:11px; }
+#ippo-pixel-command .pc-status { padding-top:21px; display:grid; gap:16px; }
+#ippo-pixel-command .pc-status p { color:var(--pc-soft); font-size:11px; }
+#ippo-pixel-command .pc-status strong { display:block; font-size:23px; font-weight:400; color:var(--pc-ink); line-height:1.4; }
+#ippo-pixel-command .pc-main { min-width:0; display:grid; gap:18px; }
+#ippo-pixel-command .pc-intro { display:grid; grid-template-columns:1fr 160px; gap:16px; align-items:center; background:var(--pc-deep); }
+#ippo-pixel-command .pc-intro h2 { font-size:22px; line-height:1.8; margin-top:7px; }
+#ippo-pixel-command .pc-intro p:last-child { font-size:11px; color:var(--pc-soft); margin-top:8px; }
+#ippo-pixel-command canvas { display:block; width:100%; height:auto; image-rendering:pixelated; }
+#ippo-pixel-command .pc-priority .pc-heading { margin-bottom:8px; }
+#ippo-pixel-command .pc-gold { color:var(--pc-gold); }
+#ippo-pixel-command .pc-quest { display:flex; justify-content:space-between; align-items:center; gap:22px; }
+#ippo-pixel-command .pc-quest h3 { font-size:20px; margin:4px 0 8px; }
+#ippo-pixel-command .pc-meta { font:12px/1.9 -apple-system,'Hiragino Kaku Gothic ProN',sans-serif; color:var(--pc-soft); }
+#ippo-pixel-command .pc-button { border:1px solid var(--pc-gold); background:var(--pc-gold); color:var(--pc-deep); box-shadow:3px 3px 0 var(--pc-deep); padding:10px 14px; font-size:12px; flex-shrink:0; }
+#ippo-pixel-command .pc-button[aria-pressed=true] { background:var(--pc-window); color:var(--pc-gold); box-shadow:none; transform:translate(2px,2px); }
+#ippo-pixel-command .pc-feedback { margin-top:12px; color:var(--pc-mint); font-size:12px; }
+#ippo-pixel-command .pc-bottom { display:grid; grid-template-columns:.65fr 1fr; gap:18px; align-items:start; }
+#ippo-pixel-command .pc-schedule h3 { font-size:15px; }
+#ippo-pixel-command .pc-event { margin-top:19px; padding-bottom:17px; border-bottom:1px dashed var(--pc-line); }
+#ippo-pixel-command .pc-event time { font-size:13px; color:var(--pc-gold); }
+#ippo-pixel-command .pc-event p { font:12px/1.9 -apple-system,'Hiragino Kaku Gothic ProN',sans-serif; margin-top:5px; }
+#ippo-pixel-command .pc-event small { display:block; font:11px/1.9 -apple-system,sans-serif; color:var(--pc-soft); }
+#ippo-pixel-command .pc-next { margin-top:16px; }
+#ippo-pixel-command .pc-next p { margin-top:6px; font-size:12px; }
+#ippo-pixel-command .pc-mail { border-top:1px dashed var(--pc-line); }
+#ippo-pixel-command .pc-mail summary { list-style:none; position:relative; padding:12px 17px 12px 0; }
+#ippo-pixel-command .pc-mail summary::-webkit-details-marker { display:none; }
+#ippo-pixel-command .pc-mail summary::after { content:'＋'; position:absolute; right:0; top:28px; color:var(--pc-soft); }
+#ippo-pixel-command .pc-mail[open] summary::after { content:'−'; }
+#ippo-pixel-command .pc-mail strong { display:block; font:500 12px/1.9 -apple-system,'Hiragino Kaku Gothic ProN',sans-serif; margin-top:5px; }
+#ippo-pixel-command .pc-mail time { display:block; color:var(--pc-soft); font-size:11px; }
+#ippo-pixel-command .pc-mail-tag { font-size:11px; color:var(--pc-mint); }
+#ippo-pixel-command .pc-mail p { font:12px/1.9 -apple-system,'Hiragino Kaku Gothic ProN',sans-serif; color:var(--pc-soft); padding-bottom:14px; }
+#ippo-pixel-command .pc-footer { display:flex; justify-content:space-between; flex-wrap:wrap; gap:8px; color:var(--pc-title); padding-top:20px; font:11px/1.8 -apple-system,sans-serif; }
+@media(max-width:850px) {
+ #ippo-pixel-command .pc-shell { grid-template-columns:128px 1fr; gap:15px; }
+ #ippo-pixel-command .pc-window { padding:18px; }
+ #ippo-pixel-command .pc-menu { padding:18px 14px; }
+ #ippo-pixel-command .pc-intro { grid-template-columns:1fr 120px; gap:10px; }
+ #ippo-pixel-command .pc-intro h2 { font-size:20px; }
+ #ippo-pixel-command .pc-quest { flex-direction:column; align-items:flex-start; gap:16px; }
+ #ippo-pixel-command .pc-bottom { grid-template-columns:1fr; }
+ #ippo-pixel-command .pc-schedule { display:grid; grid-template-columns:1fr 1fr; gap:0 18px; }
+ #ippo-pixel-command .pc-schedule > h3,#ippo-pixel-command .pc-next { grid-column:1/-1; }
+ #ippo-pixel-command .pc-next { border-top:1px dashed var(--pc-line); padding-top:14px; }
+ #ippo-pixel-command .pc-event { border:0; padding:0; }
+}
+@media(max-width:540px) {
+ #ippo-pixel-command { padding:22px 15px; }
+ #ippo-pixel-command .pc-top { gap:10px; }
+ #ippo-pixel-command .pc-logo small { display:block; margin:9px 0 0; font-size:11px; }
+ #ippo-pixel-command .pc-shell { grid-template-columns:1fr; }
+ #ippo-pixel-command .pc-menu { padding:16px 18px; }
+ #ippo-pixel-command .pc-menu > .pc-eyebrow { display:none; }
+ #ippo-pixel-command .pc-nav { flex-direction:row; gap:17px; flex-wrap:wrap; margin-top:0; padding-bottom:15px; font-size:11px; }
+ #ippo-pixel-command .pc-nav span { padding-left:0; }
+ #ippo-pixel-command .pc-status { display:flex; gap:25px; padding-top:14px; }
+ #ippo-pixel-command .pc-status strong { display:inline; font-size:17px; margin-left:7px; }
+ #ippo-pixel-command .pc-intro { grid-template-columns:1fr; }
+ #ippo-pixel-command .pc-intro h2 { font-size:23px; }
+ #ippo-pixel-command .pc-scene { width:100%; max-width:240px; justify-self:center; margin-top:6px; }
+ #ippo-pixel-command .pc-quest h3 { font-size:20px; }
+ #ippo-pixel-command .pc-heading h3 { font-size:15px; }
+}
+@media(pointer:coarse) { #ippo-pixel-command .pc-button { min-height:44px; } }
+</style>
+<div id="ippo-pixel-command" aria-label="Command Quest：レトロRPGのコマンド画面">
+  <span data-palette hidden aria-hidden="true"></span>
+  <header class="pc-top"><div class="pc-logo"><span data-brand>ippo</span><small>THE NEXT CHAPTER</small></div><time class="pc-time">2026.10.16 / FRI</time></header>
+  <div class="pc-shell"><aside class="pc-window pc-menu"><p class="pc-eyebrow">COMMAND</p><nav class="pc-nav" aria-label="メインメニュー"><span aria-current="page">ホーム</span><span>選考管理</span><span>予定</span><span>ノート</span></nav><div class="pc-status"><p>進行中<strong>8件</strong></p><p>近い締切<strong><span data-count>2</span>件</strong></p></div></aside>
+    <main class="pc-main"><section class="pc-window pc-intro"><div><p class="pc-eyebrow">TODAY'S ADVENTURE</p><h2>さて、今日は<br>何から進めよう？</h2><p>次の一歩を、ここで選ぼう。</p></div><div class="pc-scene" data-art><canvas width="96" height="64" role="img" aria-label="城の灯りに向かう旅人のドット絵"></canvas></div></section>
+      <section class="pc-window pc-priority"><div class="pc-heading"><span class="pc-eyebrow">MAIN QUEST / 提出・締切</span><span class="pc-gold">！ 今日 23:59</span></div><div class="pc-quest"><div><h3>Mori TechのESを提出</h3><p class="pc-meta">冬インターン · 企業のマイページから提出</p></div><button class="pc-button cursor-interaction" type="button" data-complete aria-pressed="false">▶ <span data-button-label>提出済みにする</span></button></div><p class="pc-feedback" data-feedback aria-live="polite" hidden>＊ クエストを完了した！ 次の一歩へ。</p></section>
+      <div class="pc-bottom"><section class="pc-window pc-schedule"><h3>今日の予定</h3><div class="pc-event"><time>15:00 — 16:00</time><p>Kite Works<small>一次面接 / オンライン</small></p></div><div class="pc-event"><time>17:00 — 17:30</time><p>キャリア面談<small>オンライン</small></p></div><div class="pc-next"><span class="pc-eyebrow">NEXT / 10.19 MON</span><p>Nami Studio · 課題提出</p><span class="pc-meta">早期選考 / 23:59まで</span></div></section><section class="pc-window"><div class="pc-heading"><h3>重要な手紙</h3><span class="pc-eyebrow">Gmail / 3件</span></div><details class="pc-mail" open><summary class="cursor-interaction"><span class="pc-mail-tag">◆ 要返信 / 選考結果</span><strong>Nami Studio｜書類選考通過</strong><time>09:42</time></summary><p>一次面接の候補日を、10月19日（月）までに返信してください。</p></details><details class="pc-mail"><summary class="cursor-interaction"><span class="pc-mail-tag">！ 本日締切</span><strong>Mori Tech｜ES提出のご案内</strong><time>08:15</time></summary><p>冬インターンのES提出は本日23:59まで。企業のマイページから提出してください。</p></details><details class="pc-mail"><summary class="cursor-interaction"><span class="pc-mail-tag">◇ 面接案内</span><strong>Kite Works｜面接URLのご案内</strong><time>昨日 18:30</time></summary><p>本日15:00から一次面接です。メール内の参加URLへ、開始5分前を目安に接続してください。</p></details></section></div>
+    </main>
+  </div><footer class="pc-footer"><span>COMMAND QUEST / コマンドを選ぶように、次の行動へ</span><span>デザインサンプル · 架空のデータ</span></footer>
+</div>
+<script>
+(() => {
+  const root = document.getElementById('ippo-pixel-command');
+  const previous = window.openai?.widgetState?.privateContent;
+  const state = {completed:previous?.completed === true, name:['ippo','tsugie','shiori'].includes(previous?.name) ? previous.name : 'ippo', art:previous?.art !== false};
+  const draw = () => {
+    const ctx = root.querySelector('canvas').getContext('2d');
+    if (!ctx) return;
+    const swatch = root.querySelector('[data-palette]');
+    const colors = {};
+    const rect = (x,y,w,h,key) => {if(!colors[key]){swatch.style.color=`var(--pc-${key})`;colors[key]=getComputedStyle(swatch).color;}ctx.fillStyle=colors[key];ctx.fillRect(x,y,w,h);};
+    ctx.clearRect(0,0,96,64); rect(0,0,96,64,'deep');
+    for (const [x,y] of [[7,9],[25,5],[82,10],[69,3],[12,26],[88,29],[38,14]]) rect(x,y,1,1,'star');
+    rect(55,9,5,1,'gold');rect(54,10,5,3,'gold');rect(55,13,5,1,'gold');rect(58,10,2,3,'deep');
+    rect(0,53,96,11,'ground');rect(4,50,19,3,'ground');rect(75,48,21,5,'ground');
+    rect(35,27,28,23,'roof');rect(29,22,10,28,'roof');rect(59,22,10,28,'roof');
+    for (const x of [29,35,59,65]) rect(x,18,4,5,'roof');
+    rect(43,20,12,9,'roof');rect(46,16,6,4,'roof');rect(48,10,1,6,'roof');rect(49,10,6,3,'coat');
+    for (const x of [32,62]) {rect(x,30,3,5,'gold');rect(x,40,3,4,'deep');}
+    rect(45,38,8,12,'deep');rect(47,38,4,2,'gold');rect(46,40,6,10,'gold');
+    rect(44,50,10,4,'path');rect(38,54,22,4,'path');rect(30,58,37,6,'path');
+    rect(23,47,5,5,'roof');rect(24,51,4,3,'skin');rect(22,54,7,5,'coat');rect(23,59,2,3,'roof');rect(27,59,2,3,'roof');rect(21,54,2,4,'gold');
+  };
+  const render = () => {root.querySelector('[data-brand]').textContent=state.name;root.querySelector('[data-count]').textContent=state.completed?'1':'2';root.querySelector('[data-complete]').setAttribute('aria-pressed',String(state.completed));root.querySelector('[data-button-label]').textContent=state.completed?'提出済みを取り消す':'提出済みにする';root.querySelector('[data-feedback]').hidden=!state.completed;root.querySelector('[data-art]').hidden=!state.art;};
+  const save = () => {if(window.openai?.setWidgetState) window.openai.setWidgetState({modelContent:{design:'Command Quest',name:state.name},privateContent:{...state}}).catch(()=>{});};
+  render();draw();
+  root.querySelector('[data-complete]').addEventListener('click',()=>{state.completed=!state.completed;render();save();});
+  window.addEventListener('openai:set_globals',event=>{const saved=event.detail?.globals?.widgetState?.privateContent;if(!saved)return;state.completed=saved.completed===true;if(['ippo','tsugie','shiori'].includes(saved.name))state.name=saved.name;state.art=saved.art!==false;render();draw();});
+  matchMedia('(prefers-color-scheme: dark)').addEventListener('change',draw);
+  const observer = new MutationObserver(draw);observer.observe(document.documentElement,{attributes:true,attributeFilter:['class','style','data-theme']});
+  if(globalThis.Tweak){const tweak=new Tweak({container:root,onChange:()=>{render();save();}});tweak.addSelect(state,'name',{label:'サービス名',options:['ippo','tsugie','shiori']});tweak.addToggle(state,'art',{label:'ドット絵の風景'});}
+})();
+</script>
