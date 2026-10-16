@@ -123,7 +123,7 @@ describe("パスワード更新", () => {
           form({ password: "new-password", confirmation: "new-password" }),
         )
       ).error,
-    ).toContain("有効期限");
+    ).toContain("ログイン情報");
     expect(mocks.update).not.toHaveBeenCalled();
   });
   it("検証済みユーザー本人のパスワードだけ更新する", async () => {

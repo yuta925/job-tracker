@@ -14,7 +14,7 @@ export default async function ForgotPasswordPage({
       title="パスワードを再設定"
       description="登録したメールアドレスに、新しいパスワードを設定するためのリンクを送ります。"
     >
-      <ForgotPasswordForm expired={params.error === "expired"} />
+      <ForgotPasswordForm recoveryError={params.error} />
     </AuthPanel>
   );
 }

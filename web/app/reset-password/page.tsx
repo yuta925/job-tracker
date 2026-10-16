@@ -10,7 +10,7 @@ export default async function ResetPasswordPage() {
   const {
     data: { user },
   } = await supabase.auth.getUser();
-  if (!user) redirect("/forgot-password?error=expired");
+  if (!user) redirect("/forgot-password?error=session_missing");
   return (
     <AuthPanel
       title="新しいパスワードを設定"

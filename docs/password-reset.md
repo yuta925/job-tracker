@@ -24,6 +24,8 @@ Gmail連携の設定は不要。再設定メールはSupabase Authのメール�
 
 テンプレート変更後のリンクは、リクエスト元と異なるブラウザでも検証できる。標準の `.ConfirmationURL` を使う既存テンプレートにも対応するが、PKCEのコード交換にはリクエスト元ブラウザのCookieが必要なため、同じブラウザで開くこと。
 
+2026-10-16に、実プロジェクトのReset Passwordテンプレートを `.RedirectTo`・`.TokenHash` 形式へ更新済み。更新前に送信したメールは変化しないため、新しくメールをリクエストする。
+
 ## 実装上の扱い
 
 - 送信前にProject URLを検証し、管理画面URLの誤入力を案内する。
@@ -33,6 +35,7 @@ Gmail連携の設定は不要。再設定メールはSupabase Authのメール�
 - `/auth/recovery` は `type=recovery` のトークン、または標準メールのPKCEコードを検証する。成功後は固定の `/reset-password` に転送する。
 - `/reset-password` と更新処理の両方でSupabaseによるユーザー確認を行う。ログイン済みのユーザーは自身のパスワードを変更できる。
 - 不正・期限切れ・使用済みリンクでは再送画面へ戻す。
+- ブラウザ情報の不一致、リンク情報の不足、検証失敗、再設定用セッションの欠落を区別する。すべてを有効期限切れと表示しない。
 - メールアドレスの登録有無は成功メッセージに含めず、送信先のアカウント存在確認に使わせない。
 - パスワードをアプリのDBやログへ保存しない。Supabaseの `updateUser` へ渡す。
 - DBの移行は不要。Supabase管理画面のURL・メール設定は別途適用する。
@@ -40,6 +43,6 @@ Gmail連携の設定は不要。再設定メールはSupabase Authのメール�
 
 ## 検証
 
-送信アクション・入力検証・本人確認・期限切れ・外部転送の拒否・認証ガード・画面操作をモックで検証する。実メールの送信確認は、Supabase側の設定後に行う。
+送信アクション・入力検証・本人確認・期限切れ・外部転送の拒否・認証ガード・画面操作をモックで検証する。また、実Supabase SSR SDKとモックAuth APIを使い、Cookieがない別ブラウザ相当の状態からトークンを検証し、次のページ要求で本人確認できるセッションCookieが保存されることも検証する。実アカウントの再設定完了は本人が操作する。
 
 公式資料: [Password security](https://supabase.com/docs/guides/auth/password-security)、[Password-based Auth](https://supabase.com/docs/guides/auth/passwords)、[Email Templates](https://supabase.com/docs/guides/auth/auth-email-templates)、[Redirect URLs](https://supabase.com/docs/guides/auth/redirect-urls)。

@@ -2,11 +2,17 @@
 
 import { useState, useTransition } from "react";
 import { requestPasswordReset } from "@/app/forgot-password/actions";
+import { recoveryErrorMessage } from "@/lib/auth/recovery-error";
 
-export function ForgotPasswordForm({ expired = false }: { expired?: boolean }) {
+export function ForgotPasswordForm({
+  recoveryError,
+}: {
+  recoveryError?: string;
+}) {
   const [pending, startTransition] = useTransition();
   const [error, setError] = useState<string | null>(null);
   const [sent, setSent] = useState(false);
+  const linkError = recoveryErrorMessage(recoveryError);
   function submit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
@@ -24,9 +30,9 @@ export function ForgotPasswordForm({ expired = false }: { expired?: boolean }) {
   }
   return (
     <form onSubmit={submit} className="space-y-5">
-      {expired && !sent && (
+      {linkError && !sent && (
         <p role="alert" className="home-error">
-          リンクが無効か、有効期限が切れています。再設定メールをもう一度リクエストしてください。
+          {linkError}
         </p>
       )}
       <div className="md-field">

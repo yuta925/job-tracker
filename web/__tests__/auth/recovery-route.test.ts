@@ -25,6 +25,28 @@ const request = (query: string) =>
   new NextRequest(`https://job.example.com/auth/recovery?${query}`);
 
 describe("再設定リンクの検証", () => {
+  it("別ブラウザでPKCEのCookieがない場合は、期限切れと区別する", async () => {
+    mocks.exchange.mockResolvedValue({
+      data: { session: null },
+      error: { code: "pkce_code_verifier_not_found" },
+    });
+    const response = await GET(request("code=code"));
+    expect(response.headers.get("location")).toContain(
+      "error=browser_mismatch",
+    );
+  });
+  it("Supabaseからの期限切れエラーを引き継ぐ", async () => {
+    const response = await GET(
+      request("error=access_denied&error_code=otp_expired"),
+    );
+    expect(response.headers.get("location")).toContain("error=expired");
+  });
+  it("未知のエラーを期限切れと断定しない", async () => {
+    const response = await GET(request("error=access_denied"));
+    expect(response.headers.get("location")).toContain(
+      "error=verification_failed",
+    );
+  });
   it("recovery種別のトークンを検証し、固定の再設定画面へ転送する", async () => {
     const response = await GET(
       request("token_hash=secret&type=recovery&next=https://evil.example/"),
@@ -45,11 +67,11 @@ describe("再設定リンクの検証", () => {
     );
     expect(mocks.exchange).toHaveBeenCalledWith("code");
   });
-  it.each(["", "token_hash=secret&type=signup", "error=access_denied"])(
+  it.each(["", "token_hash=secret&type=signup"])(
     "無効なリンクを拒否する: %s",
     async (query) => {
       expect((await GET(request(query))).headers.get("location")).toBe(
-        "https://job.example.com/forgot-password?error=expired",
+        "https://job.example.com/forgot-password?error=invalid_link",
       );
       expect(mocks.verify).not.toHaveBeenCalled();
       expect(mocks.exchange).not.toHaveBeenCalled();
@@ -58,7 +80,7 @@ describe("再設定リンクの検証", () => {
   it("期限切れ・使用済みトークンでは更新画面を表示しない", async () => {
     mocks.verify.mockResolvedValue({
       data: { session: null },
-      error: { message: "expired" },
+      error: { message: "expired", code: "otp_expired" },
     });
     expect(
       (await GET(request("token_hash=secret&type=recovery"))).headers.get(
@@ -73,6 +95,6 @@ describe("再設定リンクの検証", () => {
     });
     expect(
       (await GET(request("code=invalid"))).headers.get("location"),
-    ).toContain("error=expired");
+    ).toContain("error=verification_failed");
   });
 });

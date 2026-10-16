@@ -27,7 +27,7 @@ describe("認証ガード", () => {
       new NextRequest("https://job.example.com/reset-password"),
     );
     expect(response.headers.get("location")).toBe(
-      "https://job.example.com/forgot-password?error=expired",
+      "https://job.example.com/forgot-password?error=session_missing",
     );
   });
   it("ホームの認証保護を維持する", async () => {

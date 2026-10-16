@@ -40,7 +40,7 @@ export async function updateSession(request: NextRequest) {
 
   if (!user && pathname === "/reset-password") {
     return NextResponse.redirect(
-      new URL("/forgot-password?error=expired", request.url),
+      new URL("/forgot-password?error=session_missing", request.url),
     );
   }
 

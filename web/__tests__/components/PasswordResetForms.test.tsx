@@ -16,6 +16,11 @@ beforeEach(() => {
 });
 
 describe("再設定メールの画面", () => {
+  it("別ブラウザでの旧リンク検証失敗を、期限切れと区別して案内する", () => {
+    render(<ForgotPasswordForm recoveryError="browser_mismatch" />);
+    expect(screen.getByRole("alert")).toHaveTextContent("同じブラウザ");
+    expect(screen.getByRole("alert")).not.toHaveTextContent("有効期限");
+  });
   it("登録の有無を明かさず、送信完了を案内する", async () => {
     render(<ForgotPasswordForm />);
     fireEvent.change(screen.getByLabelText("登録したメールアドレス"), {
@@ -30,7 +35,7 @@ describe("再設定メールの画面", () => {
     expect(requestPasswordReset).toHaveBeenCalled();
   });
   it("期限切れのリンクから来た場合は再送を案内する", () => {
-    render(<ForgotPasswordForm expired />);
+    render(<ForgotPasswordForm recoveryError="expired" />);
     expect(screen.getByRole("alert")).toHaveTextContent(
       "有効期限が切れています",
     );

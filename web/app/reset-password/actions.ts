@@ -25,7 +25,7 @@ export async function updatePassword(
     if (userError || !user)
       return {
         error:
-          "再設定の有効期限が切れています。再設定メールをもう一度リクエストしてください。",
+          "再設定用のログイン情報を確認できませんでした。再設定メールをもう一度リクエストしてください。",
       };
     const { error } = await supabase.auth.updateUser({ password });
     if (error) {
