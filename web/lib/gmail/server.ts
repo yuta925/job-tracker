@@ -44,8 +44,12 @@ export async function getGmailClient(userId: string) {
   if (error) throw error;
   if (!data) return null;
   const auth = gmailOAuthClient();
-  auth.setCredentials({
-    refresh_token: decryptToken(data.encrypted_token as string),
-  });
+  try {
+    auth.setCredentials({
+      refresh_token: decryptToken(data.encrypted_token as string),
+    });
+  } catch {
+    throw new Error("GMAIL_TOKEN_DECRYPTION_FAILED");
+  }
   return google.gmail({ version: "v1", auth });
 }

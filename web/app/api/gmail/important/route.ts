@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { createClient } from "@/lib/supabase/server";
 import { getGmailClient, isGmailConfigured } from "@/lib/gmail/server";
+import { gmailFailure } from "@/lib/gmail/errors";
 import {
   classifyImportantMail,
   rankImportantMail,
@@ -92,12 +93,9 @@ export async function GET() {
       },
       { headers },
     );
-  } catch {
+  } catch (error) {
     return NextResponse.json(
-      {
-        error:
-          "Gmailを取得できませんでした。再試行するか、再連携してください。",
-      },
+      gmailFailure(error),
       { status: 502, headers },
     );
   }

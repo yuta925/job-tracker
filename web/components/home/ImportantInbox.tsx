@@ -7,21 +7,27 @@ export function ImportantInbox() {
   const [inbox, setInbox] = useState<GmailInbox | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [reconnect, setReconnect] = useState(false);
   const [notice, setNotice] = useState<string | null>(null);
   const requestNumber = useRef(0);
   const reload = useCallback(async (disconnect = false) => {
     const request = ++requestNumber.current;
     setLoading(true);
     setError(null);
+    setReconnect(false);
     try {
       const response = await fetch("/api/gmail/important", {
         method: disconnect ? "DELETE" : "GET",
         cache: "no-store",
       });
-      if (!response.ok)
-        throw new Error(
-          "Gmailを取得できませんでした。再試行するか、再連携してください。",
-        );
+      if (!response.ok) {
+        const failure: { error?: string; reconnect?: boolean } = await response.json();
+        if (request === requestNumber.current) {
+          setError(failure.error || "Gmailを取得できませんでした。更新して再度お試しください。");
+          setReconnect(failure.reconnect === true);
+        }
+        return;
+      }
       const result: GmailInbox = await response.json();
       if (request === requestNumber.current) setInbox(result);
     } catch (err) {
@@ -63,7 +69,7 @@ export function ImportantInbox() {
           {loading ? "確認中..." : "更新 ↻"}
         </button>
       </div>
-      {notice && (
+      {notice && !error && (
         <p role="status" className="home-notice">
           {notice}
         </p>
@@ -71,9 +77,9 @@ export function ImportantInbox() {
       {error && (
         <div role="alert" className="home-error">
           <p>{error}</p>
-          <a className="underline" href="/api/gmail/auth">
+          {reconnect && <a className="underline" href="/api/gmail/auth">
             Gmailを再連携
-          </a>
+          </a>}
         </div>
       )}
       {loading && !inbox && (

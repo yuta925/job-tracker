@@ -103,6 +103,28 @@ describe("Gmail APIの認証と取得", () => {
     expect(response.status).toBe(403);
     expect(mocks.from).not.toHaveBeenCalled();
   });
+  it("Gmail APIの未有効化は再連携と区別し、機密情報を返さない", async () => {
+    mocks.list.mockRejectedValue({
+      response: {status:403, data:{error:{
+        message:"provider details: private-token",
+        details:[{reason:"SERVICE_DISABLED"}],
+      }}},
+      config:{headers:{Authorization:"Bearer private-token"}},
+    });
+    const response = await GET();
+    const body = await response.json();
+    expect(response.status).toBe(502);
+    expect(body.code).toBe("gmail_api_disabled");
+    expect(body.reconnect).toBe(false);
+    expect(body.error).toContain("Gmail APIが有効になっていません");
+    expect(JSON.stringify(body)).not.toContain("private-token");
+  });
+  it("失効したGoogleの許可は再連携を案内する", async () => {
+    mocks.list.mockRejectedValue({response:{status:400,data:{error:"invalid_grant"}}});
+    expect(await (await GET()).json()).toMatchObject({
+      code:"gmail_authorization_expired",reconnect:true,
+    });
+  });
 });
 
 describe("Gmail OAuth callback", () => {
