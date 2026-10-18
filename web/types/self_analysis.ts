@@ -1,4 +1,18 @@
-export type SelfAnalysisItemType = "strength" | "weakness" | "episode";
+export type SelfAnalysisItemType =
+  | "strength"
+  | "weakness"
+  | "episode"
+  | "career_axis"
+  | "values"
+  | "interests"
+  | "skills"
+  | "challenges"
+  | "roles"
+  | "learnings"
+  | "setbacks"
+  | "future_vision"
+  | "external_feedback"
+  | "company_criteria";
 
 export interface SelfAnalysisItem {
   id: string;
