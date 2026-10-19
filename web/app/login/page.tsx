@@ -23,10 +23,10 @@ export default function LoginPage() {
             </svg>
           </div>
           <h1 className="md-headline-small" style={{ color: "var(--md-on-background)" }}>
-            就活トラッカー
+            Waypoint
           </h1>
           <p className="md-body-medium mt-1" style={{ color: "var(--md-on-surface-variant)" }}>
-            選考状況を一元管理
+            就活の情報を、ひとつの道しるべに
           </p>
         </div>
 
