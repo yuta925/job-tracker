@@ -130,7 +130,7 @@ export function ImportantInbox() {
               今回確認した範囲に、重要な選考メールはありません。
             </p>
           )}
-          {inbox.messages.slice(0, 3).map((mail) => (
+          {inbox.messages.slice(0, 2).map((mail) => (
             <a
               key={mail.id}
               className="home-mail"
@@ -160,9 +160,9 @@ export function ImportantInbox() {
               <p className="home-mail-snippet">{mail.snippet}</p>
             </a>
           ))}
-          {inbox.messages.length > 3 && (
+          {inbox.messages.length > 2 && (
             <p className="md-body-small mt-2">
-              ほか{inbox.messages.length - 3}件。Gmailで確認してください。
+              ほか{inbox.messages.length - 2}件。Gmailで確認してください。
             </p>
           )}
           <div className="flex flex-wrap justify-between items-center gap-2 mt-3">
