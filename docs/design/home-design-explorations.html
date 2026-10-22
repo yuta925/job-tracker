@@ -1,0 +1,284 @@
+<style>
+#ippo-explorations { color-scheme:light dark; }
+#ippo-explorations .ip-app { --ip-bg:light-dark(#f2f3ed,#20241f); --ip-paper:light-dark(#fffef8,#2b3028); --ip-ink:light-dark(#20251d,#f4f4e9); --ip-soft:light-dark(#62685c,#b7bfad); --ip-line:light-dark(#d6d9cb,#485040); --ip-accent:light-dark(#b9d964,#b8d77b); --ip-accent-ink:light-dark(#263118,#263118); --ip-warm:light-dark(#f8d87b,#e9c577); --ip-warm-ink:light-dark(#3c3013,#382d16); --ip-tint:light-dark(#e7eddc,#38432e); --ip-radius:20px; color:var(--ip-ink); background:var(--ip-bg); font:14px/1.6 -apple-system,BlinkMacSystemFont,"Hiragino Kaku Gothic ProN","Noto Sans JP",sans-serif; min-height:940px; padding:30px; }
+#ippo-explorations .ip-app * { box-sizing:border-box; }
+#ippo-explorations .ip-app [hidden] { display:none; }
+#ippo-explorations .ip-app h2,#ippo-explorations .ip-app h3,#ippo-explorations .ip-app p { margin:0; }
+#ippo-explorations .ip-app h2,#ippo-explorations .ip-app h3,#ippo-explorations .ip-app strong { font-weight:500; }
+#ippo-explorations .ip-app button { font:inherit; }
+#ippo-explorations .ip-top { display:flex; align-items:center; gap:30px; border-bottom:1px solid var(--ip-line); padding-bottom:22px; }
+#ippo-explorations .ip-logo { font-size:32px; letter-spacing:-.08em; font-weight:500; line-height:1; display:flex; align-items:center; gap:9px; }
+#ippo-explorations .ip-logo-mark { display:flex; gap:3px; transform:rotate(-18deg); }
+#ippo-explorations .ip-logo-mark b { width:9px; height:22px; background:var(--ip-ink); border-radius:8px; }
+#ippo-explorations .ip-logo-mark b:last-child { margin-top:8px; }
+#ippo-explorations .ip-nav { display:flex; flex-wrap:wrap; gap:26px; color:var(--ip-soft); font-size:13px; }
+#ippo-explorations .ip-nav [aria-current] { color:var(--ip-ink); }
+#ippo-explorations .ip-nav [aria-current]::before { content:'●'; font-size:9px; margin-right:7px; }
+#ippo-explorations .ip-account { margin-left:auto; border:1px solid var(--ip-line); border-radius:50%; width:34px; height:34px; display:grid; place-items:center; font-size:12px; flex-shrink:0; }
+#ippo-explorations .ip-eyebrow { font-size:11px; letter-spacing:.13em; color:var(--ip-soft); }
+#ippo-explorations .ip-intro { display:flex; align-items:center; justify-content:space-between; gap:20px; padding:25px 0 22px; }
+#ippo-explorations .ip-intro h2 { font-size:34px; letter-spacing:-.045em; line-height:1.5; }
+#ippo-explorations .ip-intro p { color:var(--ip-soft); font-size:12px; }
+#ippo-explorations .ip-stats { display:flex; align-items:center; gap:23px; font-size:11px; color:var(--ip-soft); }
+#ippo-explorations .ip-stats strong { color:var(--ip-ink); display:block; font-size:26px; line-height:1.25; }
+#ippo-explorations .ip-label { font-size:11px; color:var(--ip-soft); letter-spacing:.04em; }
+#ippo-explorations .ip-section-title { display:flex; align-items:center; justify-content:space-between; gap:12px; margin-bottom:17px; }
+#ippo-explorations .ip-section-title h3 { font-size:16px; }
+#ippo-explorations .ip-counter { font-size:11px; color:var(--ip-soft); }
+#ippo-explorations .ip-tag { display:inline-block; background:var(--ip-tint); color:var(--ip-ink); border-radius:5px; padding:2px 7px; font-size:11px; line-height:1.5; }
+#ippo-explorations .ip-mail { border-top:1px solid var(--ip-line); }
+#ippo-explorations .ip-mail summary { list-style:none; padding:15px 22px 15px 0; position:relative; }
+#ippo-explorations .ip-mail summary::-webkit-details-marker { display:none; }
+#ippo-explorations .ip-mail summary::after { content:'＋'; position:absolute; right:0; top:32px; color:var(--ip-soft); }
+#ippo-explorations .ip-mail[open] summary::after { content:'−'; }
+#ippo-explorations .ip-mail strong { display:block; font-size:13px; margin:5px 0 2px; }
+#ippo-explorations .ip-mail time { font-size:11px; color:var(--ip-soft); }
+#ippo-explorations .ip-mail p { padding:0 0 15px; font-size:12px; color:var(--ip-soft); }
+#ippo-explorations .ip-mail .ip-tag + .ip-label { margin-left:7px; }
+#ippo-explorations .ip-action { border:1px solid var(--ip-ink); color:var(--ip-paper); background:var(--ip-ink); border-radius:50px; padding:10px 17px; display:inline-flex; align-items:center; gap:7px; }
+#ippo-explorations .ip-action[aria-pressed=true] { color:var(--ip-ink); background:var(--ip-paper); }
+#ippo-explorations .ip-action svg { width:15px; height:15px; }
+#ippo-explorations .ip-status { font-size:12px; margin-top:12px!important; }
+#ippo-explorations .ip-footer { display:flex; justify-content:space-between; flex-wrap:wrap; gap:10px; padding-top:21px; color:var(--ip-soft); font-size:11px; }
+#ippo-explorations .ip-pop .ip-top { border-bottom:0; }
+#ippo-explorations .ip-pop .ip-nav [aria-current] { background:var(--ip-ink); color:var(--ip-paper); border-radius:30px; padding:7px 16px; margin:-7px -16px; }
+#ippo-explorations .ip-pop .ip-nav [aria-current]::before { display:none; }
+#ippo-explorations .ip-pop-layout { display:grid; grid-template-columns:1.05fr 1fr; gap:18px; }
+#ippo-explorations .ip-pop .ip-task { background:var(--ip-accent); color:var(--ip-accent-ink); padding:27px; border-radius:var(--ip-radius); display:flex; flex-direction:column; position:relative; border:1px solid var(--ip-ink); box-shadow:4px 4px 0 var(--ip-ink); }
+#ippo-explorations .ip-pop .ip-task .ip-eyebrow { color:var(--ip-accent-ink); }
+#ippo-explorations .ip-task-number { font-size:76px; line-height:1.1; letter-spacing:-.08em; margin:25px 0 13px; }
+#ippo-explorations .ip-pop .ip-task h3 { font-size:26px; line-height:1.6; letter-spacing:-.04em; }
+#ippo-explorations .ip-pop .ip-task p { font-size:12px; }
+#ippo-explorations .ip-pop .ip-action { align-self:flex-start; margin-top:24px; background:var(--ip-accent-ink); border-color:var(--ip-accent-ink); color:var(--ip-accent); }
+#ippo-explorations .ip-pop .ip-action[aria-pressed=true] { background:var(--ip-accent); color:var(--ip-accent-ink); }
+#ippo-explorations .ip-sticker { position:absolute; top:24px; right:21px; width:65px; height:65px; border:1px solid var(--ip-accent-ink); border-radius:50%; background:var(--ip-warm); color:var(--ip-warm-ink); transform:rotate(13deg); display:grid; place-content:center; text-align:center; font-size:12px; line-height:1.5; }
+#ippo-explorations .ip-pop .ip-inbox { background:var(--ip-paper); border:1px solid var(--ip-line); padding:25px; border-radius:var(--ip-radius); }
+#ippo-explorations .ip-pop .ip-section-title h3 { font-size:18px; }
+#ippo-explorations .ip-pop-bottom { display:grid; grid-template-columns:1.05fr 1fr; gap:18px; margin-top:20px; }
+#ippo-explorations .ip-upnext { padding:21px 25px; border:1px solid var(--ip-line); border-radius:var(--ip-radius); background:var(--ip-paper); }
+#ippo-explorations .ip-upnext p { font-size:13px; margin-top:9px; }
+#ippo-explorations .ip-upnext p span { margin-right:12px; color:var(--ip-soft); font-size:12px; }
+#ippo-explorations .ip-tomorrow { padding:21px 25px; border-radius:var(--ip-radius); background:var(--ip-warm); color:var(--ip-warm-ink); }
+#ippo-explorations .ip-tomorrow .ip-label { color:var(--ip-warm-ink); }
+#ippo-explorations .ip-tomorrow p { margin-top:9px; font-size:13px; }
+#ippo-explorations .ip-editorial { --ip-bg:light-dark(#f6f2ea,#24231e); --ip-paper:light-dark(#fbf8f1,#2c2b24); --ip-ink:light-dark(#312e28,#f2ecdf); --ip-soft:light-dark(#766b5d,#bcb09e); --ip-line:light-dark(#d5cbbb,#524c41); --ip-accent:light-dark(#b44225,#f4aa86); --ip-tint:light-dark(#ece4d6,#433a2e); --ip-radius:3px; }
+#ippo-explorations .ip-editorial .ip-top { padding-bottom:19px; border-bottom:3px double var(--ip-line); }
+#ippo-explorations .ip-editorial .ip-logo { font-family:Georgia,serif; font-style:italic; font-size:40px; letter-spacing:-.07em; }
+#ippo-explorations .ip-edition { font-size:11px; letter-spacing:.06em; color:var(--ip-soft); margin-left:auto; }
+#ippo-explorations .ip-editorial .ip-intro { align-items:flex-end; padding:30px 0 25px; }
+#ippo-explorations .ip-editorial .ip-intro h2 { font-family:"Yu Mincho","Hiragino Mincho ProN",Georgia,serif; font-size:37px; margin-top:8px; line-height:1.7; letter-spacing:-.065em; }
+#ippo-explorations .ip-editorial .ip-intro .ip-date { color:var(--ip-accent); font-family:Georgia,serif; font-size:64px; letter-spacing:-.08em; line-height:1; }
+#ippo-explorations .ip-editorial .ip-intro .ip-date small { display:block; font:11px/2 -apple-system,sans-serif; letter-spacing:.12em; text-align:center; }
+#ippo-explorations .ip-ed-grid { display:grid; grid-template-columns: .78fr 1.3fr; gap:32px; border-top:1px solid var(--ip-ink); padding-top:23px; }
+#ippo-explorations .ip-ed-schedule { border-right:1px solid var(--ip-line); padding-right:28px; }
+#ippo-explorations .ip-editorial .ip-section-title { padding-bottom:14px; border-bottom:1px solid var(--ip-line); margin-bottom:3px; }
+#ippo-explorations .ip-time-row { display:grid; grid-template-columns:44px 1fr; gap:14px; padding:19px 0; }
+#ippo-explorations .ip-time-row time { color:var(--ip-accent); font-size:13px; }
+#ippo-explorations .ip-time-row p { font-size:13px; }
+#ippo-explorations .ip-time-row small { display:block; color:var(--ip-soft); font-size:11px; margin-top:3px; }
+#ippo-explorations .ip-editorial .ip-mail:first-of-type { border-top:0; }
+#ippo-explorations .ip-editorial .ip-mail strong { font-family:"Yu Mincho","Hiragino Mincho ProN",Georgia,serif; font-size:16px; }
+#ippo-explorations .ip-editorial .ip-mail summary { padding-top:12px; padding-bottom:12px; }
+#ippo-explorations .ip-editorial .ip-tag { border-radius:0; background:transparent; padding:0; color:var(--ip-accent); }
+#ippo-explorations .ip-ed-task { margin-top:24px; display:grid; grid-template-columns:92px 1fr auto; gap:22px; align-items:center; background:var(--ip-tint); border-radius:var(--ip-radius); padding:22px; }
+#ippo-explorations .ip-ed-task .ip-deadline { color:var(--ip-accent); border-right:1px solid var(--ip-line); padding-right:18px; font-family:Georgia,serif; font-size:26px; line-height:1.2; }
+#ippo-explorations .ip-ed-task small { display:block; font:11px/1.6 -apple-system,sans-serif; margin-top:5px; }
+#ippo-explorations .ip-ed-task h3 { font-size:17px; }
+#ippo-explorations .ip-ed-task p { color:var(--ip-soft); font-size:12px; margin-top:5px; }
+#ippo-explorations .ip-editorial .ip-action { border-radius:var(--ip-radius); font-size:12px; padding:9px 12px; }
+#ippo-explorations .ip-editorial .ip-footer { border-top:1px solid var(--ip-line); margin-top:24px; padding-top:13px; }
+#ippo-explorations .ip-desk { --ip-bg:light-dark(#e9eef1,#101923); --ip-paper:light-dark(#f9fbfc,#1b2836); --ip-ink:light-dark(#1f3643,#e2edf1); --ip-soft:light-dark(#5b7180,#9eb2c1); --ip-line:light-dark(#cbd7de,#344555); --ip-accent:light-dark(#c9e9dc,#a5dcc9); --ip-accent-ink:light-dark(#173e32,#143a2e); --ip-tint:light-dark(#dfe9ef,#283d4b); display:grid; grid-template-columns:150px 1fr; padding:0; --ip-radius:14px; }
+#ippo-explorations .ip-side { padding:34px 22px; border-right:1px solid var(--ip-line); display:flex; flex-direction:column; }
+#ippo-explorations .ip-side .ip-logo { font-size:29px; }
+#ippo-explorations .ip-side .ip-nav { flex-direction:column; margin-top:42px; gap:25px; font-size:12px; }
+#ippo-explorations .ip-side .ip-nav [aria-current]::before { color:light-dark(#317761,#a5dcc9); }
+#ippo-explorations .ip-side-note { margin-top:auto!important; padding-top:28px; border-top:1px solid var(--ip-line); color:var(--ip-soft); font-size:11px; }
+#ippo-explorations .ip-desk-main { padding:30px 28px; min-width:0; }
+#ippo-explorations .ip-desk-top { display:flex; gap:16px; justify-content:space-between; align-items:center; }
+#ippo-explorations .ip-connected { font-size:11px; color:var(--ip-soft); display:flex; gap:7px; align-items:center; }
+#ippo-explorations .ip-connected::before { content:''; width:6px; height:6px; border-radius:50%; background:light-dark(#317761,#a5dcc9); }
+#ippo-explorations .ip-desk .ip-intro { padding-top:32px; }
+#ippo-explorations .ip-desk .ip-intro h2 { font-size:27px; }
+#ippo-explorations .ip-desk .ip-stats { gap:18px; }
+#ippo-explorations .ip-desk .ip-stats strong { font-size:22px; }
+#ippo-explorations .ip-focus { background:var(--ip-accent); color:var(--ip-accent-ink); padding:21px 24px; border-radius:var(--ip-radius); display:flex; justify-content:space-between; align-items:center; gap:20px; }
+#ippo-explorations .ip-focus .ip-eyebrow { color:var(--ip-accent-ink); }
+#ippo-explorations .ip-focus h3 { font-size:20px; margin:6px 0 3px; }
+#ippo-explorations .ip-focus p { font-size:12px; }
+#ippo-explorations .ip-focus .ip-action { flex-shrink:0; font-size:12px; color:var(--ip-accent); background:var(--ip-accent-ink); border-color:var(--ip-accent-ink); border-radius:8px; }
+#ippo-explorations .ip-focus .ip-action[aria-pressed=true] { color:var(--ip-accent-ink); background:var(--ip-accent); }
+#ippo-explorations .ip-desk-grid { display:grid; grid-template-columns:1fr .62fr; gap:20px; margin-top:24px; }
+#ippo-explorations .ip-desk .ip-inbox { background:var(--ip-paper); border-radius:var(--ip-radius); padding:21px; }
+#ippo-explorations .ip-desk .ip-mail strong { font-size:12px; }
+#ippo-explorations .ip-desk .ip-mail summary { padding-top:13px; padding-bottom:13px; }
+#ippo-explorations .ip-desk-schedule { padding-top:5px; }
+#ippo-explorations .ip-desk-schedule .ip-section-title h3 { font-size:14px; }
+#ippo-explorations .ip-desk-schedule .ip-time-row { display:block; padding:8px 0 20px 16px; border-left:1px solid var(--ip-line); position:relative; }
+#ippo-explorations .ip-desk-schedule .ip-time-row::before { content:''; position:absolute; left:-4px; top:15px; width:7px; height:7px; border-radius:50%; background:var(--ip-soft); }
+#ippo-explorations .ip-desk-schedule .ip-time-row p { font-size:12px; margin-top:5px; }
+#ippo-explorations .ip-desk-schedule .ip-time-row time { font-size:12px; }
+#ippo-explorations .ip-next-deadline { border-top:1px solid var(--ip-line); padding-top:18px; }
+#ippo-explorations .ip-next-deadline p { font-size:12px; margin-top:7px; }
+#ippo-explorations .ip-next-deadline small { color:var(--ip-soft); font-size:11px; }
+@media (max-width:760px) {
+ #ippo-explorations .ip-app { padding:24px; min-height:1100px; }
+ #ippo-explorations .ip-top { gap:25px; flex-wrap:wrap; }
+ #ippo-explorations .ip-top .ip-nav { order:3; width:100%; gap:23px; }
+ #ippo-explorations .ip-account { margin-left:auto; }
+ #ippo-explorations .ip-pop-layout { grid-template-columns:1fr 1fr; }
+ #ippo-explorations .ip-intro h2 { font-size:28px; }
+ #ippo-explorations .ip-stats { gap:13px; }
+ #ippo-explorations .ip-stats strong { font-size:23px; }
+ #ippo-explorations .ip-pop .ip-task,#ippo-explorations .ip-pop .ip-inbox { padding:20px; }
+ #ippo-explorations .ip-pop .ip-task h3 { font-size:23px; }
+ #ippo-explorations .ip-ed-grid { gap:22px; }
+ #ippo-explorations .ip-ed-schedule { padding-right:18px; }
+ #ippo-explorations .ip-ed-task { grid-template-columns:80px 1fr; gap:15px; }
+ #ippo-explorations .ip-ed-task .ip-action { grid-column:2; justify-self:start; }
+ #ippo-explorations .ip-desk { grid-template-columns:115px 1fr; padding:0; }
+ #ippo-explorations .ip-side { padding:28px 16px; }
+ #ippo-explorations .ip-desk-main { padding:26px 20px; }
+ #ippo-explorations .ip-desk .ip-intro { align-items:flex-start; flex-direction:column; gap:16px; }
+ #ippo-explorations .ip-focus { flex-direction:column; align-items:flex-start; padding:20px; }
+ #ippo-explorations .ip-desk-grid { grid-template-columns:1fr; }
+ #ippo-explorations .ip-desk-schedule { display:grid; grid-template-columns:1fr 1fr; gap:0 15px; }
+ #ippo-explorations .ip-desk-schedule .ip-section-title { grid-column:1/-1; }
+ #ippo-explorations .ip-next-deadline { grid-column:1/-1; }
+}
+@media (max-width:540px) {
+ #ippo-explorations .ip-app { padding:22px 17px; min-height:1680px; }
+ #ippo-explorations .ip-section-title { flex-wrap:wrap; gap:5px 12px; }
+ #ippo-explorations .ip-counter { white-space:nowrap; }
+ #ippo-explorations .ip-intro { flex-direction:column; align-items:flex-start; gap:16px; }
+ #ippo-explorations .ip-intro h2 { font-size:28px; }
+ #ippo-explorations .ip-stats { gap:28px; }
+ #ippo-explorations .ip-nav { gap:18px!important; font-size:12px; }
+ #ippo-explorations .ip-pop-layout,#ippo-explorations .ip-pop-bottom { grid-template-columns:1fr; }
+ #ippo-explorations .ip-task-number { margin-top:18px; font-size:60px; }
+ #ippo-explorations .ip-pop .ip-task h3 { font-size:25px; }
+ #ippo-explorations .ip-pop .ip-inbox { margin-top:4px; }
+ #ippo-explorations .ip-editorial .ip-intro { flex-direction:row; align-items:center; gap:12px; }
+ #ippo-explorations .ip-editorial .ip-intro h2 { font-size:27px; }
+ #ippo-explorations .ip-editorial .ip-intro .ip-date { font-size:48px; }
+ #ippo-explorations .ip-edition { margin-left:auto; font-size:11px; }
+ #ippo-explorations .ip-ed-grid { grid-template-columns:1fr; gap:20px; }
+ #ippo-explorations .ip-ed-schedule { border-right:0; padding-right:0; }
+ #ippo-explorations .ip-time-row { padding:15px 0; }
+ #ippo-explorations .ip-ed-task { padding:18px; grid-template-columns:64px 1fr; }
+ #ippo-explorations .ip-ed-task .ip-deadline { font-size:21px; padding-right:10px; }
+ #ippo-explorations .ip-ed-task h3 { font-size:15px; }
+ #ippo-explorations .ip-desk { display:block; padding:0; }
+ #ippo-explorations .ip-side { padding:22px 17px 18px; border-right:0; border-bottom:1px solid var(--ip-line); }
+ #ippo-explorations .ip-side .ip-nav { margin-top:24px; flex-direction:row; }
+ #ippo-explorations .ip-side-note { display:none; }
+ #ippo-explorations .ip-desk-main { padding:24px 17px; }
+ #ippo-explorations .ip-desk .ip-intro { padding-top:25px; }
+ #ippo-explorations .ip-desk .ip-intro h2 { font-size:25px; }
+ #ippo-explorations .ip-desk .ip-inbox { padding:18px; }
+ #ippo-explorations .ip-focus h3 { font-size:19px; }
+ #ippo-explorations .ip-desk-schedule { padding-top:7px; }
+}
+@media (pointer:coarse) {
+ #ippo-explorations .ip-action { min-height:44px; }
+ #ippo-explorations .ip-mail summary { min-height:44px; }
+}
+</style>
+<div id="ippo-explorations" class="viz-carousel" aria-label="ホーム画面の追加デザイン案" data-previous-label="前のデザイン" data-next-label="次のデザイン">
+  <section data-variant="Pop Studio" aria-label="Pop Studio">
+    <div class="ip-app ip-pop" aria-label="Pop Studioのホーム画面">
+      <header class="ip-top"><div class="ip-logo"><span class="ip-logo-mark" aria-hidden="true"><b></b><b></b></span><span class="ip-brand">ippo</span></div><nav class="ip-nav" aria-label="メインメニュー"><span aria-current="page">ホーム</span><span>選考管理</span><span>予定</span><span>ノート</span></nav><span class="ip-account" aria-label="ユーザー">YU</span></header>
+      <div class="ip-intro"><div><p class="ip-eyebrow">FRIDAY, OCTOBER 16</p><h2>小さな一歩も、前進だ。</h2></div><div class="ip-stats"><span><strong>8</strong>進行中</span><span><strong>2</strong>今日の予定</span><span><strong data-task-count>2</strong>近い締切</span></div></div>
+      <div class="ip-pop-layout">
+        <section class="ip-task"><p class="ip-eyebrow">FIRST THINGS FIRST</p><div class="ip-sticker" aria-hidden="true">まずは<br>ここから ↗</div><div class="ip-task-number" aria-hidden="true">01.</div><h3>Mori Techの<br>ESを提出しよう。</h3><p>冬インターン · 今日 23:59まで</p><button type="button" class="ip-action cursor-interaction" data-complete aria-pressed="false"><i data-lucide="check" aria-hidden="true"></i><span>提出済みにする</span></button><p class="ip-status" aria-live="polite" hidden>提出済みとして表示しました。</p></section>
+        <section class="ip-inbox"><div class="ip-section-title"><h3>大事なメールだけ。</h3><span class="ip-counter">Gmail · 3件</span></div>
+          <details class="ip-mail" open><summary class="cursor-interaction"><span class="ip-tag">要返信</span><span class="ip-label">選考結果</span><strong>Nami Studio｜書類選考通過のご連絡</strong><time>09:42</time></summary><p>書類選考を通過しました。10/19（月）までに、一次面接の候補日を返信してください。</p></details>
+          <details class="ip-mail"><summary class="cursor-interaction"><span class="ip-tag">本日締切</span><strong>Mori Tech｜冬インターンのES提出</strong><time>08:15</time></summary><p>エントリーシートの提出は本日23:59まで。企業のマイページから提出してください。</p></details>
+          <details class="ip-mail"><summary class="cursor-interaction"><span class="ip-tag">面接案内</span><strong>Kite Works｜本日の面接URL</strong><time>昨日 18:30</time></summary><p>本日15:00から、オンラインで一次面接を行います。開始5分前を目安に接続してください。</p></details>
+        </section>
+      </div>
+      <div class="ip-pop-bottom"><section class="ip-upnext"><p class="ip-label">TODAY / 今日の予定</p><p><span>15:00</span>Kite Works · 一次面接</p><p><span>17:00</span>キャリア面談</p></section><section class="ip-tomorrow"><p class="ip-label">UP NEXT / 次の締切</p><p>Nami Studio · 早期選考</p><p>課題提出 <span>10/19（月）23:59</span></p></section></div>
+      <footer class="ip-footer"><span>POP STUDIO · ステッカーと弾むタイル</span><span>デザインサンプル / 架空のデータ</span></footer>
+    </div>
+  </section>
+  <section data-variant="Daybook" aria-label="Daybook" hidden>
+    <div class="ip-app ip-editorial" aria-label="Daybookのホーム画面">
+      <header class="ip-top"><div class="ip-logo ip-brand">ippo</div><nav class="ip-nav" aria-label="メインメニュー"><span aria-current="page">ホーム</span><span>選考管理</span><span>予定</span><span>ノート</span></nav><span class="ip-edition">YOUR DAILY EDITION</span></header>
+      <div class="ip-intro"><div><p class="ip-eyebrow">今日というページを、ひらこう。</p><h2>次につながる、<br>今日のこと。</h2></div><div class="ip-date" aria-label="10月16日金曜日">16<small>OCT / FRI</small></div></div>
+      <div class="ip-ed-grid"><section class="ip-ed-schedule"><div class="ip-section-title"><h3>今日の予定</h3><span class="ip-counter">2件</span></div><div class="ip-time-row"><time>15:00</time><p>Kite Works<small>一次面接 · オンライン / 60分</small></p></div><div class="ip-time-row"><time>17:00</time><p>キャリア面談<small>オンライン / 30分</small></p></div><div class="ip-next-deadline"><p class="ip-eyebrow">NEXT DEADLINE</p><p>Nami Studio · 課題提出<br><small>早期選考 / 10月19日（月）まで</small></p></div></section>
+        <section class="ip-inbox"><div class="ip-section-title"><h3>見逃したくない便り</h3><span class="ip-counter">Gmail · 3件</span></div><details class="ip-mail" open><summary class="cursor-interaction"><span class="ip-tag">要返信 / 10月19日まで</span><strong>Nami Studioから、書類通過のお知らせ。</strong><time>09:42 · 選考結果</time></summary><p>次は一次面接です。10月19日までに、参加できる日程の候補を返信してください。</p></details><details class="ip-mail"><summary class="cursor-interaction"><span class="ip-tag">本日締切</span><strong>Mori TechのES、今日が提出日です。</strong><time>08:15 · 冬インターン</time></summary><p>本日23:59までに、企業のマイページからエントリーシートを提出してください。</p></details><details class="ip-mail"><summary class="cursor-interaction"><span class="ip-tag">面接案内</span><strong>Kite Worksから、面接のご案内。</strong><time>昨日 18:30 · 日程・URL</time></summary><p>本日15:00から一次面接を行います。開始5分前を目安に、メール内の参加URLへ接続してください。</p></details></section>
+      </div>
+      <section class="ip-ed-task"><div class="ip-deadline">23:59<small>今日の締切</small></div><div><h3>Mori TechのESを提出する</h3><p>冬インターン · 忘れずに済ませたい、今日のひとつ。</p><p class="ip-status" aria-live="polite" hidden>提出済みとして表示しました。</p></div><button type="button" class="ip-action cursor-interaction" data-complete aria-pressed="false"><i data-lucide="check" aria-hidden="true"></i><span>提出済みにする</span></button></section>
+      <footer class="ip-footer"><span>DAYBOOK · 雑誌の余白と、読みたくなる見出し</span><span>進行中 8件 / 近い締切 <span data-task-count>2</span>件 · サンプル</span></footer>
+    </div>
+  </section>
+  <section data-variant="Quiet Desk" aria-label="Quiet Desk" hidden>
+    <div class="ip-app ip-desk" aria-label="Quiet Deskのホーム画面">
+      <aside class="ip-side"><div class="ip-logo"><span class="ip-logo-mark" aria-hidden="true"><b></b><b></b></span><span class="ip-brand">ippo</span></div><nav class="ip-nav" aria-label="メインメニュー"><span aria-current="page">ホーム</span><span>選考管理</span><span>予定</span><span>ノート</span></nav><p class="ip-side-note">ONE STEP<br>AT A TIME.<br><br>自分のペースで、<br>次の一歩へ。</p></aside>
+      <main class="ip-desk-main"><div class="ip-desk-top"><p class="ip-eyebrow">FRI, OCT 16</p><span class="ip-connected">Gmail · 10:05更新</span></div><div class="ip-intro"><div><h2>今日に、フォーカス。</h2><p>必要な情報が、ここに揃っています。</p></div><div class="ip-stats"><span><strong>8</strong>進行中</span><span><strong data-task-count>2</strong>近い締切</span></div></div>
+        <section class="ip-focus"><div><p class="ip-eyebrow">PRIORITY / 本日 23:59</p><h3>Mori Tech · ES提出</h3><p>冬インターンのエントリーを仕上げよう。</p><p class="ip-status" aria-live="polite" hidden>提出済みとして表示しました。</p></div><button type="button" class="ip-action cursor-interaction" data-complete aria-pressed="false"><i data-lucide="check" aria-hidden="true"></i><span>提出済みにする</span></button></section>
+        <div class="ip-desk-grid"><section class="ip-inbox"><div class="ip-section-title"><h3>重要なメール</h3><span class="ip-counter">3件</span></div><details class="ip-mail" open><summary class="cursor-interaction"><span class="ip-tag">要返信</span><strong>Nami Studio｜書類選考の結果</strong><time>09:42 · 10/19までに返信</time></summary><p>書類選考を通過しました。一次面接の候補日を10/19（月）までに返信してください。</p></details><details class="ip-mail"><summary class="cursor-interaction"><span class="ip-tag">本日締切</span><strong>Mori Tech｜ES提出のご案内</strong><time>08:15</time></summary><p>冬インターンのES提出は、本日23:59まで。企業のマイページから提出してください。</p></details><details class="ip-mail"><summary class="cursor-interaction"><span class="ip-tag">面接案内</span><strong>Kite Works｜面接URL</strong><time>昨日 18:30</time></summary><p>本日15:00から一次面接です。開始5分前を目安に接続してください。</p></details></section><section class="ip-desk-schedule"><div class="ip-section-title"><h3>今日のタイムライン</h3></div><div class="ip-time-row"><time>15:00 — 16:00</time><p>Kite Works<small>一次面接 · オンライン</small></p></div><div class="ip-time-row"><time>17:00 — 17:30</time><p>キャリア面談<small>オンライン</small></p></div><div class="ip-next-deadline"><span class="ip-label">次の締切 · 10/19</span><p>Nami Studio<br><small>早期選考 · 課題提出</small></p></div></section></div>
+        <footer class="ip-footer"><span>QUIET DESK · 集中できる、自分の作業机</span><span>サンプルデータ</span></footer>
+      </main>
+    </div>
+  </section>
+</div>
+<script>
+(() => {
+  const root = document.getElementById('ippo-explorations');
+  const saved = window.openai?.widgetState?.privateContent?.designs || {};
+  const states = {};
+  const validNames = ['ippo', 'tsugie', 'shiori', 'michi', 'asu'];
+  const renderState = (app, state) => {
+    app.querySelectorAll('.ip-brand').forEach(brand => { brand.textContent = state.name; });
+    app.style.setProperty('--ip-radius', `${state.radius}px`);
+    const action = app.querySelector('[data-complete]');
+    action.setAttribute('aria-pressed', String(state.completed));
+    action.querySelector('span').textContent = state.completed ? '提出済みを取り消す' : '提出済みにする';
+    app.querySelector('.ip-status').hidden = !state.completed;
+    app.querySelector('[data-task-count]').textContent = state.completed ? '1' : '2';
+    app.querySelectorAll('.ip-mail').forEach((mail, index) => { mail.open = state.openMail.includes(index); });
+  };
+  const persist = () => {
+    if (window.openai?.setWidgetState) {
+      window.openai.setWidgetState({ modelContent:{ designNames:Object.keys(states), serviceNames:Object.fromEntries(Object.entries(states).map(([key, value]) => [key, value.name])) }, privateContent:{ designs:states } }).catch(() => {});
+    }
+  };
+  root.querySelectorAll('.ip-app').forEach(app => {
+    const variant = app.parentElement.dataset.variant;
+    const previous = saved[variant] || {};
+    const radius = app.classList.contains('ip-editorial') ? 3 : app.classList.contains('ip-desk') ? 14 : 20;
+    const state = { name:validNames.includes(previous.name) ? previous.name : 'ippo', radius:Number.isFinite(previous.radius) ? Math.min(28, Math.max(0, previous.radius)) : radius, completed:previous.completed === true, openMail:Array.isArray(previous.openMail) ? previous.openMail.filter(n => Number.isInteger(n) && n >= 0 && n < 3) : [0] };
+    states[variant] = state;
+    renderState(app, state);
+    app.querySelector('[data-complete]').addEventListener('click', () => {
+      state.completed = !state.completed;
+      renderState(app, state);
+      persist();
+    });
+    app.querySelectorAll('.ip-mail').forEach(mail => mail.addEventListener('toggle', () => {
+      const open = Array.from(app.querySelectorAll('.ip-mail')).flatMap((item, index) => item.open ? [index] : []);
+      if (JSON.stringify(open) !== JSON.stringify(state.openMail)) { state.openMail = open; persist(); }
+    }));
+    if (globalThis.Tweak) {
+      const tweak = new Tweak({ container:app, onChange:() => { renderState(app, state); persist(); } });
+      tweak.addSelect(state, 'name', { label:'サービス名', options:validNames });
+      tweak.addSlider(state, 'radius', { label:'カードの丸み', min:0, max:28, unit:'px' });
+    }
+  });
+  window.addEventListener('openai:set_globals', event => {
+    const restored = event.detail?.globals?.widgetState?.privateContent?.designs;
+    if (!restored) return;
+    root.querySelectorAll('.ip-app').forEach(app => {
+      const key = app.parentElement.dataset.variant;
+      const next = restored[key];
+      if (!next) return;
+      const state = states[key];
+      if (validNames.includes(next.name)) state.name = next.name;
+      if (Number.isFinite(next.radius)) state.radius = Math.min(28, Math.max(0, next.radius));
+      state.completed = next.completed === true;
+      if (Array.isArray(next.openMail)) state.openMail = next.openMail.filter(n => Number.isInteger(n) && n >= 0 && n < 3);
+      renderState(app, state);
+    });
+  });
+})();
+</script>

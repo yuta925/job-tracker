@@ -5,184 +5,123 @@ import { KanbanBoard } from "@/components/kanban/KanbanBoard";
 import { ScheduleCalendar } from "@/components/schedule/ScheduleCalendar";
 import { JobSiteList } from "@/components/job_sites/JobSiteList";
 import { SelfAnalysisTab } from "@/components/self_analysis/SelfAnalysisTab";
-import { useReverseOfferEvents } from "@/hooks/useReverseOfferEvents";
-import { useSeminars } from "@/hooks/useSeminars";
+import { ApplicationDetailModal } from "@/components/kanban/ApplicationDetailModal";
+import { ApplicationFormModal } from "@/components/kanban/ApplicationFormModal";
+import { HomeOverview } from "@/components/home/HomeOverview";
+import { useApplications } from "@/hooks/useApplications";
+import { useScheduleEvents } from "@/hooks/useScheduleEvents";
 import { useJobSites } from "@/hooks/useJobSites";
-import { useCaMeetings } from "@/hooks/useCaMeetings";
 import { useSelfAnalysis } from "@/hooks/useSelfAnalysis";
+import type { Application } from "@/types/application";
 
-type Tab = "kanban" | "schedule" | "job_sites" | "self_analysis";
+type Tab = "home" | "kanban" | "schedule" | "job_sites" | "self_analysis";
+const TABS: { id: Tab; label: string; symbol: string }[] = [
+  { id: "home", label: "ホーム", symbol: "⌂" },
+  { id: "kanban", label: "選考管理", symbol: "▦" },
+  { id: "schedule", label: "スケジュール", symbol: "◷" },
+  { id: "job_sites", label: "就活サイト", symbol: "↗" },
+  { id: "self_analysis", label: "自己分析", symbol: "✎" },
+];
 
-const TAB_STYLE_ACTIVE = {
-  color: "var(--md-primary)",
-  borderBottom: "2px solid var(--md-primary)",
-};
-const TAB_STYLE_INACTIVE = {
-  color: "var(--md-on-surface-variant)",
-};
-
-interface TabButtonProps {
-  label: string;
-  badge?: number;
-  isActive: boolean;
-  onClick: () => void;
-}
-
-function TabButton({ label, badge, isActive, onClick }: TabButtonProps) {
+// 補助機能は開いたときだけ取得する。
+function JobSitesPanel() {
+  const state = useJobSites();
   return (
-    <button
-      onClick={onClick}
-      className="shrink-0 px-4 py-2 md-label-large rounded-t-lg transition-colors"
-      style={isActive ? TAB_STYLE_ACTIVE : TAB_STYLE_INACTIVE}
-      aria-selected={isActive}
-      role="tab"
-    >
-      {label}
-      {badge !== undefined && badge > 0 && (
-        <span
-          className="ml-2 px-1.5 py-0.5 rounded-full md-label-small"
-          style={{
-            background: isActive
-              ? "var(--md-primary)"
-              : "var(--md-surface-container-high)",
-            color: isActive
-              ? "var(--md-on-primary)"
-              : "var(--md-on-surface-variant)",
-          }}
-        >
-          {badge}
-        </span>
-      )}
-    </button>
+    <JobSiteList
+      jobSites={state.jobSites}
+      isLoading={state.isLoading}
+      error={state.error}
+      onCreate={state.createItem}
+      onUpdate={state.updateItem}
+      onDelete={state.deleteItem}
+    />
+  );
+}
+function SelfAnalysisPanel() {
+  const state = useSelfAnalysis();
+  return (
+    <SelfAnalysisTab
+      items={state.items}
+      isLoading={state.isLoading}
+      error={state.error}
+      onCreate={state.createItem}
+      onUpdate={state.updateItem}
+      onDelete={state.deleteItem}
+    />
   );
 }
 
 export function DashboardTabs() {
-  const [activeTab, setActiveTab] = useState<Tab>("kanban");
-
-  const {
-    events,
-    isLoading: eventsLoading,
-    error: eventsError,
-    createEvent,
-    updateEvent,
-    deleteEvent,
-  } = useReverseOfferEvents();
-
-  const {
-    seminars,
-    isLoading: seminarsLoading,
-    error: seminarsError,
-    createItem: createSeminar,
-    updateItem: updateSeminar,
-    deleteItem: deleteSeminar,
-  } = useSeminars();
-
-  const {
-    jobSites,
-    isLoading: jobSitesLoading,
-    error: jobSitesError,
-    createItem: createJobSite,
-    updateItem: updateJobSite,
-    deleteItem: deleteJobSite,
-  } = useJobSites();
-
-  const {
-    meetings,
-    isLoading: meetingsLoading,
-    error: meetingsError,
-    createItem: createMeeting,
-    updateItem: updateMeeting,
-    deleteItem: deleteMeeting,
-  } = useCaMeetings();
-
-  const {
-    items: selfAnalysisItems,
-    isLoading: selfAnalysisLoading,
-    error: selfAnalysisError,
-    createItem: createSelfAnalysisItem,
-    updateItem: updateSelfAnalysisItem,
-    deleteItem: deleteSelfAnalysisItem,
-  } = useSelfAnalysis();
-
-  const scheduleLoading = seminarsLoading || eventsLoading || meetingsLoading;
-  const scheduleError = seminarsError ?? eventsError ?? meetingsError;
-  const scheduleCount = seminars.length + events.length + meetings.length;
+  const [activeTab, setActiveTab] = useState<Tab>("home");
+  const applicationsState = useApplications();
+  const scheduleState = useScheduleEvents();
+  const [scheduleDate, setScheduleDate] = useState<string | undefined>();
+  const [selected, setSelected] = useState<Application | null>(null);
+  const [editing, setEditing] = useState<Application | null | undefined>(
+    undefined,
+  );
 
   return (
     <div className="flex-1 flex flex-col overflow-hidden">
-      {/* Tab bar */}
-      <div
-        className="flex gap-1 px-4 sm:px-6 pt-3 pb-0 overflow-x-auto"
-        style={{ borderBottom: "1px solid var(--md-outline-variant)" }}
-      >
-        <TabButton
-          label="選考管理"
-          isActive={activeTab === "kanban"}
-          onClick={() => setActiveTab("kanban")}
-        />
-        <TabButton
-          label="スケジュール"
-          badge={scheduleCount}
-          isActive={activeTab === "schedule"}
-          onClick={() => setActiveTab("schedule")}
-        />
-        <TabButton
-          label="就活サイト"
-          badge={jobSites.length}
-          isActive={activeTab === "job_sites"}
-          onClick={() => setActiveTab("job_sites")}
-        />
-        <TabButton
-          label="自己分析"
-          badge={selfAnalysisItems.length}
-          isActive={activeTab === "self_analysis"}
-          onClick={() => setActiveTab("self_analysis")}
-        />
-      </div>
-
-      {/* Tab content */}
+      <nav className="dashboard-nav" aria-label="メインメニュー">
+        {TABS.map((tab) => (
+          <button
+            key={tab.id}
+            className="dashboard-nav-item"
+            aria-current={activeTab === tab.id ? "page" : undefined}
+            onClick={() => setActiveTab(tab.id)}
+          >
+            <span aria-hidden="true">{tab.symbol}</span>
+            {tab.label}
+          </button>
+        ))}
+      </nav>
       <div className="flex-1 overflow-auto">
-        {activeTab === "kanban" && <KanbanBoard />}
+        {activeTab === "home" && (
+          <HomeOverview
+            applicationsState={applicationsState}
+            scheduleState={scheduleState}
+            onOpenApplication={setSelected}
+            onNavigate={(tab, date) => {
+              setScheduleDate(date);
+              setActiveTab(tab);
+            }}
+          />
+        )}
+        {activeTab === "kanban" && <KanbanBoard state={applicationsState} />}
         {activeTab === "schedule" && (
           <ScheduleCalendar
-            seminars={seminars}
-            reverseOfferEvents={events}
-            caMeetings={meetings}
-            isLoading={scheduleLoading}
-            error={scheduleError}
-            onCreateSeminar={createSeminar}
-            onUpdateSeminar={updateSeminar}
-            onDeleteSeminar={deleteSeminar}
-            onCreateReverseOffer={createEvent}
-            onUpdateReverseOffer={updateEvent}
-            onDeleteReverseOffer={deleteEvent}
-            onCreateCaMeeting={createMeeting}
-            onUpdateCaMeeting={updateMeeting}
-            onDeleteCaMeeting={deleteMeeting}
+            initialDate={scheduleDate}
+            state={scheduleState}
+            applications={applicationsState.applications}
+            onOpenApplication={setSelected}
           />
         )}
-        {activeTab === "job_sites" && (
-          <JobSiteList
-            jobSites={jobSites}
-            isLoading={jobSitesLoading}
-            error={jobSitesError}
-            onCreate={createJobSite}
-            onUpdate={updateJobSite}
-            onDelete={deleteJobSite}
-          />
-        )}
-        {activeTab === "self_analysis" && (
-          <SelfAnalysisTab
-            items={selfAnalysisItems}
-            isLoading={selfAnalysisLoading}
-            error={selfAnalysisError}
-            onCreate={createSelfAnalysisItem}
-            onUpdate={updateSelfAnalysisItem}
-            onDelete={deleteSelfAnalysisItem}
-          />
-        )}
+        {activeTab === "job_sites" && <JobSitesPanel />}
+        {activeTab === "self_analysis" && <SelfAnalysisPanel />}
       </div>
+      {selected && (
+        <ApplicationDetailModal
+          application={selected}
+          onClose={() => setSelected(null)}
+          onEdit={(app) => {
+            setSelected(null);
+            setEditing(app);
+          }}
+          onDelete={(id) => {
+            void applicationsState.deleteApp(id);
+            setSelected(null);
+          }}
+        />
+      )}
+      {editing !== undefined && (
+        <ApplicationFormModal
+          application={editing}
+          onClose={() => setEditing(undefined)}
+          onCreate={applicationsState.createApp}
+          onUpdate={applicationsState.updateApp}
+        />
+      )}
     </div>
   );
 }

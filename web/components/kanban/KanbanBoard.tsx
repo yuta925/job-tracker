@@ -15,9 +15,13 @@ import {
 import { KanbanColumn } from "./KanbanColumn";
 import { ApplicationFormModal } from "./ApplicationFormModal";
 import { ApplicationDetailModal } from "./ApplicationDetailModal";
-import { useApplications } from "@/hooks/useApplications";
+import type { useApplications } from "@/hooks/useApplications";
 
-export function KanbanBoard() {
+export function KanbanBoard({
+  state,
+}: {
+  state: ReturnType<typeof useApplications>;
+}) {
   const {
     applications,
     isLoading,
@@ -26,7 +30,7 @@ export function KanbanBoard() {
     createApp,
     updateApp,
     deleteApp,
-  } = useApplications();
+  } = state;
 
   const [isFormOpen, setIsFormOpen] = useState(false);
   const [editingApplication, setEditingApplication] =
@@ -45,7 +49,7 @@ export function KanbanBoard() {
       acc[s] = filteredApplications.filter((a) => a.status === s);
       return acc;
     },
-    {} as Record<ApplicationStatus, Application[]>
+    {} as Record<ApplicationStatus, Application[]>,
   );
 
   const handleDragEnd = useCallback(
@@ -58,7 +62,7 @@ export function KanbanBoard() {
         updateStatus(appId, newStatus);
       }
     },
-    [applications, updateStatus]
+    [applications, updateStatus],
   );
 
   function handleCardClick(app: Application) {
@@ -87,9 +91,15 @@ export function KanbanBoard() {
         <div className="flex flex-col items-center gap-4">
           <div
             className="w-12 h-12 rounded-full border-4 border-t-transparent animate-spin"
-            style={{ borderColor: "var(--md-primary-container)", borderTopColor: "var(--md-primary)" }}
+            style={{
+              borderColor: "var(--md-primary-container)",
+              borderTopColor: "var(--md-primary)",
+            }}
           />
-          <p className="md-body-large" style={{ color: "var(--md-on-surface-variant)" }}>
+          <p
+            className="md-body-large"
+            style={{ color: "var(--md-on-surface-variant)" }}
+          >
             読み込み中...
           </p>
         </div>
@@ -101,7 +111,10 @@ export function KanbanBoard() {
     <>
       {/* ── Toolbar + Filters ── */}
       <div className="flex items-center gap-2 px-4 sm:px-6 py-2">
-        <p className="md-body-small shrink-0" style={{ color: "var(--md-on-surface-variant)" }}>
+        <p
+          className="md-body-small shrink-0"
+          style={{ color: "var(--md-on-surface-variant)" }}
+        >
           {applications.length} 社 管理中
         </p>
         <div className="flex flex-wrap items-center gap-2 flex-1 min-w-0">
@@ -128,7 +141,9 @@ export function KanbanBoard() {
           </select>
           <select
             value={filterIndustry}
-            onChange={(e) => setFilterIndustry(e.target.value as Industry | "all")}
+            onChange={(e) =>
+              setFilterIndustry(e.target.value as Industry | "all")
+            }
             className="md-label-small px-3 py-1 rounded-full border"
             style={{
               borderColor: "var(--md-outline-variant)",
@@ -150,8 +165,18 @@ export function KanbanBoard() {
           onClick={handleOpenNew}
           className="md-btn md-btn-filled hidden sm:inline-flex shrink-0"
         >
-          <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M12 4v16m8-8H4" />
+          <svg
+            className="w-5 h-5"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2.5}
+              d="M12 4v16m8-8H4"
+            />
           </svg>
           企業を追加
         </button>
@@ -161,11 +186,23 @@ export function KanbanBoard() {
       {error && (
         <div
           className="mx-4 sm:mx-6 mt-3 px-4 py-3 rounded-xl flex items-center gap-3"
-          style={{ background: "var(--md-error-container)", color: "var(--md-on-error-container)" }}
+          style={{
+            background: "var(--md-error-container)",
+            color: "var(--md-on-error-container)",
+          }}
         >
-          <svg className="w-5 h-5 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2}
-              d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+          <svg
+            className="w-5 h-5 shrink-0"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+            />
           </svg>
           <p className="md-body-medium">{error.message}</p>
         </div>
@@ -203,8 +240,18 @@ export function KanbanBoard() {
         aria-label="企業を追加"
         style={{ animation: "md-fab-in 300ms cubic-bezier(.2,0,0,1) forwards" }}
       >
-        <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M12 4v16m8-8H4" />
+        <svg
+          className="w-6 h-6"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth={2.5}
+            d="M12 4v16m8-8H4"
+          />
         </svg>
       </button>
 

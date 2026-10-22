@@ -10,8 +10,9 @@ const notoSansJP = Noto_Sans_JP({
 });
 
 export const metadata: Metadata = {
-  title: "就活トラッカー",
-  description: "選考状況 Kanban ダッシュボード",
+  title: "Job-Tracker",
+  description:
+    "大切な連絡と、次にやることをひと目で。Job-Trackerで就活の締切・予定・選考を管理。",
 };
 
 export default function RootLayout({
@@ -23,7 +24,10 @@ export default function RootLayout({
     <html lang="ja" className={notoSansJP.variable}>
       <body
         className={notoSansJP.className}
-        style={{ background: "var(--md-background)", color: "var(--md-on-background)" }}
+        style={{
+          background: "var(--md-background)",
+          color: "var(--md-on-background)",
+        }}
       >
         {children}
       </body>

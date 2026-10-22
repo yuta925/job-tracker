@@ -131,7 +131,7 @@ describe("ApplicationCard", () => {
       />
     );
     expect(screen.getByText("コーディングテスト")).toBeInTheDocument();
-    expect(screen.getByText("GD")).toBeInTheDocument();
+    expect(screen.getByText("グループディスカッション")).toBeInTheDocument();
   });
 
   it("screening_labels が null のときラベルチップを表示しない", () => {

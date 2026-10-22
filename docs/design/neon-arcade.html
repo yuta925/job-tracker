@@ -1,0 +1,158 @@
+<style>
+@import url('https://fonts.googleapis.com/css2?family=DotGothic16&family=Press+Start+2P&display=swap');
+#ippo-neon-arcade { color-scheme:dark; --na-bg:#06070d; --na-panel:#090b12; --na-ink:#f0f3f7; --na-soft:#a6aec1; --na-line:#30354b; --na-green:#20f58c; --na-pink:#ff60cf; --na-blue:#8680ff; --na-gold:#e7e968; --na-dim:#101424; --na-shadow:#16764d; --na-skin:#f1be9f; --na-white:#f0f3f7; --na-coat:#35d5c3; --na-trunk:#6461d6; --na-glow:6px; background:var(--na-bg); color:var(--na-ink); padding:25px 28px; font:14px/1.8 'DotGothic16',ui-monospace,monospace; background-image:linear-gradient(45deg,transparent 45%,var(--na-dim) 45%,var(--na-dim) 55%,transparent 55%),linear-gradient(-45deg,transparent 45%,var(--na-dim) 45%,var(--na-dim) 55%,transparent 55%); background-size:14px 14px; }
+#ippo-neon-arcade * { box-sizing:border-box; }
+#ippo-neon-arcade [hidden] { display:none; }
+#ippo-neon-arcade h2,#ippo-neon-arcade h3,#ippo-neon-arcade p { margin:0; font-weight:400; }
+#ippo-neon-arcade button { font:inherit; }
+#ippo-neon-arcade .na-hud { display:flex; align-items:center; justify-content:space-between; gap:18px; font-size:11px; padding-bottom:19px; }
+#ippo-neon-arcade .na-player { color:var(--na-blue); display:flex; align-items:center; gap:12px; }
+#ippo-neon-arcade .na-player b { color:var(--na-green); font-size:21px; font-weight:400; line-height:1; }
+#ippo-neon-arcade .na-hud-date { color:var(--na-soft); }
+#ippo-neon-arcade .na-hud-count { color:var(--na-pink); }
+#ippo-neon-arcade .na-hud-count strong { color:var(--na-ink); font-weight:400; margin-left:9px; }
+#ippo-neon-arcade .na-shell { border:1px solid var(--na-line); background:var(--na-panel); }
+#ippo-neon-arcade .na-top { display:flex; align-items:center; gap:32px; padding:18px 23px; border-bottom:1px solid var(--na-line); }
+#ippo-neon-arcade .na-logo { display:flex; align-items:center; gap:10px; font-size:28px; letter-spacing:-.08em; }
+#ippo-neon-arcade .na-logo span:first-child { color:var(--na-green); font-size:17px; }
+#ippo-neon-arcade .na-logo small { font:11px/1.5 'DotGothic16',monospace; color:var(--na-soft); letter-spacing:.1em; margin-left:5px; }
+#ippo-neon-arcade .na-nav { display:flex; gap:26px; font-size:12px; color:var(--na-soft); margin-left:auto; }
+#ippo-neon-arcade .na-nav [aria-current] { color:var(--na-green); }
+#ippo-neon-arcade .na-nav [aria-current]::before { content:'▶ '; font-size:10px; }
+#ippo-neon-arcade .na-content { padding:22px; }
+#ippo-neon-arcade .na-hero { border:2px solid var(--na-green); border-radius:18px; padding:24px 27px 0; display:grid; grid-template-columns:1.1fr 1fr; align-items:center; gap:10px 22px; background:var(--na-bg); box-shadow:0 0 var(--na-glow) color-mix(in srgb,var(--na-green) 17%,transparent); }
+#ippo-neon-arcade .na-eyebrow { font-size:11px; letter-spacing:.12em; color:var(--na-soft); }
+#ippo-neon-arcade .na-hero .na-eyebrow { color:var(--na-green); }
+#ippo-neon-arcade .na-title { font-size:43px; line-height:1.6; letter-spacing:.02em; color:var(--na-pink); text-shadow:3px 3px 0 var(--na-green); margin:8px 0 12px; }
+#ippo-neon-arcade .na-title .na-play { font-size:38px; letter-spacing:.015em; }
+#ippo-neon-arcade .na-hero-copy { font:12px/1.9 -apple-system,'Hiragino Kaku Gothic ProN',sans-serif; color:var(--na-soft); margin-bottom:20px; }
+#ippo-neon-arcade .na-scene { align-self:end; min-width:0; }
+#ippo-neon-arcade canvas { width:100%; height:auto; image-rendering:pixelated; display:block; }
+#ippo-neon-arcade .na-scene-label { color:var(--na-blue); font-size:11px; text-align:center; letter-spacing:.08em; margin:6px 0 14px; }
+#ippo-neon-arcade .na-main-grid { display:grid; grid-template-columns:.9fr 1.1fr; gap:22px; margin-top:24px; }
+#ippo-neon-arcade .na-panel { min-width:0; border:1px solid var(--na-line); background:var(--na-panel); padding:21px; position:relative; }
+#ippo-neon-arcade .na-panel::before { content:''; width:26px; height:3px; background:var(--na-green); position:absolute; top:-2px; left:21px; }
+#ippo-neon-arcade .na-inbox::before { background:var(--na-pink); }
+#ippo-neon-arcade .na-panel-heading { display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:6px 12px; margin-bottom:18px; }
+#ippo-neon-arcade .na-panel-heading h3 { font-size:17px; }
+#ippo-neon-arcade .na-panel-heading .na-eyebrow { font-size:11px; letter-spacing:.04em; }
+#ippo-neon-arcade .na-badge { font-size:11px; padding:3px 8px; background:color-mix(in srgb,var(--na-pink) 13%,var(--na-panel)); color:var(--na-pink); }
+#ippo-neon-arcade .na-quest h3 { font-size:24px; margin:14px 0 8px; line-height:1.6; }
+#ippo-neon-arcade .na-meta { font:12px/1.9 -apple-system,'Hiragino Kaku Gothic ProN',sans-serif; color:var(--na-soft); }
+#ippo-neon-arcade .na-button { margin-top:20px; background:var(--na-green); color:var(--na-bg); border:0; box-shadow:4px 4px 0 var(--na-shadow); padding:11px 18px; display:inline-flex; align-items:center; gap:10px; }
+#ippo-neon-arcade .na-button .na-start { font-family:'Press Start 2P',monospace; font-size:11px; }
+#ippo-neon-arcade .na-button .na-button-label { font-size:12px; }
+#ippo-neon-arcade .na-button[aria-pressed=true] { background:var(--na-panel); color:var(--na-green); outline:1px solid var(--na-green); outline-offset:-1px; box-shadow:none; transform:translate(2px,2px); }
+#ippo-neon-arcade .na-feedback { color:var(--na-gold); font-size:12px; margin-top:15px; }
+#ippo-neon-arcade .na-next { border-top:1px dashed var(--na-line); margin-top:22px; padding-top:16px; }
+#ippo-neon-arcade .na-next p { font-size:12px; margin-top:6px; }
+#ippo-neon-arcade .na-next .na-date { color:var(--na-blue); font-size:11px; }
+#ippo-neon-arcade .na-mail { border-top:1px solid var(--na-line); }
+#ippo-neon-arcade .na-mail summary { list-style:none; padding:13px 22px 13px 0; position:relative; }
+#ippo-neon-arcade .na-mail summary::-webkit-details-marker { display:none; }
+#ippo-neon-arcade .na-mail summary::after { content:'＋'; position:absolute; right:0; top:28px; color:var(--na-pink); }
+#ippo-neon-arcade .na-mail[open] summary::after { content:'−'; }
+#ippo-neon-arcade .na-mail strong { display:block; font:500 13px/1.8 -apple-system,'Hiragino Kaku Gothic ProN',sans-serif; margin-top:5px; }
+#ippo-neon-arcade .na-mail time { font-size:11px; color:var(--na-soft); }
+#ippo-neon-arcade .na-mail p { padding-bottom:14px; font:12px/1.9 -apple-system,'Hiragino Kaku Gothic ProN',sans-serif; color:var(--na-soft); }
+#ippo-neon-arcade .na-mail-tag { color:var(--na-green); font-size:11px; }
+#ippo-neon-arcade .na-mail-tag.na-urgent { color:var(--na-pink); }
+#ippo-neon-arcade .na-schedule { margin-top:23px; border-top:1px solid var(--na-line); padding-top:17px; display:grid; grid-template-columns:auto 1fr 1fr; gap:25px; }
+#ippo-neon-arcade .na-schedule > h3 { font-size:14px; color:var(--na-blue); }
+#ippo-neon-arcade .na-event { display:flex; gap:14px; align-items:baseline; }
+#ippo-neon-arcade .na-event time { color:var(--na-green); font-size:15px; }
+#ippo-neon-arcade .na-event p { font:12px/1.8 -apple-system,'Hiragino Kaku Gothic ProN',sans-serif; }
+#ippo-neon-arcade .na-event small { display:block; color:var(--na-soft); font-size:11px; }
+#ippo-neon-arcade .na-footer { display:flex; justify-content:space-between; gap:8px; flex-wrap:wrap; font-size:11px; color:var(--na-soft); padding-top:17px; }
+#ippo-neon-arcade .na-footer span:first-child { color:var(--na-green); }
+@media(max-width:800px) {
+ #ippo-neon-arcade { padding:22px; }
+ #ippo-neon-arcade .na-top { gap:20px; flex-wrap:wrap; }
+ #ippo-neon-arcade .na-nav { margin-left:0; width:100%; }
+ #ippo-neon-arcade .na-title { font-size:34px; }
+ #ippo-neon-arcade .na-title .na-play { font-size:31px; }
+ #ippo-neon-arcade .na-hero { padding:20px 20px 0; gap:16px; }
+ #ippo-neon-arcade .na-main-grid { gap:17px; }
+ #ippo-neon-arcade .na-panel { padding:17px; }
+ #ippo-neon-arcade .na-quest h3 { font-size:21px; }
+ #ippo-neon-arcade .na-button { flex-wrap:wrap; gap:9px; padding:10px 13px; }
+ #ippo-neon-arcade .na-schedule { grid-template-columns:1fr 1fr; gap:14px; }
+ #ippo-neon-arcade .na-schedule > h3 { grid-column:1/-1; }
+ #ippo-neon-arcade .na-event { gap:10px; }
+}
+@media(max-width:590px) {
+ #ippo-neon-arcade { padding:18px 14px; }
+ #ippo-neon-arcade .na-hud { flex-wrap:wrap; gap:8px 16px; font-size:11px; }
+ #ippo-neon-arcade .na-hud-date { margin-left:auto; }
+ #ippo-neon-arcade .na-hud-count { width:100%; }
+ #ippo-neon-arcade .na-top { padding:17px; }
+ #ippo-neon-arcade .na-logo { font-size:27px; }
+ #ippo-neon-arcade .na-nav { gap:20px; font-size:11px; flex-wrap:wrap; }
+ #ippo-neon-arcade .na-content { padding:16px; }
+ #ippo-neon-arcade .na-hero { grid-template-columns:1fr; padding:20px 17px 0; }
+ #ippo-neon-arcade .na-title { font-size:31px; margin-top:10px; text-shadow:2px 2px 0 var(--na-green); }
+ #ippo-neon-arcade .na-title .na-play { font-size:29px; }
+ #ippo-neon-arcade .na-hero-copy { margin-bottom:0; }
+ #ippo-neon-arcade .na-scene { max-width:360px; width:100%; justify-self:center; }
+ #ippo-neon-arcade .na-scene-label { margin-bottom:13px; }
+ #ippo-neon-arcade .na-main-grid { grid-template-columns:1fr; gap:22px; }
+ #ippo-neon-arcade .na-panel { padding:18px; }
+ #ippo-neon-arcade .na-schedule { grid-template-columns:1fr; gap:14px; }
+ #ippo-neon-arcade .na-event time { min-width:49px; }
+ #ippo-neon-arcade .na-button { padding:11px 14px; }
+}
+@media(max-width:360px) {
+ #ippo-neon-arcade .na-title { font-size:27px; }
+ #ippo-neon-arcade .na-title .na-play { font-size:24px; }
+ #ippo-neon-arcade .na-hero { padding-left:13px; padding-right:13px; }
+ #ippo-neon-arcade .na-eyebrow { letter-spacing:.03em; }
+ #ippo-neon-arcade .na-quest h3 { font-size:21px; }
+ #ippo-neon-arcade .na-button { display:flex; flex-direction:column; align-items:flex-start; gap:7px; }
+}
+@media(pointer:coarse) { #ippo-neon-arcade .na-button { min-height:44px; } }
+</style>
+<div id="ippo-neon-arcade" aria-label="Neon Arcade：蛍光色とドット絵の就活ホーム">
+  <div class="na-hud"><span class="na-player"><b aria-hidden="true">♥</b> PLAYER 01 / YU</span><time class="na-hud-date">FRI. OCT 16</time><span class="na-hud-count">IN PROGRESS <strong>08</strong></span></div>
+  <div class="na-shell"><header class="na-top"><div class="na-logo"><span aria-hidden="true">◆</span><span data-brand>ippo</span><small>NEON ARCADE</small></div><nav class="na-nav" aria-label="メインメニュー"><span aria-current="page">ホーム</span><span>選考管理</span><span>予定</span><span>ノート</span></nav></header>
+    <div class="na-content"><section class="na-hero"><div><p class="na-eyebrow">READY FOR YOUR NEXT MOVE?</p><h2 class="na-title">次の一歩を、<br><span class="na-play">PLAYしよう。</span></h2><p class="na-hero-copy">今日のクエスト、大事な連絡、次の予定。<br>ここから、ひとつずつ進めよう。</p></div><div class="na-scene" data-art><canvas width="168" height="80" role="img" aria-label="ネオンの街で、旅人と白い猫が次の一歩を踏み出すドット絵"></canvas><p class="na-scene-label">A LITTLE STEP. A NEW STAGE.</p></div></section>
+      <div class="na-main-grid"><section class="na-panel na-quest"><div class="na-panel-heading"><h3>TODAY'S QUEST</h3><span class="na-eyebrow">近い締切 <span data-count>2</span>件</span></div><span class="na-badge">！ 今日 23:59まで</span><h3>Mori Techの<br>ESを提出する</h3><p class="na-meta">冬インターン / エントリーシート<br>提出先：企業のマイページ</p><button class="na-button cursor-interaction" type="button" data-complete aria-pressed="false"><span class="na-start" data-start>▶ CLEAR</span><span class="na-button-label" data-label>提出済みにする</span></button><p class="na-feedback" data-feedback aria-live="polite" hidden>★ QUEST CLEAR! ひとつ、前進。</p><div class="na-next"><span class="na-eyebrow">NEXT QUEST</span><p>Nami Studio · 課題提出</p><span class="na-date">早期選考 / 10.19 MON 23:59</span></div></section>
+        <section class="na-panel na-inbox"><div class="na-panel-heading"><h3>NEW MESSAGES</h3><span class="na-eyebrow">重要メール / 3件</span></div><details class="na-mail" open><summary class="cursor-interaction"><span class="na-mail-tag">◆ 要返信 / 選考結果</span><strong>Nami Studio｜書類選考通過</strong><time>09:42</time></summary><p>一次面接の候補日を、10月19日（月）までに返信してください。</p></details><details class="na-mail"><summary class="cursor-interaction"><span class="na-mail-tag na-urgent">！ 本日締切</span><strong>Mori Tech｜ES提出のご案内</strong><time>08:15</time></summary><p>冬インターンのES提出は本日23:59まで。企業のマイページから提出してください。</p></details><details class="na-mail"><summary class="cursor-interaction"><span class="na-mail-tag">◇ 面接案内</span><strong>Kite Works｜本日の面接URL</strong><time>昨日 18:30</time></summary><p>本日15:00から一次面接です。開始5分前を目安に、メール内の参加URLへ接続してください。</p></details></section></div>
+      <section class="na-schedule"><h3>TODAY'S SCHEDULE</h3><div class="na-event"><time>15:00</time><p>Kite Works · 一次面接<small>オンライン / 60分</small></p></div><div class="na-event"><time>17:00</time><p>キャリア面談<small>オンライン / 30分</small></p></div></section>
+    </div>
+  </div><footer class="na-footer"><span>◆ ONE STEP AT A TIME.</span><span>NEON ARCADE · デザインサンプル / 架空のデータ</span></footer>
+</div>
+<script>
+(() => {
+  const root = document.getElementById('ippo-neon-arcade');
+  const previous = window.openai?.widgetState?.privateContent;
+  const names = ['ippo','tsugie','shiori'];
+  const state = {completed:previous?.completed===true,name:names.includes(previous?.name)?previous.name:'ippo',art:previous?.art!==false,glow:Number.isFinite(previous?.glow)?Math.max(0,Math.min(16,previous.glow)):6};
+  const draw = () => {
+    const ctx = root.querySelector('canvas').getContext('2d'); if(!ctx)return;
+    const css = getComputedStyle(root);
+    const color = key => css.getPropertyValue(`--na-${key}`).trim();
+    const rect = (x,y,w,h,key) => {ctx.fillStyle=color(key);ctx.fillRect(x,y,w,h);};
+    ctx.clearRect(0,0,168,80);rect(0,0,168,80,'bg');
+    for(const [x,y] of [[8,14],[43,8],[103,13],[155,8],[111,38]]){rect(x,y-2,1,5,'gold');rect(x-2,y,5,1,'gold');rect(x-1,y-1,3,3,'gold');}
+    rect(15,23,2,48,'blue');rect(15,23,17,2,'blue');rect(29,21,8,5,'trunk');rect(31,22,4,2,'green');rect(13,69,6,2,'blue');
+    rect(137,38,4,33,'trunk');rect(127,44,12,4,'trunk');rect(130,39,4,8,'trunk');rect(140,44,9,4,'trunk');
+    for(let row=0;row<7;row++)for(let col=0;col<9;col++){
+      const x=120+col*4,y=15+row*4;
+      if(Math.abs(col-4)+Math.abs(row-3)<6){rect(x,y,4,4,((col*7+row*11)%5===0)?'blue':((col+row)%3===0?'coat':'green'));}
+    }
+    rect(0,71,168,2,'green');rect(0,73,168,7,'trunk');
+    for(let y=74;y<80;y+=4)for(let x=(y===74?0:4);x<168;x+=9){rect(x,y,6,2,'blue');rect(x+1,y,2,1,'green');}
+    const person=['.....pppppp.....','....pppppppp....','....pssssssp....','....pswsswsp....','.....ssssss.....','......ssss......','...ccccccccc....','..sscccccccss...','..sscccccccss...','..sscccccccss...','....ccccccc.....','....ccccccc.....','....ggggggg.....','....ddddddd.....','....ddd.ddd.....','....ddd.ddd.....','...dddd.dddd....'];
+    const tones={p:'pink',s:'skin',w:'bg',c:'coat',g:'gold',d:'trunk'};
+    person.forEach((line,y)=>Array.from(line).forEach((pixel,x)=>{if(tones[pixel])rect(49+x*2,37+y*2,2,2,tones[pixel]);}));
+    const cat=['w.......w...','ww.....ww...','wwwwwwwww...','wwgwwwgww...','wwwwwwwww...','..wwwwwww..w','..wwwwwww..w','..wwwwwwwwww','..ww..ww....'];
+    cat.forEach((line,y)=>Array.from(line).forEach((pixel,x)=>{if(pixel==='w'||pixel==='g')rect(87+x*2,y*2+53,2,2,pixel==='w'?'white':'green');}));
+  };
+  const render = () => {root.querySelector('[data-brand]').textContent=state.name;root.querySelector('[data-count]').textContent=state.completed?'1':'2';root.querySelector('[data-complete]').setAttribute('aria-pressed',String(state.completed));root.querySelector('[data-label]').textContent=state.completed?'提出済みを取り消す':'提出済みにする';root.querySelector('[data-start]').textContent=state.completed?'↶ UNDO':'▶ CLEAR';root.querySelector('[data-feedback]').hidden=!state.completed;root.querySelector('[data-art]').hidden=!state.art;root.style.setProperty('--na-glow',`${state.glow}px`);};
+  const save=()=>{if(window.openai?.setWidgetState)window.openai.setWidgetState({modelContent:{design:'Neon Arcade',name:state.name},privateContent:{...state}}).catch(()=>{});};
+  render();draw();
+  root.querySelector('[data-complete]').addEventListener('click',()=>{state.completed=!state.completed;render();save();});
+  window.addEventListener('openai:set_globals',event=>{const restored=event.detail?.globals?.widgetState?.privateContent;if(!restored)return;state.completed=restored.completed===true;if(names.includes(restored.name))state.name=restored.name;state.art=restored.art!==false;if(Number.isFinite(restored.glow))state.glow=Math.max(0,Math.min(16,restored.glow));render();});
+  if(globalThis.Tweak){const tweak=new Tweak({container:root,onChange:()=>{render();save();}});tweak.addSelect(state,'name',{label:'サービス名',options:names});tweak.addToggle(state,'art',{label:'ドット絵の街'});tweak.addSlider(state,'glow',{label:'ネオンの発光',min:0,max:16,unit:'px'});}
+})();
+</script>

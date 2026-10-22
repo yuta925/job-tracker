@@ -19,11 +19,20 @@ describe("LoginForm", () => {
     expect(screen.getByLabelText("パスワード")).toBeInTheDocument();
   });
 
+  it("パスワード再設定へのリンクを表示する", () => {
+    render(<LoginForm />);
+    expect(
+      screen.getByRole("link", { name: "パスワードを忘れた方はこちら" }),
+    ).toHaveAttribute("href", "/forgot-password");
+  });
+
   it("初期状態でサブミットボタンが「ログイン」を表示する", () => {
     render(<LoginForm />);
     const form = document.querySelector("form");
     expect(form).toBeInTheDocument();
-    expect(form?.querySelector('button[type="submit"]')?.textContent).toBe("ログイン");
+    expect(form?.querySelector('button[type="submit"]')?.textContent).toBe(
+      "ログイン",
+    );
   });
 
   it("「新規登録」タブをクリックするとサブミットボタンが切り替わる", () => {
@@ -32,7 +41,7 @@ describe("LoginForm", () => {
     fireEvent.click(signupTab);
     const form = document.querySelector("form");
     expect(form?.querySelector('button[type="submit"]')?.textContent).toBe(
-      "アカウントを作成"
+      "アカウントを作成",
     );
   });
 

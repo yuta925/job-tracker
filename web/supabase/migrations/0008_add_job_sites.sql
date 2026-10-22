@@ -34,4 +34,3 @@ $$ LANGUAGE plpgsql;
 CREATE TRIGGER job_sites_updated_at
   BEFORE UPDATE ON public.job_sites
   FOR EACH ROW EXECUTE FUNCTION handle_job_sites_updated_at();
-∑

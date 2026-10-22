@@ -45,7 +45,7 @@ export function Header({ userEmail }: HeaderProps) {
         className="md-title-large flex-1"
         style={{ color: "var(--md-on-surface)" }}
       >
-        就活トラッカー
+        Job-Tracker
       </h1>
 
       {/* Trailing actions */}

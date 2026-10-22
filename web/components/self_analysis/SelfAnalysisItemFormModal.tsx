@@ -11,7 +11,18 @@ import type {
 const TYPE_LABELS: Record<SelfAnalysisItemType, string> = {
   strength: "強み",
   weakness: "弱み",
-  episode: "エピソード",
+  episode: "ガクチカ・エピソード",
+  career_axis: "就活の軸",
+  values: "価値観",
+  interests: "興味・関心",
+  skills: "得意なこと・スキル",
+  challenges: "苦手なこと",
+  roles: "経験・役割",
+  learnings: "成果・学び",
+  setbacks: "失敗・挫折経験",
+  future_vision: "将来像",
+  external_feedback: "他者から見た自分",
+  company_criteria: "企業選びの条件",
 };
 
 interface SelfAnalysisItemFormModalProps {
@@ -80,10 +91,9 @@ export function SelfAnalysisItemFormModal({
     }
   };
 
-  const descriptionLabel =
-    itemType === "episode"
-      ? "メモ（STAR形式など自由に記述）"
-      : "説明（任意）";
+  const descriptionLabel = itemType === "episode" || itemType === "roles" || itemType === "learnings" || itemType === "setbacks"
+    ? "メモ（STAR形式など自由に記述）"
+    : "説明（任意）";
 
   return (
     <div
@@ -137,7 +147,7 @@ export function SelfAnalysisItemFormModal({
                 value={title}
                 onChange={(e) => setTitle(e.target.value)}
                 required
-                className="md-input"
+                className="md-field-input"
                 placeholder={
                   itemType === "episode"
                     ? "例: チーム開発でのリーダー経験"
@@ -161,8 +171,8 @@ export function SelfAnalysisItemFormModal({
                 id="sa-description"
                 value={description}
                 onChange={(e) => setDescription(e.target.value)}
-                rows={itemType === "episode" ? 6 : 3}
-                className="md-input resize-none"
+                rows={itemType === "episode" || itemType === "roles" || itemType === "learnings" || itemType === "setbacks" ? 6 : 3}
+                className="md-field-input resize-none"
                 placeholder={
                   itemType === "episode"
                     ? "S: 状況...\nT: 課題...\nA: 行動...\nR: 結果..."
@@ -171,8 +181,8 @@ export function SelfAnalysisItemFormModal({
               />
             </div>
 
-            {/* Tags (episodes only) */}
-            {itemType === "episode" && (
+            {/* Tags are useful for interview and experience notes. */}
+            {(itemType === "episode" || itemType === "roles" || itemType === "learnings" || itemType === "setbacks") && (
               <div className="flex flex-col gap-1">
                 <label
                   className="md-label-medium"
@@ -191,7 +201,7 @@ export function SelfAnalysisItemFormModal({
                         addTag(tagInput);
                       }
                     }}
-                    className="md-input flex-1"
+                    className="md-field-input flex-1"
                     placeholder="タグを入力して Enter"
                   />
                   <button
