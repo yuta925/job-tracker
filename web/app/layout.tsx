@@ -10,9 +10,9 @@ const notoSansJP = Noto_Sans_JP({
 });
 
 export const metadata: Metadata = {
-  title: "Waypoint",
+  title: "Job-Tracker",
   description:
-    "大切な連絡と、次にやることをひと目で。Waypointで就活の締切・予定・選考を管理。",
+    "大切な連絡と、次にやることをひと目で。Job-Trackerで就活の締切・予定・選考を管理。",
 };
 
 export default function RootLayout({

@@ -1,4 +1,4 @@
-# Job Tracker
+# Job-Tracker
 
 締切・予定・重要メールをホームで確認し、応募企業と選考ステータスを管理する Web アプリです。
 Supabase Auth でログインし、各ユーザーが自分の応募データのみを CRUD できます。

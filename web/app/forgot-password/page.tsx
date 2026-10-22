@@ -1,7 +1,7 @@
 import { AuthPanel } from "@/components/auth/AuthPanel";
 import { ForgotPasswordForm } from "@/components/auth/ForgotPasswordForm";
 
-export const metadata = { title: "パスワード再設定 | Waypoint" };
+export const metadata = { title: "パスワード再設定 | Job-Tracker" };
 
 export default async function ForgotPasswordPage({
   searchParams,

@@ -3,7 +3,7 @@ import { createClient } from "@/lib/supabase/server";
 import { AuthPanel } from "@/components/auth/AuthPanel";
 import { ResetPasswordForm } from "@/components/auth/ResetPasswordForm";
 
-export const metadata = { title: "新しいパスワード | Waypoint" };
+export const metadata = { title: "新しいパスワード | Job-Tracker" };
 
 export default async function ResetPasswordPage() {
   const supabase = await createClient();
